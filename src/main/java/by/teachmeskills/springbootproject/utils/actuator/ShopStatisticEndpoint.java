@@ -1,6 +1,6 @@
 package by.teachmeskills.springbootproject.utils.actuator;
 
-import by.teachmeskills.springbootproject.services.UserService;
+import by.teachmeskills.springbootproject.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
@@ -15,21 +15,21 @@ import static by.teachmeskills.springbootproject.ShopConstants.TIME;
 @Component
 @Endpoint(id = "statistic")
 public class ShopStatisticEndpoint {
-    private final UserService userService;
+    private final ProductService productService;
 
     @Autowired
-    public ShopStatisticEndpoint(UserService userService) {
-        this.userService = userService;
+    public ShopStatisticEndpoint(ProductService productService) {
+        this.productService = productService;
     }
 
     @ReadOperation
-    public ModelAndView getUsersStatistic() {
+    public ModelAndView getProductsStatistic() {
         ModelAndView modelAndView = new ModelAndView();
         ModelMap modelMap = new ModelMap();
 
         StopWatch stopWatch = new StopWatch("App");
         stopWatch.start("App Startup");
-        userService.read();
+        productService.read();
         stopWatch.stop();
 
         modelMap.addAttribute(TIME, stopWatch.getTotalTimeSeconds());

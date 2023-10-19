@@ -11,6 +11,6 @@
 </head>
 <body>
 <br>
-<p style="text-align: center">Получение всех юзеров из системы за ${time} c.</p>
+<p style="text-align: center">Получение всех всех продуктов из системы за ${time} c.</p>
 </body>
 </html>
