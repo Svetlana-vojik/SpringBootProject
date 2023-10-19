@@ -1,6 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>Ошибка</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,9 +13,9 @@
 </head>
 <body>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-<h2 style="text-align: center">Ошибка</h2>
+<h2>Ошибка</h2>
 
-<div class="container-fluid mb-4" style="text-align: center">
+<div class="container-fluid mb-4">
     <h1 class="alert alert-danger">
         ${error}
     </h1>

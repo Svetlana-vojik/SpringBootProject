@@ -3,6 +3,7 @@ package by.teachmeskills.springbootproject.controllers;
 
 import by.teachmeskills.springbootproject.entities.User;
 import by.teachmeskills.springbootproject.PagesPathEnum;
+import by.teachmeskills.springbootproject.exceptions.AuthorizationException;
 import by.teachmeskills.springbootproject.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class LoginController {
 
 
     @PostMapping
-    public ModelAndView login(@Valid @ModelAttribute(USER) User user, BindingResult bindingResult, ModelAndView modelAndView) {
+    public ModelAndView login(@Valid @ModelAttribute(USER) User user, BindingResult bindingResult, ModelAndView modelAndView) throws AuthorizationException {
         if (bindingResult.hasErrors()) {
             populateError(EMAIL, modelAndView, bindingResult);
             populateError(PASSWORD, modelAndView, bindingResult);
