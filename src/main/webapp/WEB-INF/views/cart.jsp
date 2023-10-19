@@ -51,7 +51,7 @@
                         <div class="col m-1" style="text-align: left"><p></p>
                             <p>${product.getName()}</p>
                             <p>${product.getDescription()}</p>
-                            <p>Цена: ${product.getPrice()}></p></div>
+                            <p>Цена: ${product.getPrice()}</p></div>
                         <div class="col m-1"><a
                                 href="${contextPath}/cart/delete?product_id=${product.getId()}">
                             <p></p>

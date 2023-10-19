@@ -43,10 +43,9 @@ public class LoginController {
         return new ModelAndView(PagesPathEnum.REGISTRATION_PAGE.getPath());
     }
 
-
     @PostMapping
     public ModelAndView login(@Valid @ModelAttribute(USER) User user, BindingResult bindingResult, ModelAndView modelAndView) throws AuthorizationException {
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasFieldErrors(EMAIL) || bindingResult.hasFieldErrors(PASSWORD)) {
             populateError(EMAIL, modelAndView, bindingResult);
             populateError(PASSWORD, modelAndView, bindingResult);
             modelAndView.setViewName(LOGIN_PAGE.getPath());

@@ -10,6 +10,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        span.error {
+            color: red;
+        }
+    </style>
 </head>
 <body><h2 style="text-align:center">Регистрация</h2>
 <p></p>
@@ -24,38 +29,38 @@
                     <input type="text" class="form-control w-25" id="email" placeholder="Введите email"
                            name="email"
                            required>
-                    <div class="invalid-feedback">Поле не может быть пустым!</div>
+                    <span class="error">${emailError}</span>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control w-25" id="password" placeholder="Введите пароль"
                            name="password"
                            required>
-                    <div class="invalid-feedback">Поле не может быть пустым!</div>
+                    <span class="error">${passwordError}</span>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control w-25" id="name" placeholder="Имя"
                            name="name"
                            required>
-                    <div class="invalid-feedback">Поле не может быть пустым!</div>
+                    <span class="error">${nameError}</span>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control w-25" id="surname" placeholder="Фамилия"
                            name="surname"
                            required>
-                    <div class="invalid-feedback">Поле не может быть пустым!</div>
+                    <span class="error">${surnameError}</span>
                 </div>
                 <div class="form-group">
                     <label for="birthday"><b>Дата рождения</b></label>
                     <input type="text" class="form-control w-25 datepicker" id="birthday" placeholder="YYYY-mm-dd"
                            name="birthday"
                            required>
-                    <div class="invalid-feedback">Поле не может быть пустым!</div>
+                    <span class="error">${birthdayError}</span>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control w-25" id="address" placeholder="Адрес"
                            name="address"
                            required>
-                    <div class="invalid-feedback">Поле не может быть пустым!</div>
+                    <span class="error">${addressError}</span>
                 </div>
                 <button id="registrationBtn" type="submit" class="btn btn-success">Регистрация</button>
             </form>
@@ -63,41 +68,5 @@
         </div>
     </div>
 </div>
-<script>
-    (function () {
-        'use strict';
-        window.addEventListener('load', function () {
-            const forms = document.getElementsByClassName('needs-validation');
-            const validation = Array.prototype.filter.call(forms, function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (form.checkValidity() === false) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
-        }, false);
-    })();
-    document.getElementById('registrationBtn').disabled = true;
-    document.getElementById('email').addEventListener('keyup', e => {
-        document.getElementById('registrationBtn').disabled = e.target.value === "";
-    });
-    document.getElementById('password').addEventListener('keyup', e => {
-        document.getElementById('registrationBtn').disabled = e.target.value === "";
-    });
-    document.getElementById('name').addEventListener('keyup', e => {
-        document.getElementById('registrationBtn').disabled = e.target.value === "";
-    });
-    document.getElementById('surname').addEventListener('keyup', e => {
-        document.getElementById('registrationBtn').disabled = e.target.value === "";
-    });
-    document.getElementById('birthday').addEventListener('keyup', e => {
-        document.getElementById('registrationBtn').disabled = e.target.value === "";
-    });
-    document.getElementById('address').addEventListener('keyup', e => {
-        document.getElementById('registrationBtn').disabled = e.target.value === "";
-    });
-</script>
 </body>
 </html>

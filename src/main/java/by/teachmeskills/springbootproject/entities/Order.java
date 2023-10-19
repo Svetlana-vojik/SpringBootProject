@@ -19,10 +19,4 @@ public class Order extends BaseEntity {
     private int price;
     private int userId;
     List<Product> products;
-
-    public Order(int id, LocalDateTime orderDate, List<Product> products) {
-        this.id = id;
-        this.orderDate = orderDate;
-        this.products = products;
-    }
 }

@@ -1,5 +1,6 @@
 package by.teachmeskills.springbootproject.services.impl;
 
+import by.teachmeskills.springbootproject.entities.Category;
 import by.teachmeskills.springbootproject.entities.Product;
 import by.teachmeskills.springbootproject.PagesPathEnum;
 import by.teachmeskills.springbootproject.repositories.ProductRepository;
@@ -27,8 +28,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product create(Product entity) {
-        return productRepository.create(entity);
+    public ModelAndView create(Product entity) {
+        return new ModelAndView();
     }
 
     @Override

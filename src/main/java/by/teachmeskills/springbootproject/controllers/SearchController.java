@@ -1,6 +1,5 @@
 package by.teachmeskills.springbootproject.controllers;
 
-
 import by.teachmeskills.springbootproject.services.CategoryService;
 import by.teachmeskills.springbootproject.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,36 +4,26 @@ import by.teachmeskills.springbootproject.PagesPathEnum;
 import by.teachmeskills.springbootproject.entities.Category;
 import by.teachmeskills.springbootproject.entities.Order;
 import by.teachmeskills.springbootproject.entities.User;
+import by.teachmeskills.springbootproject.exceptions.AuthorizationException;
 import by.teachmeskills.springbootproject.repositories.UserRepository;
 import by.teachmeskills.springbootproject.services.CategoryService;
 import by.teachmeskills.springbootproject.services.OrderService;
 import by.teachmeskills.springbootproject.services.UserService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static by.teachmeskills.springbootproject.PagesPathEnum.HOME_PAGE;
-import static by.teachmeskills.springbootproject.PagesPathEnum.LOGIN_PAGE;
 import static by.teachmeskills.springbootproject.PagesPathEnum.USER_PROFILE_PAGE;
-import static by.teachmeskills.springbootproject.ShopConstants.ADDRESS;
-import static by.teachmeskills.springbootproject.ShopConstants.BIRTHDAY;
 import static by.teachmeskills.springbootproject.ShopConstants.CATEGORIES;
-import static by.teachmeskills.springbootproject.ShopConstants.EMAIL;
-import static by.teachmeskills.springbootproject.ShopConstants.NAME;
 import static by.teachmeskills.springbootproject.ShopConstants.ORDERS;
-import static by.teachmeskills.springbootproject.ShopConstants.SURNAME;
 import static by.teachmeskills.springbootproject.ShopConstants.USER;
-import static by.teachmeskills.springbootproject.utils.ValidatorUtil.validateUserData;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private final static Logger log = LogManager.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
     private final CategoryService categoryService;
     private final OrderService orderService;
@@ -46,25 +36,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(User entity) {
-        return userRepository.create(entity);
-    }
-
-    @Override
-    public ModelAndView createUser(User entity) {
+    public ModelAndView create(User entity) throws AuthorizationException {
         ModelAndView modelAndView = new ModelAndView(PagesPathEnum.REGISTRATION_PAGE.getPath());
-        Map<String, String> data = Map.of(NAME, entity.getName(), SURNAME, entity.getSurname(), BIRTHDAY,
-                String.valueOf(entity.getBirthday()), EMAIL, entity.getEmail(),
-                ADDRESS, entity.getAddress());
-        if (validateUserData(data)) {
-            if ((userRepository.findByEmailAndPassword(entity.getEmail(), entity.getPassword())) != null) {
-                modelAndView.addObject("info", "Данный пользователь уже зарегистрирован. Войдите в систему.");
-            } else {
-                userRepository.create(entity);
-                modelAndView.addObject("info", "Пользователь успешно зарегистрирован. Войдите в систему.");
-            }
+        if ((userRepository.findByEmailAndPassword(entity.getEmail(), entity.getPassword())) != null) {
+            throw new AuthorizationException("Данный пользователь уже зарегистрирован. Войдите в систему.");
         } else {
-            modelAndView.addObject("info", "Некорректные данные.");
+            userRepository.create(entity);
+            modelAndView.addObject("info", "Пользователь успешно зарегистрирован. Войдите в систему.");
         }
         return modelAndView;
     }
@@ -85,18 +63,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByEmailAndPassword(String email, String password) {
-        return userRepository.findByEmailAndPassword(email, password);
-    }
-
-
-    @Override
     public User findById(int id) {
         return userRepository.findById(id);
     }
 
     @Override
-    public ModelAndView authenticate(User user) {
+    public ModelAndView authenticate(User user) throws AuthorizationException {
         ModelAndView modelAndView = new ModelAndView();
         ModelMap modelMap = new ModelMap();
         if (Optional.ofNullable(user).isPresent()
@@ -109,8 +81,7 @@ public class UserServiceImpl implements UserService {
                 modelAndView.setViewName(HOME_PAGE.getPath());
                 modelAndView.addAllObjects(modelMap);
             } else {
-                modelMap.addAttribute("error", "Пользователь не зарегистрирован!");
-                return new ModelAndView(LOGIN_PAGE.getPath(), modelMap);
+                throw new AuthorizationException("Пользователь не зарегистрирован!");
             }
         }
         return modelAndView;

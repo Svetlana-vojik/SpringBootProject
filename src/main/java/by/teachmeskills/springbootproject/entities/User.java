@@ -26,7 +26,7 @@ public class User extends BaseEntity {
 
     @NotNull
     @NotNull(message = "пароль не должен быть пустым")
-    @Size(min = 6, max = 10, message = "длина пароля должна быть от 6 до 10 символов")
+    @Size(min = 4, max = 10, message = "длина пароля должна быть от 4 до 10 символов")
     private String password;
 
     @NotNull

@@ -1,9 +1,11 @@
 package by.teachmeskills.springbootproject.services.impl;
 
+import by.teachmeskills.springbootproject.entities.Category;
 import by.teachmeskills.springbootproject.entities.Order;
 import by.teachmeskills.springbootproject.repositories.OrderRepository;
 import by.teachmeskills.springbootproject.services.OrderService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -16,8 +18,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order create(Order entity) {
-        return orderRepository.create(entity);
+    public ModelAndView create(Order entity) {
+        return new ModelAndView();
     }
 
     @Override

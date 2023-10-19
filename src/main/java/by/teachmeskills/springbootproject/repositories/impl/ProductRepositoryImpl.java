@@ -21,7 +21,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     private static final String GET_PRODUCT = "SELECT * FROM shop.products WHERE id=?";
     private static final String GET_CATEGORY_PRODUCTS = "SELECT * FROM shop.products WHERE categoryId=?";
     private final static String UPDATE_DESCRIPTION_AND_PRICE_BY_ID = "UPDATE shop.products SET description = ?, price = ? WHERE id = ?";
-    private static final String GET_PRODUCTS_BY_WORD = "SELECT * FROM products WHERE name LIKE ? OR description LIKE ? ORDER BY name ASC;";
+    private static final String GET_PRODUCTS_BY_WORD = "SELECT * FROM shop.products WHERE name LIKE ? OR description LIKE ? ORDER BY name ASC";
 
     public ProductRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -66,6 +66,6 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public List<Product> findProductsByWord(String search) {
         search = "%" + search.trim() + "%";
-        return jdbcTemplate.query(GET_PRODUCTS_BY_WORD, new BeanPropertyRowMapper<>(Product.class), search);
+        return jdbcTemplate.query(GET_PRODUCTS_BY_WORD, new BeanPropertyRowMapper<>(Product.class), search, search);
     }
 }
