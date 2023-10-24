@@ -7,7 +7,5 @@ import org.springframework.web.servlet.ModelAndView;
 public interface UserService extends BaseService<User> {
     User findById(int id);
 
-    ModelAndView authenticate(User user) throws AuthorizationException;;
-
-    ModelAndView generateAccountPage(User user);
-  }
+    ModelAndView authenticate(User user) throws AuthorizationException;
+}

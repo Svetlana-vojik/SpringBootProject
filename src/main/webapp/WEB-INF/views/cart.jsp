@@ -36,6 +36,9 @@
 </nav>
 <h2 style="text-align: center">Корзина</h2>
 <p></p>
+<c:if test="${not empty info}">
+    <p style="text-align: center" class="text-success">${info}</p>
+</c:if>
 <div class="container-fluid mb-4" style="text-align: center">
     <c:forEach items="${cart.getProducts()}" var="product">
         <div class="card w-50 m-1" type="product">
@@ -64,7 +67,7 @@
     </c:forEach>
 </div>
 <div class="container-fluid mb-4" style="text-align: center">
-    <a href="${contextPath}/order"
+    <a href="${contextPath}/cart/order"
        style=" text-align: right"><p></p>
         <button class="btn btn-success m-2" type="button">Оформить заказ</button>
     </a></div>

@@ -22,6 +22,9 @@
     <a href="${contextPath}/login">
         <button type="button" class="btn btn-danger">Попробуйте снова...</button>
     </a>
+    <a href="${contextPath}/home">
+        <button type="button" class="btn btn-success">Главная</button>
+    </a>
 </div>
 </body>
 </html>

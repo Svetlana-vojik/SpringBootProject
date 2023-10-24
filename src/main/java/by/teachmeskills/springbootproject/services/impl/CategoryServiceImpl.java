@@ -7,6 +7,7 @@ import by.teachmeskills.springbootproject.PagesPathEnum;
 import by.teachmeskills.springbootproject.repositories.CategoryRepository;
 import by.teachmeskills.springbootproject.repositories.ProductRepository;
 import by.teachmeskills.springbootproject.services.CategoryService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -16,14 +17,10 @@ import java.util.Optional;
 import static by.teachmeskills.springbootproject.ShopConstants.CATEGORY;
 
 @Service
+@AllArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productService;
-
-    public CategoryServiceImpl(CategoryRepository categoryRepository, ProductRepository productService) {
-        this.categoryRepository = categoryRepository;
-        this.productService = productService;
-    }
 
     @Override
     public ModelAndView create(Category entity) {
@@ -40,9 +37,8 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.update(entity);
     }
 
-    @Override
-    public void delete(int id) {
-        categoryRepository.delete(id);
+    public void delete(Category entity) {
+        categoryRepository.delete(entity);
     }
 
     @Override

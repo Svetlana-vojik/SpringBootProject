@@ -95,28 +95,31 @@
 </section>
 <section>
     <h5 class="mb-0" style="padding: 20px">История заказов</h5>
-    <c:forEach items="${orders}" var="order">
-        <span style="padding: 20px">Номер заказа-${order.getId()} / Дата заказа-${order.getOrderDate()}</span>
-        <div class="col d-flex justify-content-start">
-            <c:forEach items="${order.getProducts()}" var="product">
-                <div class="card mb-3" style="max-width: 540px;margin: 20px">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="${contextPath}/images/${product.getImagePath()}"
-                                 class="img-fluid rounded-start" alt="Card image">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">${product.getName()}</h5>
-                                <p class="card-text">${product.getDescription()}</p>
-                                <p class="card-text">Цена: ${product.getPrice()}</p>
-                            </div>
+    <c:if test="${not empty orders}">
+        <c:forEach items="${orders}" var="order">
+            <p><b>Дата заказа:</b> ${order.getOrderDate()}</p>
+            <p><b>Номер заказа: </b> ${order.getId()}</p>
+            <c:forEach items="${order.getProductList()}" var="product">
+                <div class="card w-50 m-1" type="product">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col m-1">
+                                <img class="card-img"
+                                     style="width:70px;height:70px"
+                                     src="${product.getImagePath()}"
+                                     alt=${product.getImagePath()}></div>
+                            <div class="col m-1" style="text-align: center">
+                                <p>${product.getName()}</p></div>
+                            <div class="col m-1" style="text-align: center">
+                                <p>${product.getDescription()}</p></div>
+                            <div class="col m-1" style="text-align: center">
+                                <p>Цена: ${product.getPrice()}</p></div>
                         </div>
                     </div>
                 </div>
             </c:forEach>
-        </div>
-    </c:forEach>
+        </c:forEach>
+    </c:if>
 </section>
 </body>
 </html>
