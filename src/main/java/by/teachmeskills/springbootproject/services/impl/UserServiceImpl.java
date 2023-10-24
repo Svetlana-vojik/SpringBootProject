@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     private final CategoryService categoryService;
 
     @Override
-    public ModelAndView create(User entity) throws AuthorizationException {
+    public ModelAndView createUser(User entity) throws AuthorizationException {
         ModelAndView modelAndView = new ModelAndView(PagesPathEnum.REGISTRATION_PAGE.getPath());
         if ((userRepository.findByEmailAndPassword(entity.getEmail(), entity.getPassword())) != null) {
             throw new AuthorizationException("Данный пользователь уже зарегистрирован. Войдите в систему.");
@@ -34,6 +34,11 @@ public class UserServiceImpl implements UserService {
             modelAndView.addObject("info", "Пользователь успешно зарегистрирован. Войдите в систему.");
         }
         return modelAndView;
+    }
+
+    @Override
+    public User create(User entity) {
+        return userRepository.create(entity);
     }
 
     @Override

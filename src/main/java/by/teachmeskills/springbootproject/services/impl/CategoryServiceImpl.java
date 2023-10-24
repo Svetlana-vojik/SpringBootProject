@@ -23,8 +23,8 @@ public class CategoryServiceImpl implements CategoryService {
     private final ProductRepository productService;
 
     @Override
-    public ModelAndView create(Category entity) {
-        return new ModelAndView();
+    public Category create(Category entity) {
+        return categoryRepository.create(entity);
     }
 
     @Override

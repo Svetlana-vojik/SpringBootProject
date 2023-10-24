@@ -49,7 +49,7 @@ public class RegistrationController {
             modelAndView.setViewName(REGISTRATION_PAGE.getPath());
             return modelAndView;
         }
-        return userService.create(user);
+        return userService.createUser(user);
     }
 
     @ModelAttribute(USER)

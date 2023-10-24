@@ -6,7 +6,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 public interface BaseService<T extends BaseEntity> {
-    ModelAndView create(T entity) throws AuthorizationException;
+    T create(T entity);
 
     List<T> read();
 
