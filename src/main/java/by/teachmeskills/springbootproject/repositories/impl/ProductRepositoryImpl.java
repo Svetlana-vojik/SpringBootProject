@@ -64,7 +64,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         Query<Product> query = session.createQuery( "from Product where name like :search or description like :search", Product.class);
         query.setParameter("search", "%" + searchWord.getSearchString().toLowerCase() + "%");
         query.setFirstResult((searchWord.getPaginationNumber() - 1) * 2);
-        query.setMaxResults(2);
+        query.setMaxResults(3);
         return query.list();
     }
 }
