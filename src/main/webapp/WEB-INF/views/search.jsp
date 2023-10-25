@@ -72,7 +72,7 @@
                 </form>
                 <p></p>
                 <div>
-                    <button class="btn btn-success" style="text-align:center">Применить</button>
+                    <button class="btn btn-success" style="text-align:center">Найти</button>
                 </div>
             </form>
         </div>

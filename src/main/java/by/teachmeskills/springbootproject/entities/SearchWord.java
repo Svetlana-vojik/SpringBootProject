@@ -10,4 +10,7 @@ import lombok.experimental.SuperBuilder;
 public class SearchWord {
     private String searchString;
     private int paginationNumber;
+    private int priceFrom;
+    private int priceTo;
+    private String categoryName;
 }
