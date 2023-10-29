@@ -1,40 +1,47 @@
 package by.teachmeskills.springbootproject.controllers;
 
-import by.teachmeskills.springbootproject.services.CategoryService;
+import by.teachmeskills.springbootproject.entities.SearchWord;
 import by.teachmeskills.springbootproject.services.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import static by.teachmeskills.springbootproject.PagesPathEnum.SEARCH_PAGE;
-import static by.teachmeskills.springbootproject.ShopConstants.CATEGORIES;
+import static by.teachmeskills.springbootproject.ShopConstants.SEARCH_WORD;
 
 @RestController
 @RequestMapping("/search")
+@AllArgsConstructor
+@SessionAttributes(SEARCH_WORD)
 public class SearchController {
 
     private final ProductService productService;
-    private final CategoryService categoryService;
-
-    @Autowired
-    public SearchController(ProductService productService, CategoryService categoryService) {
-        this.productService = productService;
-        this.categoryService = categoryService;
-    }
 
     @GetMapping
-    public ModelAndView openSearchPage() {
-        ModelMap model = new ModelMap();
-        model.addAttribute(CATEGORIES, categoryService.read());
-        return new ModelAndView(SEARCH_PAGE.getPath(), model);
+    public ModelAndView openSearchPage(@ModelAttribute(SEARCH_WORD) SearchWord searchWord) {
+        return productService.findProductsByWord(searchWord);
     }
 
     @PostMapping
-    public ModelAndView search(String searchString) {
-        return productService.findProductsByWord(searchString);
+    public ModelAndView search(@RequestParam String searchString, @ModelAttribute(SEARCH_WORD) SearchWord searchWord) {
+        searchWord.setSearchString(searchString);
+        return productService.findProductsByWord(searchWord);
+    }
+
+    @GetMapping("{pageNumber}")
+    public ModelAndView openPageNumber(@PathVariable int pageNumber, @ModelAttribute(SEARCH_WORD) SearchWord searchWord) {
+        searchWord.setPaginationNumber(pageNumber);
+        return productService.findProductsByWord(searchWord);
+    }
+
+    @ModelAttribute(SEARCH_WORD)
+    public SearchWord initSearchWord() {
+        return new SearchWord();
     }
 }

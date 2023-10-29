@@ -2,64 +2,60 @@ package by.teachmeskills.springbootproject.repositories.impl;
 
 import by.teachmeskills.springbootproject.entities.User;
 import by.teachmeskills.springbootproject.repositories.UserRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@Transactional
+@AllArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
-    private final JdbcTemplate jdbcTemplate;
-    private static final String ADD_USER = "INSERT INTO shop.users (email,password,name,surname,birthday,balance,address) values (?,?,?,?,?,?,?)";
-    private final static String GET_ALL_USERS = "SELECT * FROM  shop.users";
-    private final static String UPDATE_ADDRESS = "UPDATE  shop.users SET address = ? WHERE id = ?";
-    private final static String DELETE_USER = "DELETE FROM shop.users WHERE id=?";
-    private static final String GET_USER_BY_ID = "SELECT * FROM shop.users WHERE id=?";
-    private final static String GET_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM shop.users WHERE email=? and password=?";
-
-    public UserRepositoryImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    @PersistenceContext
+    private final EntityManager entityManager;
 
     @Override
     public User create(User entity) {
-        jdbcTemplate.update(ADD_USER, entity.getEmail(), entity.getPassword(), entity.getName(),
-                entity.getSurname(), entity.getBirthday(), entity.getBalance(), entity.getAddress());
+        Session session = entityManager.unwrap(Session.class);
+        session.persist(entity);
         return entity;
     }
 
     @Override
     public List<User> read() {
-        return jdbcTemplate.query(GET_ALL_USERS, new BeanPropertyRowMapper<>(User.class));
+        Session session = entityManager.unwrap(Session.class);
+        return session.createQuery("select u from User u ", User.class).list();
     }
 
     @Override
     public User update(User entity) {
-        jdbcTemplate.update(UPDATE_ADDRESS, entity.getAddress(), entity.getId());
-        return entity;
+        Session session = entityManager.unwrap(Session.class);
+        return session.merge(entity);
     }
 
     @Override
-    public void delete(int id) {
-        jdbcTemplate.update(DELETE_USER, id);
+    public void delete(User entity) {
+        Session session = entityManager.unwrap(Session.class);
+        session.remove(entity);
     }
 
     @Override
     public User findById(int id) {
-        return jdbcTemplate.queryForObject(GET_USER_BY_ID, new BeanPropertyRowMapper<>(User.class));
+        Session session = entityManager.unwrap(Session.class);
+        return session.get(User.class, id);
     }
 
     @Override
     public User findByEmailAndPassword(String email, String password) {
-        return jdbcTemplate.query(GET_USER_BY_EMAIL_AND_PASSWORD, new BeanPropertyRowMapper<>(User.class),
-                email, password).stream().findAny().orElse(null);
+        Session session = entityManager.unwrap(Session.class);
+        Query<User> query = session.createQuery("select u from User u where u.email=:email and u.password=:password", User.class);
+        query.setParameter("email", email);
+        query.setParameter("password", password);
+        return query.uniqueResult();
     }
 }

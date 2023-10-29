@@ -1,12 +1,11 @@
 package by.teachmeskills.springbootproject.controllers;
 
-
 import by.teachmeskills.springbootproject.entities.User;
 import by.teachmeskills.springbootproject.PagesPathEnum;
 import by.teachmeskills.springbootproject.exceptions.AuthorizationException;
 import by.teachmeskills.springbootproject.services.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,13 +24,9 @@ import static by.teachmeskills.springbootproject.utils.ErrorUtil.populateError;
 @RestController
 @SessionAttributes({USER})
 @RequestMapping("/login")
+@AllArgsConstructor
 public class LoginController {
     private final UserService userService;
-
-    @Autowired
-    public LoginController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping
     public ModelAndView openLoginPage() {

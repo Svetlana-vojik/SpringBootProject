@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS shop.users (
     CREATE TABLE IF NOT EXISTS shop.categories (
                                                 id INT NOT NULL AUTO_INCREMENT,
                                                 name VARCHAR(30) NOT NULL,
-                                                imagePath VARCHAR(75) NOT NULL,
+                                                image_path VARCHAR(75) NOT NULL,
                                                 rating INT NOT NULL,
                                                 PRIMARY KEY (`id`),
                                                 UNIQUE INDEX IDX_CATEGORIES_CATEGORY_ID_UNIQUE (ID ASC),
@@ -43,12 +43,12 @@ CREATE TABLE IF NOT EXISTS shop.users (
                                                     name VARCHAR(30) NOT NULL,
                                                     description VARCHAR(100) NOT NULL,
                                                     price INT NOT NULL,
-                                                    categoryId INT NOT NULL,
-                                                    imagePath  VARCHAR(100) NOT NULL,
+                                                    category_id INT NOT NULL,
+                                                    image_path  VARCHAR(100) NOT NULL,
                                                     PRIMARY KEY (`id`),
                                                     UNIQUE INDEX IDX_PRODUCTS_ID_UNIQUE (ID ASC),
                                                     CONSTRAINT FK_PRODUCTS_CATEGORY_ID_CATEGORIES_ID
-                                                    FOREIGN KEY (categoryId)
+                                                    FOREIGN KEY (category_id)
                                                     REFERENCES SHOP.CATEGORIES (ID)
                                                     ON DELETE CASCADE
                                                     ON UPDATE CASCADE);
@@ -58,13 +58,13 @@ CREATE TABLE IF NOT EXISTS shop.users (
     DROP TABLE IF EXISTS shop.orders;
     CREATE TABLE IF NOT EXISTS shop.orders (
                                             id INT NOT NULL AUTO_INCREMENT,
-                                            orderDate Timestamp NOT NULL,
+                                            order_date DATETIME NOT NULL,
                                             price INT NOT NULL,
-                                            userId INT NOT NULL,
+                                            user_id INT NOT NULL,
                                             PRIMARY KEY (ID),
                                             UNIQUE INDEX IDX_ORDERS_ID_UNIQUE (ID ASC),
                                             CONSTRAINT FK_ORDERS_USERID_USERS_ID
-                                            FOREIGN KEY (userId)
+                                            FOREIGN KEY (user_id)
                                             REFERENCES SHOP.USERS (ID)
                                             ON DELETE CASCADE
                                             ON UPDATE CASCADE);
@@ -73,15 +73,15 @@ CREATE TABLE IF NOT EXISTS shop.users (
 --------------------------------------------------------
 DROP TABLE IF EXISTS shop.orders_products;
 CREATE TABLE IF NOT EXISTS shop.orders_products (
-                                                    orderId INT NOT NULL,
-                                                    productId INT NOT NULL,
+                                                    order_id INT NOT NULL,
+                                                    product_id INT NOT NULL,
                                                     quantity  INT NOT NULL DEFAULT 0,
-                                                    PRIMARY KEY (orderId, productId),
-                                                    CONSTRAINT FK_orders_products_orderId_orders_id
-                                                    FOREIGN KEY (orderId)
+                                                    PRIMARY KEY (order_id, product_id),
+                                                    CONSTRAINT FK_orders_products_order_id_orders_id
+                                                    FOREIGN KEY (order_id)
                                                     REFERENCES shop.orders(id),
-                                                    CONSTRAINT FK_orders_products_productId_products_id
-                                                    FOREIGN KEY (productId)
+                                                    CONSTRAINT FK_orders_products_product_id_products_id
+                                                    FOREIGN KEY (product_id)
                                                     REFERENCES shop.products(id)
                                                     ON DELETE CASCADE
                                                     ON UPDATE CASCADE);
@@ -92,19 +92,19 @@ CREATE TABLE IF NOT EXISTS shop.orders_products (
 DROP TABLE IF EXISTS shop.images;
 CREATE TABLE IF NOT EXISTS shop.images (
                                             id INT NOT NULL AUTO_INCREMENT,
-                                            imagePath VARCHAR(45) NOT NULL,
-                                            categoryId INT NULL,
-                                            productId INT NULL,
+                                            image_path VARCHAR(45) NOT NULL,
+                                            category_id INT NULL,
+                                            product_id INT NULL,
                                             primaryImage  INT   NOT NULL,
                                             UNIQUE INDEX id (id ASC),
                                             PRIMARY KEY (id),
-                                            CONSTRAINT FK_images_categoryId_categories_id
-                                            FOREIGN KEY (categoryId)
+                                            CONSTRAINT FK_images_category_id_categories_id
+                                            FOREIGN KEY (category_id)
                                             REFERENCES shop.categories (id)
                                             ON DELETE CASCADE
                                             ON UPDATE CASCADE,
-                                            CONSTRAINT FK_images_productId_products_id
-                                            FOREIGN KEY (productId)
+                                            CONSTRAINT FK_images_product_id_products_id
+                                            FOREIGN KEY (product_id)
                                             REFERENCES shop.products (id)
                                             ON DELETE CASCADE
                                             ON UPDATE CASCADE
@@ -121,40 +121,40 @@ CREATE TABLE IF NOT EXISTS shop.images (
 --------------------------------------------------------
 --  DML for Table categories
 --------------------------------------------------------
-    INSERT INTO shop.categories(name, imagePath, rating) VALUES(?, ?, ?);
+    INSERT INTO shop.categories(name, image_path, rating) VALUES(?, ?, ?);
 
-    INSERT INTO shop.categories(name, imagePath, rating) VALUES('Капкейки', 'images/categories/cupcakes.png', 2);
-    INSERT INTO shop.categories(name, imagePath, rating) VALUES('Торты', 'images/categories/cakes.png', 5);
-    INSERT INTO shop.categories(name, imagePath, rating) VALUES('Пирожные', 'images/categories/pastries.png',4);
-    INSERT INTO shop.categories(name, imagePath, rating) VALUES('Круассаны', 'images/categories/croissants.png',3);
-    INSERT INTO shop.categories(name, imagePath, rating) VALUES('Киши', 'images/categories/quiche.png',5);
+    INSERT INTO shop.categories(name, image_path, rating) VALUES('Капкейки', 'images/categories/cupcakes.png', 2);
+    INSERT INTO shop.categories(name, image_path, rating) VALUES('Торты', 'images/categories/cakes.png', 5);
+    INSERT INTO shop.categories(name, image_path, rating) VALUES('Пирожные', 'images/categories/pastries.png',4);
+    INSERT INTO shop.categories(name, image_path, rating) VALUES('Круассаны', 'images/categories/croissants.png',3);
+    INSERT INTO shop.categories(name, image_path, rating) VALUES('Киши', 'images/categories/quiche.png',5);
 
     --------------------------------------------------------
 --  DML for Table products
 --------------------------------------------------------
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES(?, ?, ?, ?, ?);
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES(?, ?, ?, ?, ?);
 
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Капкейки', 'Лимонный капкейк', 5, 1,'images/products/lemon.png');
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Капкейки', 'Шоколадный капкейк', 7, 1,'images/products/chocolate.png');
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Капкейки', 'Клубничный капкейк', 10, 1,'images/products/strawberries.png');
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Капкейки', 'Сырный капкейк', 8, 1,'images/products/cheese.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Капкейки', 'Лимонный капкейк', 5, 1,'images/products/lemon.png');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Капкейки', 'Шоколадный капкейк', 7, 1,'images/products/chocolate.png');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Капкейки', 'Клубничный капкейк', 10, 1,'images/products/strawberries.png');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Капкейки', 'Сырный капкейк', 8, 1,'images/products/cheese.jpg');
 
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Торты', 'Наполеон', 5, 2,'images/products/napoleon.jpg');
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Торты', 'Красный бархат', 7, 2,'images/products/red.jpg');
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Торты', 'Медовик', 10, 2,'images/products/medovik.jpg');
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Торты', 'Тирамису', 8, 2,'images/products/tiramisu.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Торты', 'Наполеон', 5, 2,'images/products/napoleon.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Торты', 'Красный бархат', 7, 2,'images/products/red.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Торты', 'Медовик', 10, 2,'images/products/medovik.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Торты', 'Тирамису', 8, 2,'images/products/tiramisu.jpg');
 
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Пирожные', 'Картошка', 5, 3,'images/products/kartoshka.jpg');
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Пирожные', 'Классический эклер', 7, 3,'images/products/ekler.jpg');
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Пирожные', 'Корзиночка', 10, 3,'images/products/korzinochka.jpg');
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Пирожные', 'Павлова', 8, 3,'images/products/pavlova.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Пирожные', 'Картошка', 5, 3,'images/products/kartoshka.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Пирожные', 'Классический эклер', 7, 3,'images/products/ekler.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Пирожные', 'Корзиночка', 10, 3,'images/products/korzinochka.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Пирожные', 'Павлова', 8, 3,'images/products/pavlova.jpg');
 
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Круассаны', 'Шоколадный круассан', 10, 4,'images/products/croissant_chocolate.jpg');
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Круассаны', 'Сырный круассан', 10, 4,'images/products/chessecroissant.jpg');
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Круассаны', 'Круассан с беконом', 15, 4,'images/products/bacon.jpg');
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Круассаны', 'Круассан с яблочно-грушевой начинкой', 14, 4,'images/products/apple.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Круассаны', 'Шоколадный круассан', 10, 4,'images/products/croissant_chocolate.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Круассаны', 'Сырный круассан', 10, 4,'images/products/chessecroissant.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Круассаны', 'Круассан с беконом', 15, 4,'images/products/bacon.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Круассаны', 'Круассан с яблочно-грушевой начинкой', 14, 4,'images/products/apple.jpg');
 
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Киши', 'Киш с броколли', 5, 5,'images/products/brokoli.jpg');
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Киши', 'Киш с сыром', 7, 5,'images/products/cheesekish.jpg');
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Киши', 'Киш с семгой и броколли', 10, 5,'images/products/kish-s-semgoi-i-brokkoli.jpg');
-    INSERT INTO shop.products(name, description, price, categoryId, imagePath) VALUES('Киши', 'Киш Лорен с курицей', 8, 5,'images/products/kish-loren-s-kuricei.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Киши', 'Киш с броколли', 5, 5,'images/products/brokoli.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Киши', 'Киш с сыром', 7, 5,'images/products/cheesekish.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Киши', 'Киш с семгой и броколли', 10, 5,'images/products/kish-s-semgoi-i-brokkoli.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Киши', 'Киш Лорен с курицей', 8, 5,'images/products/kish-loren-s-kuricei.jpg');

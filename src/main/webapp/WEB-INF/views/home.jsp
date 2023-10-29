@@ -35,11 +35,12 @@
     </div>
 </nav>
 <h1 style="text-align: center">Каталог</h1>
-<div class="container-fluid mb-4">
+<div class="container">
     <c:if test="${not empty categories}">
-        <div class="row">
+        <div class="row d-flex justify-content-center">
             <c:forEach items="${categories}" var="category">
-                <div class="card w-25 m-1" type="category">
+                <div class="card w-25 m-2 text-center" type="category">
+                    <a href="${contextPath}/category/${category.getId()}"/>
                     <div class="card-body">
                         <a href="${contextPath}/category/${category.getId()}">
                             <img class="card-img" style="width:160px;height:160px"
@@ -50,6 +51,7 @@
                                class="btn">${category.getName()}</a>
                         </div>
                     </div>
+                    </a>
                 </div>
             </c:forEach>
         </div>

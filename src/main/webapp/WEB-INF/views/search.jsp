@@ -34,16 +34,15 @@
 <div class="container">
     <form class="input-group mb-3" method="post" action="${contextPath}/search" style="text-align: center">
         <label for="searchString"></label>
-        <input type="search" name="searchString" id="searchString" class="form-control"
+        <input type="text" name="searchString" id="searchString" class="form-control"
                placeholder=" Поиск ">
         <button type="submit" class="btn btn-success">Найти</button>
     </form>
-</div>
-<p></p>
-<c:if test="${not empty info}">
-    <p style="text-align: center" class="text-danger">${info}</p>
     <p></p>
-</c:if>
+    <c:if test="${not empty info}">
+        <p style="text-align: center" class="text-danger">${info}</p>
+        <p></p>
+    </c:if>
 </div>
 <br>
 <div class="container">
@@ -73,7 +72,7 @@
                 </form>
                 <p></p>
                 <div>
-                    <button class="btn btn-success" style="text-align:center">Применить</button>
+                    <button class="btn btn-success" style="text-align:center">Найти</button>
                 </div>
             </form>
         </div>
@@ -90,7 +89,7 @@
                                     href="${contextPath}/products/${product.getId()}"><img
                                     class="card-img"
                                     style="width:100px;height:100px"
-                                    src="${product.getImagePath()}"
+                                    src="<c:url value="/${product.getImagePath()}"/>"
                                     alt=${product.getImagePath()}></a></div>
                             <div class="col m-1" style="text-align: left">
                                 <a href="${contextPath}/products/${product.getId()}">
@@ -112,20 +111,17 @@
             </c:forEach><br>
         </div>
     </div>
+    <ul class="pagination justify-content-end" style="margin:20px 0">
+        <li class="page-item" style="margin-right:10px"><a class="btn btn-outline-success"
+                                                           href="/search/${searchWord.getPaginationNumber() - 1}">Назад</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="/search/1">1</a></li>
+        <li class="page-item"><a class="page-link" href="/search/2">2</a></li>
+        <li class="page-item"><a class="page-link" href="/search/3">3</a></li>
+        <li class="page-item" style="margin-left:10px"><a class="btn btn-outline-success"
+                                                          href="/search/${searchWord.getPaginationNumber() + 1}">Вперед</a>
+        </li>
+    </ul>
 </div>
-<ul class="pagination justify-content-end" style="margin:20px 0">
-    <div class="dropdown">
-        <button type="button" class="btn btn-outline-success m-1" data-toggle="dropdown">
-            Количество
-        </button>
-        <div class="dropdown-menu" style="color: black">
-            <a class="dropdown-item" href="#" style="color: black">5</a>
-            <a class="dropdown-item" href="#" style="color: black">10</a>
-            <a class="dropdown-item" href="#" style="color: black">15</a>
-        </div>
-    </div>
-    <li class="page-item"><a class="btn btn-outline-success m-1" href="#"><</a></li>
-    <li class="page-item"><a class="btn btn-outline-success m-1" href="#">></a></li>
-</ul>
 </body>
 </html>
