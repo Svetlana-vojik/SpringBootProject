@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS shop.images (
     INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Круассаны', 'Шоколадный круассан', 10, 4,'images/products/croissant_chocolate.jpg');
     INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Круассаны', 'Сырный круассан', 10, 4,'images/products/chessecroissant.jpg');
     INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Круассаны', 'Круассан с беконом', 15, 4,'images/products/bacon.jpg');
-    INSERT INTO shop.products(name, description, price, category_id, imagePath) VALUES('Круассаны', 'Круассан с яблочно-грушевой начинкой', 14, 4,'images/products/apple.jpg');
+    INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Круассаны', 'Круассан с яблочно-грушевой начинкой', 14, 4,'images/products/apple.jpg');
 
     INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Киши', 'Киш с броколли', 5, 5,'images/products/brokoli.jpg');
     INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Киши', 'Киш с сыром', 7, 5,'images/products/cheesekish.jpg');

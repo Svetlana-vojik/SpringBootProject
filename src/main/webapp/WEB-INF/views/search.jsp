@@ -112,18 +112,15 @@
         </div>
     </div>
     <ul class="pagination justify-content-end" style="margin:20px 0">
-        <div class="dropdown">
-            <button type="button" class="btn btn-outline-success m-1" data-toggle="dropdown">
-                Страница
-            </button>
-            <div class="dropdown-menu" style="color: black">
-                <a class="dropdown-item" href="${contextPath}/search/1" style="color: black">1</a>
-                <a class="dropdown-item" href="${contextPath}/search/2" style="color: black">2</a>
-                <a class="dropdown-item" href="${contextPath}/search/3" style="color: black">3</a>
-            </div>
-        </div>
-        <li class="page-item"><a class="btn btn-outline-success m-1" href="${contextPath}/search/previous"><</a></li>
-        <li class="page-item"><a class="btn btn-outline-success m-1" href="${contextPath}/search/next">></a></li>
+        <li class="page-item" style="margin-right:10px"><a class="btn btn-outline-success"
+                                                           href="/search/${searchWord.getPaginationNumber() - 1}">Назад</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="/search/1">1</a></li>
+        <li class="page-item"><a class="page-link" href="/search/2">2</a></li>
+        <li class="page-item"><a class="page-link" href="/search/3">3</a></li>
+        <li class="page-item" style="margin-left:10px"><a class="btn btn-outline-success"
+                                                          href="/search/${searchWord.getPaginationNumber() + 1}">Вперед</a>
+        </li>
     </ul>
 </div>
 </body>

@@ -60,14 +60,16 @@ public class ProductServiceImpl implements ProductService {
         }
         ModelMap modelParam = new ModelMap();
         modelParam.addAttribute(CATEGORIES, categoryService.read());
-        if (searchWord.getSearchString().length() < 3) {
-            modelParam.addAttribute("info", "Для поиска введите не менее трех символов");
-        } else {
-            List<Product> productList = productRepository.findProductsByWord(searchWord);
-            if (productList.size() != 0) {
-                modelParam.addAttribute(PRODUCTS, productList);
+        if (searchWord.getSearchString() != null) {
+            if (searchWord.getSearchString().length() < 3) {
+                modelParam.addAttribute("info", "Для поиска введите не менее трех символов");
             } else {
-                modelParam.addAttribute("message", "Ничего не найдено...");
+                List<Product> productList = productRepository.findProductsByWord(searchWord);
+                if (productList.size() != 0) {
+                    modelParam.addAttribute(PRODUCTS, productList);
+                } else {
+                    modelParam.addAttribute("message", "Ничего не найдено...");
+                }
             }
         }
         return new ModelAndView(SEARCH_PAGE.getPath(), modelParam);

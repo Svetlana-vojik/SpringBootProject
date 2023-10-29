@@ -29,38 +29,38 @@ public class User extends BaseEntity {
     @NotNull
     @NotBlank(message = "email не должен быть пустым")
     @Email(message = "Некорректный адрес электронной почты.")
-    @Column(name = "email")
+    @Column()
     private String email;
 
     @NotNull
     @NotNull(message = "пароль не должен быть пустым")
     @Size(min = 4, max = 10, message = "длина пароля должна быть от 4 до 10 символов")
-    @Column(name = "password")
+    @Column()
     private String password;
 
     @NotNull
     @NotBlank(message = "имя не должно быть пустым")
     @Pattern(regexp = "[A-Za-z А-Яа-я]+", message = "Некорректное имя.")
-    @Column(name = "name")
+    @Column()
     private String name;
 
     @NotNull
     @NotBlank(message = "фамилия не должна быть пустой")
     @Pattern(regexp = "[A-Za-z А-Яа-я]+", message = "Некорректная фамилия.")
-    @Column(name = "surname")
+    @Column()
     private String surname;
 
     @NotNull
     @Pattern(regexp = "\\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])*", message = "Некорректная дата рождения")
-    @Column(name = "birthday")
+    @Column()
     private String birthday;
 
-    @Column(name = "balance")
+    @Column()
     private int balance;
 
     @NotNull(message = "поле не должно быть пустым")
     @Pattern(regexp = "[A-Za-z А-Яа-я0-9\\d]+", message = "Некорректный адрес")
-    @Column(name = "address")
+    @Column()
     private String address;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
