@@ -21,6 +21,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     @Override
     public Category create(Category entity) {
         entityManager.persist(entity);
+        return entity;
     }
 
     @Override
