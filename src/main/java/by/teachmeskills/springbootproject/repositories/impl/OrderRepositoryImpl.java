@@ -5,10 +5,9 @@ import by.teachmeskills.springbootproject.entities.User;
 import by.teachmeskills.springbootproject.repositories.OrderRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,34 +21,29 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Order create(Order entity) {
-        Session session = entityManager.unwrap(Session.class);
-        session.persist(entity);
+        entityManager.persist(entity);
         return entity;
     }
 
     @Override
     public List<Order> read() {
-        Session session = entityManager.unwrap(Session.class);
-        return session.createQuery("select o from Order o", Order.class).list();
+        return entityManager.createQuery("select o from Order o", Order.class).getResultList();
     }
 
     @Override
     public Order update(Order entity) {
-        Session session = entityManager.unwrap(Session.class);
-        return session.merge(entity);
+        return entityManager.merge(entity);
     }
 
     @Override
     public void delete(Order entity) {
-        Session session = entityManager.unwrap(Session.class);
-        session.remove(entity);
+        entityManager.remove(entity);
     }
 
     @Override
     public List<Order> findByUser(User user) {
-        Session session = entityManager.unwrap(Session.class);
-        Query<Order> query = session.createQuery( "select o from Order o where o.user=:user", Order.class);
+        TypedQuery<Order> query = entityManager.createQuery("select o from Order o where o.user=:user", Order.class);
         query.setParameter("user", user);
-        return query.list();
+        return query.getResultList();
     }
 }

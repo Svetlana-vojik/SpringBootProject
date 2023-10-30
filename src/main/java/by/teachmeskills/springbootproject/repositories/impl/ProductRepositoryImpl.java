@@ -5,10 +5,9 @@ import by.teachmeskills.springbootproject.entities.SearchWord;
 import by.teachmeskills.springbootproject.repositories.ProductRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,27 +21,23 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product create(Product entity) {
-        Session session = entityManager.unwrap(Session.class);
-        session.persist(entity);
+        entityManager.persist(entity);
         return entity;
     }
 
     @Override
     public List<Product> read() {
-        Session session = entityManager.unwrap(Session.class);
-        return session.createQuery("select p from Product p where p.category.id=:categoryId", Product.class).list();
+        return entityManager.createQuery("select p from Product p where p.category.id=:categoryId", Product.class).getResultList();
     }
 
     @Override
     public Product update(Product entity) {
-        Session session = entityManager.unwrap(Session.class);
-        return session.merge(entity);
+        return entityManager.merge(entity);
     }
 
     @Override
     public void delete(Product entity) {
-        Session session = entityManager.unwrap(Session.class);
-        session.remove(entity);
+        entityManager.remove(entity);
     }
 
     @Override
@@ -52,19 +47,17 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public List<Product> findByCategoryId(int id) {
-        Session session = entityManager.unwrap(Session.class);
-        Query<Product> query = session.createQuery("select p from Product p where p.category.id=:categoryId", Product.class);
+        TypedQuery<Product> query = entityManager.createQuery("select p from Product p where p.category.id=:categoryId", Product.class);
         query.setParameter("categoryId", id);
-        return query.list();
+        return query.getResultList();
     }
 
     @Override
     public List<Product> findProductsByWord(SearchWord searchWord) {
-        Session session = entityManager.unwrap(Session.class);
-        Query<Product> query = session.createQuery( "from Product where name like :search or description like :search", Product.class);
+        TypedQuery<Product> query = entityManager.createQuery("from Product where name like :search or description like :search", Product.class);
         query.setParameter("search", "%" + searchWord.getSearchString().toLowerCase() + "%");
         query.setFirstResult((searchWord.getPaginationNumber() - 1) * 2);
         query.setMaxResults(3);
-        return query.list();
+        return query.getResultList();
     }
 }
