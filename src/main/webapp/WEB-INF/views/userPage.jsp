@@ -126,11 +126,11 @@
     <label for="file-upload" class="custom-file-upload"
            style="padding: 15px;margin: 0px 0px 15px 15px;border: 1px solid #ccc">
         <input id="file-upload" name="file" type="file" class="title" accept=".csv">
-        <button type="submit" class="btn-outline-success">Импортировать заказа пользователя</button>
+        <button type="submit" class="btn-outline-success">Импортировать заказы пользователя</button>
     </label>
 </form>
 <form method="POST" action="/userPage/csv/export/${user.getId()}">
-    <button type="submit" class="btn-outline-success" style="margin: 15px">Экспортировать заказа пользователя</button>
+    <button type="submit" class="btn-outline-success" style="margin: 15px">Экспортировать заказы пользователя</button>
 </form>
 </body>
 </html>
