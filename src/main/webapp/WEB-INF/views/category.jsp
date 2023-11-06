@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>${category}</title>
+    <title>${category.getName()}</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -34,9 +34,9 @@
     </div>
 </nav>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-<h2 style="text-align: center">${category}</h2>
+<h2 style="text-align: center">${category.getName()}</h2>
 <div class="container-fluid mb-4">
-    <c:forEach items="${products}" var="product">
+    <c:forEach items="${category.getProductList()}" var="product">
         <div class="card w-25 m-1" type="product">
             <div class="card-body">
                 <div class="row">
@@ -57,5 +57,16 @@
         </div>
     </c:forEach>
 </div>
+<form method="POST" action="/category/csv/import/${category.getId()}" enctype="multipart/form-data"
+      class="file-import">
+    <label for="file-upload" class="custom-file-upload"
+           style="padding: 15px;margin: 0px 0px 15px 15px;border: 1px solid #ccc">
+        <input id="file-upload" name="file" type="file" class="title" accept=".csv">
+        <button type="submit" class="btn-outline-success">Импортировать продукты категории</button>
+    </label>
+</form>
+<form method="POST" action="/category/csv/export/${category.getId()}">
+    <button type="submit" class="btn-outline-success" style="margin: 15px">Экспортировать продукты категории</button>
+</form>
 </body>
 </html>

@@ -6,8 +6,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,34 +20,31 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     @Override
     public Category create(Category entity) {
-        Session session = entityManager.unwrap(Session.class);
-        session.persist(entity);
+        entityManager.persist(entity);
         return entity;
     }
 
     @Override
     public Category update(Category entity) {
-        Session session = entityManager.unwrap(Session.class);
-        return session.merge(entity);
+        return entityManager.merge(entity);
     }
 
     @Override
     public void delete(Category entity) {
-        Session session = entityManager.unwrap(Session.class);
-        Category category = session.get(Category.class, entity);
-        session.remove(category);
+        entityManager.remove(entity);
     }
 
     @Override
     public List<Category> read() {
-        Session session = entityManager.unwrap(Session.class);
-        Query<Category> query = session.createQuery("from Category", Category.class);
-        return query.list();
+        return entityManager.createQuery("from Category", Category.class).getResultList();
     }
 
     @Override
     public Category findNameById(int id) {
-        Session session = entityManager.unwrap(Session.class);
-        return session.get(Category.class, id);
+        return entityManager.find(Category.class, id);
+    }
+    @Override
+    public Category findByName(String name) {
+        return (Category) entityManager.createQuery("select c from Category c where c.name =:name").setParameter("name", name).getSingleResult();
     }
 }
