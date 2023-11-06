@@ -14,15 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 public class CategoryCsv {
     private int id;
-
     @CsvBindByName
     private String name;
-
-    @CsvBindByName
-    private String imagePath;
-
     @CsvBindByName
     private int rating;
-
     private List<ProductCsv> products;
 }
