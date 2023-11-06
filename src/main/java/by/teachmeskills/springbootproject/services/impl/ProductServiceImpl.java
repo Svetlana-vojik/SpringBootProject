@@ -28,13 +28,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static by.teachmeskills.springbootproject.PagesPathEnum.CATEGORY_PAGE;
-import static by.teachmeskills.springbootproject.PagesPathEnum.HOME_PAGE;
 import static by.teachmeskills.springbootproject.PagesPathEnum.SEARCH_PAGE;
 import static by.teachmeskills.springbootproject.ShopConstants.CATEGORIES;
 import static by.teachmeskills.springbootproject.ShopConstants.PRODUCTS;
@@ -109,21 +107,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ModelAndView saveProductsFromFile(MultipartFile file, int id) throws IOException {
-        ModelAndView modelAndView = new ModelAndView("redirect:/" + HOME_PAGE.getPath());
-        try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-            CsvToBean<ProductCsv> csvToBean = new CsvToBeanBuilder<ProductCsv>(reader)
-                    .withType(ProductCsv.class)
-                    .withIgnoreLeadingWhiteSpace(true)
-                    .withIgnoreQuotations(true)
-                    .withSeparator(',')
-                    .build();
-            List<ProductCsv> productsCsv = new ArrayList<>();
-            csvToBean.forEach(productsCsv::add);
-            productsCsv.stream().map(productConverter::fromCsv).forEach(productRepository::create);
-            return modelAndView;
+    public ModelAndView saveProductsFromFile(MultipartFile file, int id) {
+        List<ProductCsv> csvProducts = parseCsv(file);
+        ModelMap modelMap = new ModelMap();
+        List<Product> products = csvProducts.stream().map(productConverter::fromCsv).toList();
+        products.stream().forEach(c -> {
+            try {
+                c.setCategory(categoryService.findById(id));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        for (Product product : products) {
+            productRepository.create(product);
         }
+        Category category = categoryService.findById(id);
+        modelMap.addAttribute("category", category);
+        return new ModelAndView(CATEGORY_PAGE.getPath(), modelMap);
     }
+
     @Override
     public List<ProductCsv> parseCsv(MultipartFile file) {
         if (Optional.ofNullable(file).isPresent()) {

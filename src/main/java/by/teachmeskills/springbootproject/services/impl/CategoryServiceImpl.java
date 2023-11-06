@@ -1,7 +1,6 @@
 package by.teachmeskills.springbootproject.services.impl;
 
 import by.teachmeskills.springbootproject.entities.Category;
-import by.teachmeskills.springbootproject.PagesPathEnum;
 import by.teachmeskills.springbootproject.repositories.CategoryRepository;
 import by.teachmeskills.springbootproject.services.CategoryService;
 import com.opencsv.bean.CsvToBean;
