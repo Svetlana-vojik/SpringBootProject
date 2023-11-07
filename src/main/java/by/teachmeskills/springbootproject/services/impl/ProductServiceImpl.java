@@ -3,9 +3,11 @@ package by.teachmeskills.springbootproject.services.impl;
 import by.teachmeskills.springbootproject.csv.converters.ProductConverter;
 import by.teachmeskills.springbootproject.csv.dto.ProductCsv;
 import by.teachmeskills.springbootproject.entities.Category;
+import by.teachmeskills.springbootproject.entities.PaginationParams;
 import by.teachmeskills.springbootproject.entities.Product;
-import by.teachmeskills.springbootproject.entities.SearchWord;
+import by.teachmeskills.springbootproject.entities.SearchParams;
 import by.teachmeskills.springbootproject.repositories.ProductRepository;
+import by.teachmeskills.springbootproject.repositories.ProductSearchSpecification;
 import by.teachmeskills.springbootproject.services.CategoryService;
 import by.teachmeskills.springbootproject.services.ProductService;
 import com.opencsv.bean.CsvToBean;
@@ -17,6 +19,9 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,9 +38,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static by.teachmeskills.springbootproject.PagesPathEnum.CATEGORY_PAGE;
+import static by.teachmeskills.springbootproject.PagesPathEnum.PRODUCT_PAGE;
 import static by.teachmeskills.springbootproject.PagesPathEnum.SEARCH_PAGE;
-import static by.teachmeskills.springbootproject.ShopConstants.CATEGORIES;
-import static by.teachmeskills.springbootproject.ShopConstants.PRODUCTS;
 
 @Slf4j
 @Service
@@ -48,22 +52,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product create(Product entity) {
-        return productRepository.create(entity);
+        return productRepository.save(entity);
     }
 
     @Override
     public List<Product> read() {
-        return productRepository.read();
+        return productRepository.findAll();
     }
 
     @Override
-    public Product update(Product entity) {
-        return productRepository.update(entity);
-    }
-
-    @Override
-    public void delete(Product entity) {
-        productRepository.delete(entity);
+    public void delete(int id) {
+        productRepository.deleteById(id);
     }
 
     @Override
@@ -72,38 +71,53 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ModelAndView getProductsByCategory(int id) {
+    public ModelAndView getProductsByCategory(int id, PaginationParams params) {
+        if (params.getPageNumber() < 0) {
+            params.setPageNumber(0);
+        }
         ModelMap modelMap = new ModelMap();
         Category category = categoryService.findById(id);
+        Pageable pageable = PageRequest.of(params.getPageNumber(), params.getPageSize(), Sort.by("name").ascending());
+        category.setProductList(productRepository.findByCategoryId(id, pageable).getContent());
+        if (category.getProductList().isEmpty()) {
+            params.setPageNumber(params.getPageNumber() - 1);
+            pageable = PageRequest.of(params.getPageNumber(), params.getPageSize(), Sort.by("name").ascending());
+            category.setProductList(productRepository.findByCategoryId(id, pageable).getContent());
+        }
         modelMap.addAttribute("category", category);
         return new ModelAndView(CATEGORY_PAGE.getPath(), modelMap);
     }
 
     @Override
     public List<Product> findByCategoryId(int id) {
-        return productRepository.getProductsByCategory(id);
+        return productRepository.findByCategoryId(id);
     }
 
+//    @Override
+//    public ModelAndView findProductByIdForProductPage(int id) {
+//        ModelMap modelMap = new ModelMap();
+//        Product product = findById(id);
+//        modelMap.addAttribute("categoryName", product.getName());
+//        modelMap.addAttribute("product", product);
+//        return new ModelAndView(PRODUCT_PAGE.getPath(), modelMap);
+//    }
     @Override
-    public ModelAndView findProducts(SearchWord searchWord) {
-        if (searchWord.getPaginationNumber() < 1) {
-            searchWord.setPaginationNumber(1);
+    public ModelAndView searchProducts(SearchParams searchParams, PaginationParams paginationParams) {
+        if (paginationParams.getPageNumber() < 0) {
+            paginationParams.setPageNumber(0);
         }
-        ModelMap modelParam = new ModelMap();
-        modelParam.addAttribute(CATEGORIES, categoryService.read());
-        if (searchWord.getSearchString() != null) {
-            if (searchWord.getSearchString().length() < 3) {
-                modelParam.addAttribute("info", "Для поиска введите не менее трех символов");
-            } else {
-                List<Product> productList = productRepository.findProducts(searchWord);
-                if (productList.size() != 0) {
-                    modelParam.addAttribute(PRODUCTS, productList);
-                } else {
-                    modelParam.addAttribute("message", "Ничего не найдено...");
-                }
-            }
+        ProductSearchSpecification specification = new ProductSearchSpecification(searchParams);
+        Pageable pageable = PageRequest.of(paginationParams.getPageNumber(), paginationParams.getPageSize(), Sort.by("name").ascending());
+        ModelMap modelMap = new ModelMap();
+        List<Product> products = productRepository.findAll(specification, pageable).getContent();
+        if (products.isEmpty() && paginationParams.getPageNumber() > 0) {
+            paginationParams.setPageNumber(paginationParams.getPageNumber() - 1);
+            pageable = PageRequest.of(paginationParams.getPageNumber(), paginationParams.getPageSize(), Sort.by("name").ascending());
+            products = productRepository.findAll(specification, pageable).getContent();
         }
-        return new ModelAndView(SEARCH_PAGE.getPath(), modelParam);
+        modelMap.addAttribute("categories", categoryService.read());
+        modelMap.addAttribute("products", products);
+        return new ModelAndView(SEARCH_PAGE.getPath(), modelMap);
     }
 
     @Override
@@ -111,17 +125,11 @@ public class ProductServiceImpl implements ProductService {
         List<ProductCsv> csvProducts = parseCsv(file);
         ModelMap modelMap = new ModelMap();
         List<Product> products = csvProducts.stream().map(productConverter::fromCsv).toList();
-        products.stream().forEach(c -> {
-            try {
-                c.setCategory(categoryService.findById(id));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-        for (Product product : products) {
-            productRepository.create(product);
-        }
+        products.stream().forEach(c -> c.setCategory(categoryService.findById(id)));
+        productRepository.saveAll(products);
+        Pageable pageable = PageRequest.of(0, 0, Sort.by("name").ascending());
         Category category = categoryService.findById(id);
+        category.setProductList(productRepository.findByCategoryId(id, pageable).getContent());
         modelMap.addAttribute("category", category);
         return new ModelAndView(CATEGORY_PAGE.getPath(), modelMap);
     }
@@ -144,7 +152,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void saveCategoryProductsToFile(HttpServletResponse servletResponse, int id) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
-        List<Product> products = productRepository.getProductsByCategory(id);
+        List<Product> products = productRepository.findByCategoryId(id);
         try (Writer writer = new OutputStreamWriter(servletResponse.getOutputStream())) {
             StatefulBeanToCsv<ProductCsv> beanToCsv = new StatefulBeanToCsvBuilder<ProductCsv>(writer).withSeparator(';').build();
             servletResponse.setContentType("text/csv");

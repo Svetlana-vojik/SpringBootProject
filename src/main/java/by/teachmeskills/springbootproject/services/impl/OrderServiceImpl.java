@@ -3,6 +3,7 @@ package by.teachmeskills.springbootproject.services.impl;
 import by.teachmeskills.springbootproject.csv.converters.OrderConverter;
 import by.teachmeskills.springbootproject.csv.dto.OrderCsv;
 import by.teachmeskills.springbootproject.entities.Cart;
+import by.teachmeskills.springbootproject.entities.Category;
 import by.teachmeskills.springbootproject.entities.Order;
 import by.teachmeskills.springbootproject.entities.User;
 import by.teachmeskills.springbootproject.exceptions.AuthorizationException;
@@ -35,7 +36,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static by.teachmeskills.springbootproject.PagesPathEnum.CART_PAGE;
 import static by.teachmeskills.springbootproject.PagesPathEnum.USER_PROFILE_PAGE;
@@ -63,8 +63,7 @@ public class OrderServiceImpl implements OrderService {
         }
         Order order = Order.builder().orderDate(LocalDate.now()).price(cart.getTotalPrice())
                 .user(user).productList(cart.getProducts()).build();
-        userRepository.update(userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword()));
-        orderRepository.create(order);
+        orderRepository.save(order);
         cart.clear();
         cart.setTotalPrice(0);
         ModelAndView modelAndView = new ModelAndView(CART_PAGE.getPath());
@@ -95,22 +94,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order create(Order entity) {
-        return orderRepository.create(entity);
+        return orderRepository.save(entity);
     }
 
     @Override
     public List<Order> read() {
-        return orderRepository.read();
+        return orderRepository.findAll();
     }
 
     @Override
-    public Order update(Order entity) {
-        return orderRepository.update(entity);
-    }
-
-    @Override
-    public void delete(Order entity) {
-        orderRepository.delete(entity);
+    public void delete(int id) {
+        orderRepository.deleteById(id);
     }
 
     public List<Order> getOrdersByUserId(int id) {
@@ -134,7 +128,7 @@ public class OrderServiceImpl implements OrderService {
                         .toList())
                 .orElse(null);
         if (Optional.ofNullable(newOrders).isPresent()) {
-            newOrders.forEach(orderRepository::create);
+            newOrders.forEach(orderRepository::save);
         }
 
         List<Order> orders = getOrdersByUserId(user.getId());

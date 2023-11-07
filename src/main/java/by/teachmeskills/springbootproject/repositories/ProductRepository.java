@@ -1,14 +1,21 @@
 package by.teachmeskills.springbootproject.repositories;
 
 import by.teachmeskills.springbootproject.entities.Product;
-import by.teachmeskills.springbootproject.entities.SearchWord;
+import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface ProductRepository extends BaseRepository<Product> {
+@Repository
+@Transactional
+public interface ProductRepository extends JpaRepository<Product, Integer>, JpaSpecificationExecutor<Product> {
     Product findById(int id);
 
-    List<Product> getProductsByCategory(int categoryId);
+    List<Product> findByCategoryId(int id);
 
-    List<Product> findProducts(SearchWord searchWord);
+    Page<Product> findByCategoryId(int id, Pageable page);
 }

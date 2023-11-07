@@ -32,55 +32,41 @@
     </div>
 </nav>
 <div class="container">
-    <form class="input-group mb-3" method="post" action="${contextPath}/search" style="text-align: center">
-        <label for="searchString"></label>
-        <input type="text" name="searchString" id="searchString" class="form-control"
+    <form class="input-group mb-3" method="post" action="/search/applyFilter" style="text-align: center">
+        <label for="searchKey"></label>
+        <input type="text" name="searchKey" id="searchKey" class="form-control"
                placeholder=" Поиск ">
-        <button type="submit" class="btn btn-success">Найти</button>
+        <button type="submit" style="margin-left:10px" class="btn btn-success">Найти</button>
     </form>
     <p></p>
-    <c:if test="${not empty info}">
-        <p style="text-align: center" class="text-danger">${info}</p>
-        <p></p>
-    </c:if>
 </div>
+<br>
 <br>
 <div class="container">
     <div class="row"><p></p>
-        <div class="col"><b>Фильтр</b><br><br>
-            <form method="post" action="${contextPath}/search">
-                <div class="dropdown">
-                    <label for="categories"></label>
-                    <select class="col-sm-7" id="categories" name="categories">
-                        <option selected>Категория</option>
-                        <c:forEach items="${categories}" var="category">
-                            <option style="text-align: center"
-                                    value="${category.getName()}">${category.getName()}</option>
-                        </c:forEach>
-                    </select>
-                </div>
+        <div class="col-lg-6 col-md-6">
+            <label><h3>Фильтр</h3></label>
+            <form method="post" action="/search/applyFilter">
+                <select id="categoryName" name="categoryName">
+                    <c:forEach items="${categories}" var="category">
+                        <option name="category"
+                                <c:if test="${searchParams.getCategoryName().equals(category.getName())}">selected</c:if>
+                                value="${category.getName()}">
+                                ${category.getName()}
+                        </option>
+                    </c:forEach>
+                </select>
                 <p></p>
-                <form>
-                    <div class="row">
-                        <div class="col">
-                            <input type="text" id="priceFrom" placeholder="Цена от" name="priceFrom">
-                        </div>
-                        <div class="col">
-                            <input type="text" id="priceTo" placeholder="Цена до" name="priceTo">
-                        </div>
-                    </div>
-                </form>
+                <div>Цена</div>
                 <p></p>
-                <div>
-                    <button class="btn btn-success" style="text-align:center">Найти</button>
-                </div>
+                <input id="priceFrom" name="priceFrom" type="text" placeholder="Цена от">
+                <input id="priceTo" name="priceTo" type="text" placeholder="Цена до">
+                <button type="submit" style="margin-left:10px" class="btn btn-success"> Применить</button>
             </form>
         </div>
+        <p></p>
+        <p></p>
         <div class="col" style="text-align: center"><b>Результаты поиска:</b><br><br>
-            <c:if test="${not empty message}">
-                <p style="text-align: center" class="text">${message}</p>
-                <p></p>
-            </c:if>
             <c:forEach items="${products}" var="product">
                 <div class="card w-80 m-1" type="product">
                     <div class="card-body">
@@ -111,17 +97,43 @@
             </c:forEach><br>
         </div>
     </div>
-    <ul class="pagination justify-content-end" style="margin:20px 0">
-        <li class="page-item" style="margin-right:10px"><a class="btn btn-outline-success"
-                                                           href="/search/${searchWord.getPaginationNumber() - 1}">Назад</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="/search/1">1</a></li>
-        <li class="page-item"><a class="page-link" href="/search/2">2</a></li>
-        <li class="page-item"><a class="page-link" href="/search/3">3</a></li>
-        <li class="page-item" style="margin-left:10px"><a class="btn btn-outline-success"
-                                                          href="/search/${searchWord.getPaginationNumber() + 1}">Вперед</a>
-        </li>
-    </ul>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+    <nav>
+        <ul class="pagination justify-content-center" style="margin: 15px">
+            <li class="page-item" style="margin-right:10px"><a class="btn btn-outline-success"
+                                                               href="/search/pagination/${paginationParams.getPageNumber()-1}">Назад</a>
+            </li>
+            <li class="page-item"><a class="page-link"
+                                     href="/category/pagination/0">1</a>
+            </li>
+            <li class="page-item"><a class="page-link"
+                                     href="/category/pagination/1">2</a>
+            </li>
+            <li class="page-item"><a class="page-link"
+                                     href="/category/pagination/2">3</a>
+            </li>
+            <li class="page-item" style="margin-left:10px"><a class="btn btn-outline-success"
+                                                              href="/category/pagination/${paginationParams.getPageNumber()+1}">Вперед</a>
+            </li>
+
+            <div class="dropdown">
+                <button class="btn btn-success" type="button" id="dropdownMenu" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false" style="margin-left:30px ">
+                    Размер страницы
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu">
+                    <a class="dropdown-item" href="/search/setPageSize/1">1</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/search/setPageSize/2">2</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/search/setPageSize/3">3</a>
+                </div>
+            </div>
+        </ul>
+    </nav>
 </div>
 </body>
 </html>

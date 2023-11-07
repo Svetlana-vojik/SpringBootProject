@@ -1,6 +1,7 @@
 package by.teachmeskills.springbootproject.controllers;
 
-import by.teachmeskills.springbootproject.entities.SearchWord;
+import by.teachmeskills.springbootproject.entities.PaginationParams;
+import by.teachmeskills.springbootproject.entities.SearchParams;
 import by.teachmeskills.springbootproject.services.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,38 +11,76 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import static by.teachmeskills.springbootproject.ShopConstants.SEARCH_WORD;
+import java.util.Optional;
+
+import static by.teachmeskills.springbootproject.PagesPathEnum.SEARCH_PAGE;
 
 @RestController
 @RequestMapping("/search")
 @AllArgsConstructor
-@SessionAttributes(SEARCH_WORD)
+@SessionAttributes({"searchParams", "paginationParams"})
 public class SearchController {
 
     private final ProductService productService;
 
     @GetMapping
-    public ModelAndView openSearchPage(@ModelAttribute(SEARCH_WORD) SearchWord searchWord) {
-        return productService.findProducts(searchWord);
+    public ModelAndView openSearchPage() {
+        return new ModelAndView(SEARCH_PAGE.getPath());
     }
 
     @PostMapping
-    public ModelAndView search(@RequestParam String searchString, @ModelAttribute(SEARCH_WORD) SearchWord searchWord) {
-        searchWord.setSearchString(searchString);
-        return productService.findProducts(searchWord);
+    public ModelAndView searchByNameOrDescription(@RequestParam("searchKey") String searchKey, @ModelAttribute("searchParams") SearchParams searchParams,
+                                                  @ModelAttribute("paginationParams") PaginationParams paginationParams) {
+        paginationParams.setPageNumber(0);
+        searchParams.setSearchKey(searchKey);
+        searchParams.setCategoryName(null);
+        searchParams.setPriceTo(null);
+        searchParams.setPriceFrom(null);
+        return productService.searchProducts(searchParams, paginationParams);
     }
 
-    @GetMapping("{pageNumber}")
-    public ModelAndView openPageNumber(@PathVariable int pageNumber, @ModelAttribute(SEARCH_WORD) SearchWord searchWord) {
-        searchWord.setPaginationNumber(pageNumber);
-        return productService.findProducts(searchWord);
+    @GetMapping("/pagination/{pageNumber}")
+    public ModelAndView searchPaginated(@PathVariable int pageNumber, @SessionAttribute("searchParams") SearchParams searchParams,
+                                        @SessionAttribute("paginationParams") PaginationParams paginationParams) {
+        paginationParams.setPageNumber(pageNumber);
+        return productService.searchProducts(searchParams, paginationParams);
     }
 
-    @ModelAttribute(SEARCH_WORD)
-    public SearchWord initSearchWord() {
-        return new SearchWord();
+    @PostMapping("/applyFilter")
+    public ModelAndView applyFilter(@RequestParam(value = "searchKey", required = false) String searchKey,
+                                    @RequestParam(value = "categoryName", required = false) String categoryName,
+                                    @RequestParam(value = "priceFrom", required = false) Integer priceFrom,
+                                    @RequestParam(value = "priceTo", required = false) Integer priceTo,
+                                    @SessionAttribute("searchParams") SearchParams searchParams,
+                                    @SessionAttribute("paginationParams") PaginationParams paginationParams) {
+        paginationParams.setPageNumber(0);
+        if (Optional.ofNullable(categoryName).isPresent()) {
+            searchParams.setCategoryName(categoryName);
+        }
+        searchParams.setPriceFrom(priceFrom);
+        searchParams.setPriceTo(priceTo);
+        searchParams.setSearchKey(searchKey);
+        return productService.searchProducts(searchParams, paginationParams);
+    }
+
+    @GetMapping("/setPageSize/{pageSize}")
+    public ModelAndView changePageSize(@PathVariable int pageSize, @SessionAttribute("searchParams") SearchParams searchParams,
+                                       @SessionAttribute("paginationParams") PaginationParams paginationParams) {
+        paginationParams.setPageSize(pageSize);
+        return productService.searchProducts(searchParams, paginationParams);
+    }
+
+    @ModelAttribute("searchParams")
+    public SearchParams setSearchParams() {
+        return new SearchParams();
+    }
+
+    @ModelAttribute("paginationParams")
+    public PaginationParams setPaginationParams() {
+        return new PaginationParams();
     }
 }

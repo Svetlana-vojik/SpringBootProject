@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
         if ((userRepository.findByEmailAndPassword(entity.getEmail(), entity.getPassword())) != null) {
             throw new AuthorizationException("Данный пользователь уже зарегистрирован. Войдите в систему.");
         } else {
-            userRepository.create(entity);
+            userRepository.save(entity);
             modelAndView.addObject("info", "Пользователь успешно зарегистрирован. Войдите в систему.");
         }
         return modelAndView;
@@ -38,22 +38,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(User entity) {
-        return userRepository.create(entity);
+        return userRepository.save(entity);
     }
 
     @Override
     public List<User> read() {
-        return userRepository.read();
+        return userRepository.findAll();
     }
 
-    @Override
-    public User update(User entity) {
-        return userRepository.update(entity);
-    }
 
     @Override
-    public void delete(User entity) {
-        userRepository.delete(entity);
+    public void delete(int id) {
+        userRepository.deleteById(id);
     }
 
     @Override

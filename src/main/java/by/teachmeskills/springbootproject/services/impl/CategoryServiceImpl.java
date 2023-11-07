@@ -39,21 +39,16 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category create(Category entity) {
-        return categoryRepository.create(entity);
+        return categoryRepository.save(entity);
     }
 
     @Override
     public List<Category> read() {
-        return categoryRepository.read();
+        return categoryRepository.findAll();
     }
 
-    @Override
-    public Category update(Category entity) {
-        return categoryRepository.update(entity);
-    }
-
-    public void delete(Category entity) {
-        categoryRepository.delete(entity);
+    public void delete(int id) {
+        categoryRepository.deleteById(id);
     }
 
     @Override
@@ -67,16 +62,16 @@ public class CategoryServiceImpl implements CategoryService {
         ModelMap modelMap = new ModelMap();
         if (Optional.ofNullable(csvCategories).isPresent()) {
             for (Category csvCategory : csvCategories) {
-                categoryRepository.create(csvCategory);
+                categoryRepository.save(csvCategory);
             }
-            modelMap.addAttribute("categories", categoryRepository.read());
+            modelMap.addAttribute("categories", categoryRepository.findAll());
         }
         return new ModelAndView(HOME_PAGE.getPath(), modelMap);
     }
 
     @Override
     public void exportCategoriesToCsv(HttpServletResponse response) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
-        List<Category> categories = categoryRepository.read();
+        List<Category> categories = categoryRepository.findAll();
         try (Writer writer = new OutputStreamWriter(response.getOutputStream())) {
             StatefulBeanToCsv<Category> statefulBeanToCsv = new StatefulBeanToCsvBuilder<Category>(writer).withSeparator(';').build();
             response.setContentType("text/csv");

@@ -1,5 +1,6 @@
 package by.teachmeskills.springbootproject.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -7,10 +8,10 @@ import lombok.experimental.SuperBuilder;
 @Data
 @NoArgsConstructor
 @SuperBuilder
-public class SearchWord {
-    private String searchString;
-    private int paginationNumber;
-    private int priceFrom;
-    private int priceTo;
+@AllArgsConstructor
+public class SearchParams {
+    private String searchKey;
+    private Integer priceFrom;
+    private Integer priceTo;
     private String categoryName;
 }

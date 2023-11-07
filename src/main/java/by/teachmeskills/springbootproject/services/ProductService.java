@@ -1,8 +1,9 @@
 package by.teachmeskills.springbootproject.services;
 
 import by.teachmeskills.springbootproject.csv.dto.ProductCsv;
+import by.teachmeskills.springbootproject.entities.PaginationParams;
 import by.teachmeskills.springbootproject.entities.Product;
-import by.teachmeskills.springbootproject.entities.SearchWord;
+import by.teachmeskills.springbootproject.entities.SearchParams;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,10 +14,13 @@ import java.io.IOException;
 import java.util.List;
 public interface ProductService extends BaseService<Product> {
     Product findById(int id);
-    ModelAndView getProductsByCategory(int id);
-    List<Product> findByCategoryId(int id);
 
-    ModelAndView findProducts(SearchWord searchWord);
+    ModelAndView getProductsByCategory(int id, PaginationParams params);
+
+    List<Product> findByCategoryId(int id);
+  //  ModelAndView findProductByIdForProductPage(int id);
+
+    ModelAndView searchProducts(SearchParams searchParams, PaginationParams paginationParams);
 
     ModelAndView saveProductsFromFile(MultipartFile file, int id) throws IOException;
 
