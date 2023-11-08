@@ -17,5 +17,4 @@ public interface ShopConstants {
     String ORDERS = "orders";
     String TIME = "time";
     String ERROR = "error";
-    String SEARCH_WORD = "searchWord";
 }
