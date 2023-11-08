@@ -121,38 +121,6 @@
         </c:forEach>
     </c:if>
 </section>
-<nav>
-    <ul class="pagination justify-content-center" style="margin: 15px">
-        <li class="page-item" style="margin-right:10px"><a class="btn btn-outline-success"
-                                                           href="/profile/pagination/${paginationParams.getPageNumber()-1}">Назад</a>
-        </li>
-        <li class="page-item"><a class="page-link"
-                                 href="/profile/pagination/0">1</a>
-        </li>
-        <li class="page-item"><a class="page-link"
-                                 href="/profile/pagination/1">2</a>
-        </li>
-        <li class="page-item"><a class="page-link"
-                                 href="/profile/pagination/2">3</a>
-        </li>
-        <li class="page-item" style="margin-left:10px"><a class="btn btn-outline-success"
-                                                          href="/profile/pagination/${paginationParams.getPageNumber()+1}">Вперед</a>
-        </li>
-        <div class="dropdown">
-            <button class="btn btn-success" type="button" id="dropdownMenu" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false" style="margin-left:30px ">
-                Размер страницы
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu">
-                <a class="dropdown-item" href="/profile/changeSize/1">1</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="/profile/changeSize/2">2</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="/profile/changeSize/3">3</a>
-            </div>
-        </div>
-    </ul>
-</nav>
 <form method="POST" action="/userPage/csv/import" enctype="multipart/form-data"
       class="file-import">
     <label for="file-upload" class="custom-file-upload"
