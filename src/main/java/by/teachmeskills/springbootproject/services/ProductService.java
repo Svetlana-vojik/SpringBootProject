@@ -18,7 +18,6 @@ public interface ProductService extends BaseService<Product> {
     ModelAndView getProductsByCategory(int id, PaginationParams params);
 
     List<Product> findByCategoryId(int id);
-  //  ModelAndView findProductByIdForProductPage(int id);
 
     ModelAndView searchProducts(SearchParams searchParams, PaginationParams paginationParams);
 

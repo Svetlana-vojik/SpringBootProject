@@ -93,14 +93,6 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findByCategoryId(id);
     }
 
-//    @Override
-//    public ModelAndView findProductByIdForProductPage(int id) {
-//        ModelMap modelMap = new ModelMap();
-//        Product product = findById(id);
-//        modelMap.addAttribute("categoryName", product.getName());
-//        modelMap.addAttribute("product", product);
-//        return new ModelAndView(PRODUCT_PAGE.getPath(), modelMap);
-//    }
     @Override
     public ModelAndView searchProducts(SearchParams searchParams, PaginationParams paginationParams) {
         if (paginationParams.getPageNumber() < 0) {
