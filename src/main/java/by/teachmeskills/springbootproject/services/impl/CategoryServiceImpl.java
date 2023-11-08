@@ -1,5 +1,7 @@
 package by.teachmeskills.springbootproject.services.impl;
 
+import by.teachmeskills.springbootproject.csv.converters.CategoryConverter;
+import by.teachmeskills.springbootproject.csv.dto.CategoryCsv;
 import by.teachmeskills.springbootproject.entities.Category;
 import by.teachmeskills.springbootproject.repositories.CategoryRepository;
 import by.teachmeskills.springbootproject.services.CategoryService;
@@ -13,7 +15,6 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.query.sqm.ParsingException;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,6 +37,7 @@ import static by.teachmeskills.springbootproject.PagesPathEnum.HOME_PAGE;
 @AllArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
+    private final CategoryConverter categoryConverter;
 
     @Override
     public Category create(Category entity) {
@@ -58,15 +60,18 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ModelAndView importCategoriesFromCsv(MultipartFile file) throws EntityNotFoundException {
-        List<Category> csvCategories = parseCsv(file);
+        List<CategoryCsv> csvCategories = parseCsv(file);
         ModelMap modelMap = new ModelMap();
-        if (Optional.ofNullable(csvCategories).isPresent()) {
-            for (Category csvCategory : csvCategories) {
-                categoryRepository.save(csvCategory);
-            }
-            modelMap.addAttribute("categories", categoryRepository.findAll());
+            List<Category> newCategories = Optional.ofNullable(csvCategories)
+                .map(list -> list.stream()
+                        .map(categoryConverter::fromCsv)
+                        .toList())
+                .orElse(null);
+
+        if (Optional.ofNullable(newCategories).isPresent()) {
+            newCategories.forEach(categoryRepository::save);
         }
-        return new ModelAndView(HOME_PAGE.getPath(), modelMap);
+        return new ModelAndView(HOME_PAGE.getPath(),modelMap);
     }
 
     @Override
@@ -80,18 +85,17 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
-    private List<Category> parseCsv(MultipartFile file) {
+      public List<CategoryCsv> parseCsv(MultipartFile file) {
         if (Optional.ofNullable(file).isPresent()) {
             try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-                CsvToBean<Category> csvToBean = new CsvToBeanBuilder<Category>(reader)
-                        .withType(Category.class)
-                        .withIgnoreLeadingWhiteSpace(true)
-                        .withSeparator(',')
-                        .build();
+                CsvToBean<CategoryCsv> csvToBean = new CsvToBeanBuilder<CategoryCsv>(reader).withType(CategoryCsv.class).
+                        withIgnoreLeadingWhiteSpace(true).withSeparator(';').build();
                 return csvToBean.parse();
-            } catch (Exception ex) {
-                throw new ParsingException(String.format("Ошибка во время преобразования данных: %s", ex.getMessage()));
+            } catch (IOException e) {
+                log.error("Exception occurred during csv parsing:" + e.getMessage());
             }
+        } else {
+            log.error("Empty scv file is uploaded");
         }
         return Collections.emptyList();
     }

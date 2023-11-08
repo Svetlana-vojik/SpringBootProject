@@ -1,5 +1,6 @@
 package by.teachmeskills.springbootproject.services;
 
+import by.teachmeskills.springbootproject.csv.dto.CategoryCsv;
 import by.teachmeskills.springbootproject.entities.Category;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
@@ -9,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface CategoryService extends BaseService<Category> {
     Category findById(int id);
@@ -16,4 +18,5 @@ public interface CategoryService extends BaseService<Category> {
     ModelAndView importCategoriesFromCsv(MultipartFile file) throws EntityNotFoundException;
 
     void exportCategoriesToCsv(HttpServletResponse response) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException;
+
 }

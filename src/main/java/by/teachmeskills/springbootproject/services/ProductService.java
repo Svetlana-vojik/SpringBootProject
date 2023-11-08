@@ -23,7 +23,5 @@ public interface ProductService extends BaseService<Product> {
 
     ModelAndView saveProductsFromFile(MultipartFile file, int id) throws IOException;
 
-    List<ProductCsv> parseCsv(MultipartFile file);
-
     void saveCategoryProductsToFile(HttpServletResponse servletResponse, int id) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException;
 }

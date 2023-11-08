@@ -118,16 +118,17 @@ public class ProductServiceImpl implements ProductService {
         ModelMap modelMap = new ModelMap();
         List<Product> products = csvProducts.stream().map(productConverter::fromCsv).toList();
         products.stream().forEach(c -> c.setCategory(categoryService.findById(id)));
-        productRepository.saveAll(products);
-        Pageable pageable = PageRequest.of(0, 0, Sort.by("name").ascending());
+        for (Product product : products) {
+            productRepository.save(product);
+        }
+        Pageable pageable = PageRequest.of(1, 2, Sort.by("name").ascending());
         Category category = categoryService.findById(id);
         category.setProductList(productRepository.findByCategoryId(id, pageable).getContent());
         modelMap.addAttribute("category", category);
         return new ModelAndView(CATEGORY_PAGE.getPath(), modelMap);
     }
 
-    @Override
-    public List<ProductCsv> parseCsv(MultipartFile file) {
+      public List<ProductCsv> parseCsv(MultipartFile file) {
         if (Optional.ofNullable(file).isPresent()) {
             try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
                 CsvToBean<ProductCsv> csvToBean = new CsvToBeanBuilder<ProductCsv>(reader).withType(ProductCsv.class).

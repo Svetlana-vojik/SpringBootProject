@@ -17,6 +17,8 @@ public class CategoryCsv {
     @CsvBindByName
     private String name;
     @CsvBindByName
+    private String imagePath;
+    @CsvBindByName
     private int rating;
     private List<ProductCsv> products;
 }
