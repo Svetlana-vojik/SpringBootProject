@@ -107,16 +107,16 @@
                                                                href="/search/pagination/${paginationParams.getPageNumber()-1}">Назад</a>
             </li>
             <li class="page-item"><a class="page-link"
-                                     href="/category/pagination/0">1</a>
+                                     href="/search/pagination/0">1</a>
             </li>
             <li class="page-item"><a class="page-link"
-                                     href="/category/pagination/1">2</a>
+                                     href="/search/pagination/1">2</a>
             </li>
             <li class="page-item"><a class="page-link"
-                                     href="/category/pagination/2">3</a>
+                                     href="/search/pagination/2">3</a>
             </li>
             <li class="page-item" style="margin-left:10px"><a class="btn btn-outline-success"
-                                                              href="/category/pagination/${paginationParams.getPageNumber()+1}">Вперед</a>
+                                                              href="/search/pagination/${paginationParams.getPageNumber()+1}">Вперед</a>
             </li>
 
             <div class="dropdown">

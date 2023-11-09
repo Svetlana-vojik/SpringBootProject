@@ -12,7 +12,6 @@ import static by.teachmeskills.springbootproject.PagesPathEnum.PRODUCT_PAGE;
 import static by.teachmeskills.springbootproject.ShopConstants.CART;
 import static by.teachmeskills.springbootproject.ShopConstants.PRODUCT;
 
-
 @Service
 public class CartService {
     private final ProductRepository productRepository;

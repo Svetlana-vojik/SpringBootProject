@@ -1,6 +1,5 @@
 package by.teachmeskills.springbootproject.services;
 
-import by.teachmeskills.springbootproject.csv.dto.ProductCsv;
 import by.teachmeskills.springbootproject.entities.PaginationParams;
 import by.teachmeskills.springbootproject.entities.Product;
 import by.teachmeskills.springbootproject.entities.SearchParams;

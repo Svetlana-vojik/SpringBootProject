@@ -1,8 +1,9 @@
 package by.teachmeskills.springbootproject.services.impl;
 
 import by.teachmeskills.springbootproject.csv.converters.CategoryConverter;
-import by.teachmeskills.springbootproject.csv.dto.CategoryCsv;
+import by.teachmeskills.springbootproject.csv.dto.CategoryCsvDto;
 import by.teachmeskills.springbootproject.entities.Category;
+import by.teachmeskills.springbootproject.entities.PaginationParams;
 import by.teachmeskills.springbootproject.repositories.CategoryRepository;
 import by.teachmeskills.springbootproject.services.CategoryService;
 import com.opencsv.bean.CsvToBean;
@@ -15,6 +16,9 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +35,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static by.teachmeskills.springbootproject.PagesPathEnum.HOME_PAGE;
+import static by.teachmeskills.springbootproject.ShopConstants.CATEGORIES;
 
 @Service
 @Slf4j
@@ -60,9 +65,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ModelAndView importCategoriesFromCsv(MultipartFile file) throws EntityNotFoundException {
-        List<CategoryCsv> csvCategories = parseCsv(file);
+        List<CategoryCsvDto> csvCategories = parseCsv(file);
         ModelMap modelMap = new ModelMap();
-            List<Category> newCategories = Optional.ofNullable(csvCategories)
+        List<Category> newCategories = Optional.ofNullable(csvCategories)
                 .map(list -> list.stream()
                         .map(categoryConverter::fromCsv)
                         .toList())
@@ -71,7 +76,24 @@ public class CategoryServiceImpl implements CategoryService {
         if (Optional.ofNullable(newCategories).isPresent()) {
             newCategories.forEach(categoryRepository::save);
         }
-        return new ModelAndView(HOME_PAGE.getPath(),modelMap);
+        List<Category> categories = categoryRepository.findAll();
+        modelMap.addAttribute(CATEGORIES, categories);
+        return new ModelAndView(HOME_PAGE.getPath(), modelMap);
+    }
+
+    public List<CategoryCsvDto> parseCsv(MultipartFile file) {
+        if (Optional.ofNullable(file).isPresent()) {
+            try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+                CsvToBean<CategoryCsvDto> csvToBean = new CsvToBeanBuilder<CategoryCsvDto>(reader).withType(CategoryCsvDto.class).
+                        withIgnoreLeadingWhiteSpace(true).withSeparator(';').build();
+                return csvToBean.parse();
+            } catch (IOException e) {
+                log.error("Exception occurred during csv parsing:" + e.getMessage());
+            }
+        } else {
+            log.error("Empty scv file is uploaded");
+        }
+        return Collections.emptyList();
     }
 
     @Override
@@ -85,18 +107,19 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
-      public List<CategoryCsv> parseCsv(MultipartFile file) {
-        if (Optional.ofNullable(file).isPresent()) {
-            try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-                CsvToBean<CategoryCsv> csvToBean = new CsvToBeanBuilder<CategoryCsv>(reader).withType(CategoryCsv.class).
-                        withIgnoreLeadingWhiteSpace(true).withSeparator(';').build();
-                return csvToBean.parse();
-            } catch (IOException e) {
-                log.error("Exception occurred during csv parsing:" + e.getMessage());
-            }
-        } else {
-            log.error("Empty scv file is uploaded");
+    @Override
+    public ModelAndView getAllCategories(PaginationParams paginationParams) {
+        ModelMap modelMap = new ModelMap();
+        Pageable pageable = PageRequest.of(paginationParams.getPageNumber(), paginationParams.getPageSize(), Sort.by("name").ascending());
+        List<Category> categories = categoryRepository.findAll(pageable).getContent();
+        if (paginationParams.getPageNumber() < 0) {
+            paginationParams.setPageNumber(0);
         }
-        return Collections.emptyList();
+        if (categories.isEmpty()) {
+            throw new EntityNotFoundException("Категории не найдены.");
+        }
+
+        modelMap.addAttribute(CATEGORIES, categories);
+        return new ModelAndView(HOME_PAGE.getPath(), modelMap);
     }
 }
