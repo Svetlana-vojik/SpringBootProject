@@ -16,7 +16,8 @@
         }
     </style>
 </head>
-<body><h2 style="text-align:center">Регистрация</h2>
+<body style="background-color:lightyellow">
+<h2 style="text-align:center">Регистрация</h2>
 <p></p>
 <div class="container">
     <c:if test="${not empty info}">

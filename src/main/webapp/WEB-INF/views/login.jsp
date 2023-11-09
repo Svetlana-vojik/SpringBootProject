@@ -18,7 +18,8 @@
         }
     </style>
 </head>
-<body><h2 style="text-align:center">Вход</h2>
+<body style="background-color:lightyellow">
+<h2 style="text-align:center">Вход</h2>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <p style="text-align:center">Заполните поля для входа</p>
 <div class="container">
