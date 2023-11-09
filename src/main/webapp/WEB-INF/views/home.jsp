@@ -63,7 +63,7 @@
 <nav>
     <ul class="pagination justify-content-center" style="margin: 15px">
         <li class="page-item" style="margin-right:10px"><a class="btn btn-outline-success"
-                                                           href="/home/pagination/${category.getId()}/${paginationParams.getPageNumber()-1}">Назад</a>
+                                                           href="/home/pagination/${paginationParams.getPageNumber()-1}">Назад</a>
         </li>
         <li class="page-item"><a class="page-link"
                                  href="/home/pagination/0">1</a>
@@ -75,7 +75,7 @@
                                  href="/home/pagination/2">3</a>
         </li>
         <li class="page-item" style="margin-left:10px"><a class="btn btn-outline-success"
-                                                          href="/home/pagination/${category.getId()}/${paginationParams.getPageNumber()+1}">Вперед</a>
+                                                          href="/home/pagination/${paginationParams.getPageNumber()+1}">Вперед</a>
         </li>
         <div class="dropdown">
             <button class="btn btn-success" type="button" id="dropdownMenu" data-toggle="dropdown"

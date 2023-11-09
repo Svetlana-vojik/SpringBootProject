@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,27 +23,27 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/home")
 @AllArgsConstructor
-
+@SessionAttributes({"paginationParams"})
 public class HomeController {
     private final CategoryService categoryService;
 
     @GetMapping
     public ModelAndView openHomePage(@ModelAttribute("paginationParams") PaginationParams paginationParams) {
         paginationParams.setPageNumber(0);
-        paginationParams.setPageSize(4);
+        paginationParams.setPageSize(5);
         return categoryService.getAllCategories(paginationParams);
     }
 
     @GetMapping("/pagination/{page}")
     public ModelAndView homePagePaginated(@PathVariable int page,
-                                          @ModelAttribute("paginationParams") PaginationParams paginationParams) {
+                                          @SessionAttribute(required=false,name="paginationParams") PaginationParams paginationParams) {
         paginationParams.setPageNumber(page);
         return categoryService.getAllCategories(paginationParams);
     }
 
     @GetMapping("/changeSize/{size}")
     public ModelAndView changePage(@PathVariable int size,
-                                   @ModelAttribute("paginationParams") PaginationParams paginationParams) {
+                                   @SessionAttribute(required=false,name="paginationParams") PaginationParams paginationParams) {
         paginationParams.setPageSize(size);
         return categoryService.getAllCategories(paginationParams);
     }
