@@ -1,7 +1,7 @@
 package by.teachmeskills.springbootproject.services.impl;
 
 import by.teachmeskills.springbootproject.csv.converters.OrderConverter;
-import by.teachmeskills.springbootproject.csv.dto.OrderCsv;
+import by.teachmeskills.springbootproject.csv.dto.OrderCsvDto;
 import by.teachmeskills.springbootproject.entities.Cart;
 import by.teachmeskills.springbootproject.entities.Order;
 import by.teachmeskills.springbootproject.entities.User;
@@ -35,7 +35,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static by.teachmeskills.springbootproject.PagesPathEnum.CART_PAGE;
 import static by.teachmeskills.springbootproject.PagesPathEnum.USER_PROFILE_PAGE;
@@ -127,7 +126,7 @@ public class OrderServiceImpl implements OrderService {
         model.addAttribute(BIRTHDAY, user.getBirthday());
         model.addAttribute(EMAIL, user.getEmail());
 
-        List<OrderCsv> csvOrders = parseCsv(file);
+        List<OrderCsvDto> csvOrders = parseCsv(file);
         List<Order> newOrders = Optional.ofNullable(csvOrders)
                 .map(list -> list.stream()
                         .map(orderConverter::fromCsv)
@@ -145,9 +144,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void exportOrdersToCsv(HttpServletResponse response, int userId) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
-        List<OrderCsv> csvOrders = orderRepository.findByUserId(userId).stream().map(orderConverter::toCsv).toList();
+        List<OrderCsvDto> csvOrders = orderRepository.findByUserId(userId).stream().map(orderConverter::toCsv).toList();
         try (Writer writer = new OutputStreamWriter(response.getOutputStream())) {
-            StatefulBeanToCsv<OrderCsv> statefulBeanToCsv = new StatefulBeanToCsvBuilder<OrderCsv>(writer).withSeparator(';').build();
+            StatefulBeanToCsv<OrderCsvDto> statefulBeanToCsv = new StatefulBeanToCsvBuilder<OrderCsvDto>(writer).withSeparator(';').build();
             response.setContentType("text/csv");
             response.addHeader("Content-Disposition", "attachment; filename=" + "orders.csv");
             statefulBeanToCsv.write(csvOrders);
@@ -155,11 +154,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    private List<OrderCsv> parseCsv(MultipartFile file) {
+    private List<OrderCsvDto> parseCsv(MultipartFile file) {
         if (Optional.ofNullable(file).isPresent()) {
             try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-                CsvToBean<OrderCsv> csvToBean = new CsvToBeanBuilder<OrderCsv>(reader)
-                        .withType(OrderCsv.class)
+                CsvToBean<OrderCsvDto> csvToBean = new CsvToBeanBuilder<OrderCsvDto>(reader)
+                        .withType(OrderCsvDto.class)
                         .withIgnoreLeadingWhiteSpace(true)
                         .withSeparator(',')
                         .build();

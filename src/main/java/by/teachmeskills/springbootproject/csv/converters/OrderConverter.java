@@ -1,6 +1,6 @@
 package by.teachmeskills.springbootproject.csv.converters;
 
-import by.teachmeskills.springbootproject.csv.dto.OrderCsv;
+import by.teachmeskills.springbootproject.csv.dto.OrderCsvDto;
 import by.teachmeskills.springbootproject.entities.Order;
 import by.teachmeskills.springbootproject.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,8 +17,8 @@ public class OrderConverter {
     private final ProductConverter productConverter;
     private final UserRepository userRepository;
 
-    public OrderCsv toCsv(Order order) {
-        return Optional.ofNullable(order).map(o -> OrderCsv.builder()
+    public OrderCsvDto toCsv(Order order) {
+        return Optional.ofNullable(order).map(o -> OrderCsvDto.builder()
                         .id(o.getId())
                         .orderDate(o.getOrderDate().toString())
                         .productList(Optional.ofNullable(o.getProductList()).map(products -> products.stream()
@@ -29,7 +29,7 @@ public class OrderConverter {
                 .orElse(null);
     }
 
-    public Order fromCsv(OrderCsv orderCsv) {
+    public Order fromCsv(OrderCsvDto orderCsv) {
         return Order.builder()
                 .user(Optional.ofNullable(userRepository.findById(orderCsv.getUserId()))
                         .orElseThrow(() -> new EntityNotFoundException(String.format("Пользователя с id %d не найдено.", orderCsv.getUserId()))))

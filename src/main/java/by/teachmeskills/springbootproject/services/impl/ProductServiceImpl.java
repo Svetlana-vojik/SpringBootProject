@@ -1,7 +1,7 @@
 package by.teachmeskills.springbootproject.services.impl;
 
 import by.teachmeskills.springbootproject.csv.converters.ProductConverter;
-import by.teachmeskills.springbootproject.csv.dto.ProductCsv;
+import by.teachmeskills.springbootproject.csv.dto.ProductCsvDto;
 import by.teachmeskills.springbootproject.entities.Category;
 import by.teachmeskills.springbootproject.entities.Product;
 import by.teachmeskills.springbootproject.entities.SearchWord;
@@ -108,7 +108,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ModelAndView saveProductsFromFile(MultipartFile file, int id) {
-        List<ProductCsv> csvProducts = parseCsv(file);
+        List<ProductCsvDto> csvProducts = parseCsv(file);
         ModelMap modelMap = new ModelMap();
         List<Product> products = csvProducts.stream().map(productConverter::fromCsv).toList();
         products.stream().forEach(c -> {
@@ -127,10 +127,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductCsv> parseCsv(MultipartFile file) {
+    public List<ProductCsvDto> parseCsv(MultipartFile file) {
         if (Optional.ofNullable(file).isPresent()) {
             try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-                CsvToBean<ProductCsv> csvToBean = new CsvToBeanBuilder<ProductCsv>(reader).withType(ProductCsv.class).
+                CsvToBean<ProductCsvDto> csvToBean = new CsvToBeanBuilder<ProductCsvDto>(reader).withType(ProductCsvDto.class).
                         withIgnoreLeadingWhiteSpace(true).withSeparator(';').build();
                 return csvToBean.parse();
             } catch (IOException e) {
@@ -146,7 +146,7 @@ public class ProductServiceImpl implements ProductService {
     public void saveCategoryProductsToFile(HttpServletResponse servletResponse, int id) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
         List<Product> products = productRepository.getProductsByCategory(id);
         try (Writer writer = new OutputStreamWriter(servletResponse.getOutputStream())) {
-            StatefulBeanToCsv<ProductCsv> beanToCsv = new StatefulBeanToCsvBuilder<ProductCsv>(writer).withSeparator(';').build();
+            StatefulBeanToCsv<ProductCsvDto> beanToCsv = new StatefulBeanToCsvBuilder<ProductCsvDto>(writer).withSeparator(';').build();
             servletResponse.setContentType("text/csv");
             servletResponse.addHeader("Content-Disposition", "attachment; filename=" + "products.csv");
             beanToCsv.write(products.stream().map(productConverter::toCsv).toList());

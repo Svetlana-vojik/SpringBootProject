@@ -1,6 +1,6 @@
 package by.teachmeskills.springbootproject.services;
 
-import by.teachmeskills.springbootproject.csv.dto.ProductCsv;
+import by.teachmeskills.springbootproject.csv.dto.ProductCsvDto;
 import by.teachmeskills.springbootproject.entities.Product;
 import by.teachmeskills.springbootproject.entities.SearchWord;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
@@ -20,7 +20,7 @@ public interface ProductService extends BaseService<Product> {
 
     ModelAndView saveProductsFromFile(MultipartFile file, int id) throws IOException;
 
-    List<ProductCsv> parseCsv(MultipartFile file);
+    List<ProductCsvDto> parseCsv(MultipartFile file);
 
     void saveCategoryProductsToFile(HttpServletResponse servletResponse, int id) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException;
 }

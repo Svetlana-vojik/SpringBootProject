@@ -12,11 +12,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryCsv {
+public class CategoryCsvDto {
     private int id;
     @CsvBindByName
     private String name;
     @CsvBindByName
     private int rating;
-    private List<ProductCsv> products;
+    private List<ProductCsvDto> products;
 }

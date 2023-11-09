@@ -1,6 +1,6 @@
 package by.teachmeskills.springbootproject.csv.converters;
 
-import by.teachmeskills.springbootproject.csv.dto.CategoryCsv;
+import by.teachmeskills.springbootproject.csv.dto.CategoryCsvDto;
 import by.teachmeskills.springbootproject.entities.Category;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,8 +13,8 @@ import java.util.Optional;
 public class CategoryConverter {
     private final ProductConverter productConverter;
 
-    public CategoryCsv toDto(Category category) {
-        return Optional.ofNullable(category).map(c -> CategoryCsv.builder()
+    public CategoryCsvDto toDto(Category category) {
+        return Optional.ofNullable(category).map(c -> CategoryCsvDto.builder()
                         .id(c.getId())
                         .name(c.getName())
                         .rating(c.getRating())
@@ -23,7 +23,7 @@ public class CategoryConverter {
                 .orElse(null);
     }
 
-    public Category fromDto(CategoryCsv CategoryCsv) {
+    public Category fromDto(CategoryCsvDto CategoryCsv) {
         return Optional.ofNullable(CategoryCsv).map(cd -> Category.builder()
                         .name(cd.getName())
                         .rating(cd.getRating())

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductCsv {
+public class ProductCsvDto {
     private int id;
 
     @CsvBindByName
