@@ -2,6 +2,7 @@ package by.teachmeskills.springbootproject.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -11,7 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
@@ -35,8 +35,6 @@ public class Order extends BaseEntity {
 
     @JoinTable(name = "orders_products", joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
-    @ToString.Exclude
-    @ManyToMany
-    @EqualsAndHashCode.Exclude
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Product> productList;
 }

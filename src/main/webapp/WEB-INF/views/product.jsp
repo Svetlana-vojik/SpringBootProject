@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,6 +31,14 @@
             <a href=${contextPath}/cart/open>
                 <button class="btn btn-outline-success m-1" type="button">Корзина</button>
             </a>
+            <sec:authorize access="isAuthenticated()">
+            <a href="/logout">
+                <button class="btn btn-outline-success m-1" type="button">Выйти</button> </a>
+                </sec:authorize>
+                <sec:authorize access="!isAuthenticated()">
+                <a href="/login">
+                    <button class="btn btn-outline-success m-1" type="button">Войти</button> </a>
+                    </sec:authorize>
         </form>
     </div>
 </nav>

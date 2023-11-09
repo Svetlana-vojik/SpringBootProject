@@ -1,10 +1,8 @@
 package by.teachmeskills.springbootproject.services.impl;
 
 import by.teachmeskills.springbootproject.csv.converters.OrderConverter;
-import by.teachmeskills.springbootproject.csv.dto.CategoryCsvDto;
 import by.teachmeskills.springbootproject.csv.dto.OrderCsvDto;
 import by.teachmeskills.springbootproject.entities.Cart;
-import by.teachmeskills.springbootproject.entities.Category;
 import by.teachmeskills.springbootproject.entities.Order;
 import by.teachmeskills.springbootproject.entities.User;
 import by.teachmeskills.springbootproject.exceptions.AuthorizationException;
@@ -109,7 +107,7 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.deleteById(id);
     }
 
-    public List<Order> getOrdersByUserId(int id) {
+    public List<Order> findByUserId(int id) {
         return orderRepository.findByUserId(id);
     }
 
@@ -133,7 +131,7 @@ public class OrderServiceImpl implements OrderService {
             newOrders.forEach(orderRepository::save);
         }
 
-        List<Order> orders = getOrdersByUserId(user.getId());
+        List<Order> orders = findByUserId(user.getId());
         model.addAttribute(orders.stream().collect(Collectors.toList()));
 
         return new ModelAndView(USER_PROFILE_PAGE.getPath(), model);

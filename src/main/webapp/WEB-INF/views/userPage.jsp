@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,6 +32,16 @@
             <a href=${contextPath}/cart/open>
                 <button class="btn btn-outline-success m-1" type="button">Корзина</button>
             </a>
+            <sec:authorize access="isAuthenticated()">
+            <a href="/logout">
+                <button class="btn btn-outline-success m-1" type="button">Выйти</button>
+            </a>
+                </sec:authorize>
+                <sec:authorize access="!isAuthenticated()">
+                <a href="/login">
+                    <button class="btn btn-outline-success m-1" type="button">Войти</button>
+                </a>
+                    </sec:authorize>
         </form>
     </div>
 </nav>
@@ -95,7 +106,6 @@
 </section>
 <section>
     <h5 class="mb-0" style="padding: 20px">История заказов</h5>
-    <c:if test="${not empty orders}">
         <c:forEach items="${orders}" var="order">
             <p><b>Дата заказа:</b> ${order.getOrderDate()}</p>
             <p><b>Номер заказа: </b> ${order.getId()}</p>
@@ -106,7 +116,7 @@
                             <div class="col m-1">
                                 <img class="card-img"
                                      style="width:70px;height:70px"
-                                     src="${product.getImagePath()}"
+                                     src="<c:url value="/${product.getImagePath()}"/>"
                                      alt=${product.getImagePath()}></div>
                             <div class="col m-1" style="text-align: center">
                                 <p>${product.getName()}</p></div>
@@ -119,8 +129,41 @@
                 </div>
             </c:forEach>
         </c:forEach>
-    </c:if>
 </section>
+<nav>
+    <ul class="pagination justify-content-center" style="margin: 15px">
+        <li class="page-item" style="margin-right:10px"><a class="btn btn-outline-success"
+                                                           href="/userPage/pagination/${paginationParams.getPageNumber()-1}">Назад</a>
+        </li>
+        <li class="page-item"><a class="page-link"
+                                 href="/userPage/pagination/0">1</a>
+        </li>
+        <li class="page-item"><a class="page-link"
+                                 href="/userPage/pagination/1">2</a>
+        </li>
+        <li class="page-item"><a class="page-link"
+                                 href="/userPage/pagination/2">3</a>
+        </li>
+        <li class="page-item" style="margin-left:10px"><a class="btn btn-outline-success"
+                                                          href="/userPage/pagination/${paginationParams.getPageNumber()+1}">Вперед</a>
+        </li>
+
+        <div class="dropdown">
+            <button class="btn btn-success" type="button" id="dropdownMenu" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" style="margin-left:30px ">
+                Размер страницы
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu">
+                <a class="dropdown-item" href="/userPage/changeSize/1">1</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/userPage/changeSize/2">2</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/userPage/changeSize/3">3</a>
+            </div>
+        </div>
+    </ul>
+</nav>
+<sec:authorize access="hasAuthority('ADMIN')">
 <form method="POST" action="/userPage/csv/import" enctype="multipart/form-data"
       class="file-import">
     <label for="file-upload" class="custom-file-upload"
@@ -132,5 +175,6 @@
 <form method="POST" action="/userPage/csv/export/${user.getId()}">
     <button type="submit" class="btn-outline-success" style="margin: 15px">Экспортировать заказы пользователя</button>
 </form>
+</sec:authorize>
 </body>
 </html>

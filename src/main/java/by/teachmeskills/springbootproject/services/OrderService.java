@@ -23,7 +23,7 @@ public interface OrderService extends BaseService<Order>{
 
     Order create(Order entity);
 
-    List<Order> getOrdersByUserId(int id);
+    List<Order> findByUserId(int id);
 
     ModelAndView importOrdersFromCsv(MultipartFile file, User user);
 

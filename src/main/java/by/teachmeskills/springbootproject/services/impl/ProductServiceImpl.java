@@ -71,6 +71,7 @@ public class ProductServiceImpl implements ProductService {
     public Product findById(int id) {
         return productRepository.findById(id);
     }
+
     @Override
     public List<Product> findByCategoryId(int id) {
         return productRepository.findByCategoryId(id);
@@ -93,6 +94,7 @@ public class ProductServiceImpl implements ProductService {
         modelMap.addAttribute("category", category);
         return new ModelAndView(CATEGORY_PAGE.getPath(), modelMap);
     }
+
     @Override
     public ModelAndView searchProducts(SearchParams searchParams, PaginationParams paginationParams) {
         if (paginationParams.getPageNumber() < 0) {
@@ -129,7 +131,8 @@ public class ProductServiceImpl implements ProductService {
         modelMap.addAttribute("category", category);
         return new ModelAndView(CATEGORY_PAGE.getPath(), modelMap);
     }
-     public List<ProductCsvDto> parseCsv(MultipartFile file) {
+
+    public List<ProductCsvDto> parseCsv(MultipartFile file) {
         if (Optional.ofNullable(file).isPresent()) {
             try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
                 CsvToBean<ProductCsvDto> csvToBean = new CsvToBeanBuilder<ProductCsvDto>(reader).withType(ProductCsvDto.class).

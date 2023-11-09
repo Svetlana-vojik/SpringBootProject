@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,6 +29,14 @@
             <a href="${contextPath}/cart/open">
                 <button class="btn btn-outline-success m-1" type="button">Корзина</button>
             </a>
+            <sec:authorize access="isAuthenticated()">
+            <a href="/logout">
+                <button class="btn btn-outline-success m-1" type="button">Выйти</button></a>
+                </sec:authorize>
+                <sec:authorize access="!isAuthenticated()">
+                <a href="/login">
+                    <button class="btn btn-outline-success m-1" type="button">Войти</button></a>
+                    </sec:authorize>
         </form>
     </div>
 </nav>
@@ -102,38 +111,38 @@
     <p></p>
     <p></p>
     <nav>
-        <ul class="pagination justify-content-center" style="margin: 15px">
-            <li class="page-item" style="margin-right:10px"><a class="btn btn-outline-success"
-                                                               href="/search/pagination/${paginationParams.getPageNumber()-1}">Назад</a>
-            </li>
-            <li class="page-item"><a class="page-link"
-                                     href="/search/pagination/0">1</a>
-            </li>
-            <li class="page-item"><a class="page-link"
-                                     href="/search/pagination/1">2</a>
-            </li>
-            <li class="page-item"><a class="page-link"
-                                     href="/search/pagination/2">3</a>
-            </li>
-            <li class="page-item" style="margin-left:10px"><a class="btn btn-outline-success"
-                                                              href="/search/pagination/${paginationParams.getPageNumber()+1}">Вперед</a>
-            </li>
+    <ul class="pagination justify-content-center" style="margin: 15px">
+        <li class="page-item" style="margin-right:10px"><a class="btn btn-outline-success"
+                                                           href="/search/pagination/${paginationParams.getPageNumber()-1}">Назад</a>
+        </li>
+        <li class="page-item"><a class="page-link"
+                                 href="/search/pagination/0">1</a>
+        </li>
+        <li class="page-item"><a class="page-link"
+                                 href="/search/pagination/1">2</a>
+        </li>
+        <li class="page-item"><a class="page-link"
+                                 href="/search/pagination/2">3</a>
+        </li>
+        <li class="page-item" style="margin-left:10px"><a class="btn btn-outline-success"
+                                                          href="/search/pagination/${paginationParams.getPageNumber()+1}">Вперед</a>
+        </li>
 
-            <div class="dropdown">
-                <button class="btn btn-success" type="button" id="dropdownMenu" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false" style="margin-left:30px ">
-                    Размер страницы
-                </button>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu">
-                    <a class="dropdown-item" href="/search/setPageSize/1">1</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/search/setPageSize/2">2</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/search/setPageSize/3">3</a>
-                </div>
+        <div class="dropdown">
+            <button class="btn btn-success" type="button" id="dropdownMenu" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" style="margin-left:30px ">
+                Размер страницы
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu">
+                <a class="dropdown-item" href="/search/setPageSize/1">1</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/search/setPageSize/2">2</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/search/setPageSize/3">3</a>
             </div>
-        </ul>
-    </nav>
+        </div>
+    </ul>
+</nav>
 </div>
 </body>
 </html>
