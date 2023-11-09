@@ -25,4 +25,4 @@ public class ProductController {
         modelAndView.addObject(PRODUCT, productService.findById(id));
         return modelAndView;
     }
-    }
+}
