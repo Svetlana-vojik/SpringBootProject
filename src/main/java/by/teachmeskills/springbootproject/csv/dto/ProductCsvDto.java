@@ -6,19 +6,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryCsv {
+public class ProductCsvDto {
     private int id;
+
     @CsvBindByName
     private String name;
+
+    @CsvBindByName
+    private String description;
+
+    @CsvBindByName
+    private int price;
+
     @CsvBindByName
     private String imagePath;
+
     @CsvBindByName
-    private int rating;
-    private List<ProductCsv> products;
+    private String categoryName;
 }

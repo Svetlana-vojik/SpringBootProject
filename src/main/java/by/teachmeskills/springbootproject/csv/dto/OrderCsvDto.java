@@ -1,30 +1,31 @@
 package by.teachmeskills.springbootproject.csv.dto;
 
+
+import by.teachmeskills.springbootproject.entities.Order;
 import com.opencsv.bean.CsvBindByName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductCsv {
+public class OrderCsvDto  {
     private int id;
 
     @CsvBindByName
-    private String name;
+    private String orderDate;
 
     @CsvBindByName
-    private String description;
+    private List<ProductCsvDto> productList;
 
     @CsvBindByName
     private int price;
 
     @CsvBindByName
-    private String imagePath;
-
-    @CsvBindByName
-    private String categoryName;
+    private int userId;
 }

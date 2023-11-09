@@ -6,32 +6,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCsv {
+public class CategoryCsvDto {
     private int id;
     @CsvBindByName
-    private String email;
-
-    @CsvBindByName
-    private String password;
-
-    @CsvBindByName
     private String name;
-
     @CsvBindByName
-    private String surname;
-
+    private String imagePath;
     @CsvBindByName
-    private LocalDate birthday;
-
-    @CsvBindByName
-    private int balance;
-
-    private List<OrderCsv> orders;
+    private int rating;
+    private List<ProductCsvDto> products;
 }

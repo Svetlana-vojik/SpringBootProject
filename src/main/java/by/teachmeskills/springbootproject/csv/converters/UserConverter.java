@@ -1,6 +1,6 @@
 package by.teachmeskills.springbootproject.csv.converters;
 
-import by.teachmeskills.springbootproject.csv.dto.UserCsv;
+import by.teachmeskills.springbootproject.csv.dto.UserCsvDto;
 import by.teachmeskills.springbootproject.entities.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,8 +15,8 @@ public class UserConverter {
     private final OrderConverter orderConverter;
 
 
-    public UserCsv toCsv(User user) {
-        return Optional.ofNullable(user).map(u -> UserCsv.builder()
+    public UserCsvDto toCsv(User user) {
+        return Optional.ofNullable(user).map(u -> UserCsvDto.builder()
                         .id(u.getId())
                         .name(u.getName())
                         .surname(u.getSurname())
@@ -30,7 +30,7 @@ public class UserConverter {
                 .orElse(null);
     }
 
-    public User fromCsv(UserCsv userCsv) {
+    public User fromCsv(UserCsvDto userCsv) {
         return Optional.ofNullable(userCsv).map(uc -> User.builder()
                         .name(uc.getName())
                         .surname(uc.getSurname())
