@@ -15,7 +15,6 @@ import static by.teachmeskills.springbootproject.ShopConstants.CART;
 import static by.teachmeskills.springbootproject.ShopConstants.PRODUCT_ID;
 import static by.teachmeskills.springbootproject.PagesPathEnum.CART_PAGE;
 
-
 @RestController
 @RequestMapping("/cart")
 @SessionAttributes({CART})

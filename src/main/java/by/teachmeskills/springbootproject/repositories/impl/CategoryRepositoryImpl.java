@@ -6,7 +6,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,6 +14,7 @@ import java.util.List;
 @Transactional
 @AllArgsConstructor
 public class CategoryRepositoryImpl implements CategoryRepository {
+
     @PersistenceContext
     private final EntityManager entityManager;
 
@@ -42,5 +42,9 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     @Override
     public Category findNameById(int id) {
         return entityManager.find(Category.class, id);
+    }
+    @Override
+    public Category findByName(String name) {
+        return (Category) entityManager.createQuery("select c from Category c where c.name =:name").setParameter("name", name).getSingleResult();
     }
 }

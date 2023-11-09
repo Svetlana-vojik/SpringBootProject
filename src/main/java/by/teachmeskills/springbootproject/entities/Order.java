@@ -27,8 +27,7 @@ import java.util.List;
 public class Order extends BaseEntity {
     @Column(name = "order_date")
     private LocalDate orderDate;
-
-    @Column()
+    @Column
     private int price;
 
     @ManyToOne(optional = false)

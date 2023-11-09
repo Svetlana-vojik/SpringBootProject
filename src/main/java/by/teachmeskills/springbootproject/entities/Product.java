@@ -25,13 +25,11 @@ import java.util.List;
 @Entity
 @Table(name = "products")
 public class Product extends BaseEntity {
-    @Column()
+    @Column
     private String name;
-
-    @Column()
+    @Column
     private String description;
-
-    @Column()
+    @Column
     private int price;
 
     @ManyToOne(optional = false)

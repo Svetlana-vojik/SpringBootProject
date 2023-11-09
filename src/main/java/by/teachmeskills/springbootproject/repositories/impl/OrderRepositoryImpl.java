@@ -1,7 +1,6 @@
 package by.teachmeskills.springbootproject.repositories.impl;
 
 import by.teachmeskills.springbootproject.entities.Order;
-import by.teachmeskills.springbootproject.entities.User;
 import by.teachmeskills.springbootproject.repositories.OrderRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -41,9 +40,9 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public List<Order> findByUser(User user) {
-        TypedQuery<Order> query = entityManager.createQuery("select o from Order o where o.user=:user", Order.class);
-        query.setParameter("user", user);
+    public List<Order> findByUserId(int userId) {
+        TypedQuery<Order> query = entityManager.createQuery("select o from Order o where o.user.id=:user_id", Order.class);
+        query.setParameter("user_id", userId);
         return query.getResultList();
     }
 }

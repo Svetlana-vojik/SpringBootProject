@@ -46,14 +46,14 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public List<Product> findByCategoryId(int id) {
+    public List<Product> getProductsByCategory(int categoryId) {
         TypedQuery<Product> query = entityManager.createQuery("select p from Product p where p.category.id=:categoryId", Product.class);
-        query.setParameter("categoryId", id);
+        query.setParameter("categoryId", categoryId);
         return query.getResultList();
     }
 
     @Override
-    public List<Product> findProductsByWord(SearchWord searchWord) {
+    public List<Product> findProducts(SearchWord searchWord) {
         TypedQuery<Product> query = entityManager.createQuery("from Product where name like :search or description like :search", Product.class);
         query.setParameter("search", "%" + searchWord.getSearchString().toLowerCase() + "%");
         query.setFirstResult((searchWord.getPaginationNumber() - 1) * 2);

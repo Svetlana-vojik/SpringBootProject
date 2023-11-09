@@ -25,19 +25,19 @@ public class SearchController {
 
     @GetMapping
     public ModelAndView openSearchPage(@ModelAttribute(SEARCH_WORD) SearchWord searchWord) {
-        return productService.findProductsByWord(searchWord);
+        return productService.findProducts(searchWord);
     }
 
     @PostMapping
     public ModelAndView search(@RequestParam String searchString, @ModelAttribute(SEARCH_WORD) SearchWord searchWord) {
         searchWord.setSearchString(searchString);
-        return productService.findProductsByWord(searchWord);
+        return productService.findProducts(searchWord);
     }
 
     @GetMapping("{pageNumber}")
     public ModelAndView openPageNumber(@PathVariable int pageNumber, @ModelAttribute(SEARCH_WORD) SearchWord searchWord) {
         searchWord.setPaginationNumber(pageNumber);
-        return productService.findProductsByWord(searchWord);
+        return productService.findProducts(searchWord);
     }
 
     @ModelAttribute(SEARCH_WORD)
