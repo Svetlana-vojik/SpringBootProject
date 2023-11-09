@@ -1,6 +1,7 @@
 package by.teachmeskills.springbootproject.services.impl;
 
 import by.teachmeskills.springbootproject.csv.converters.OrderConverter;
+import by.teachmeskills.springbootproject.csv.dto.CategoryCsvDto;
 import by.teachmeskills.springbootproject.csv.dto.OrderCsvDto;
 import by.teachmeskills.springbootproject.entities.Cart;
 import by.teachmeskills.springbootproject.entities.Category;
@@ -19,7 +20,7 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.hibernate.query.sqm.ParsingException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,6 +49,7 @@ import static by.teachmeskills.springbootproject.ShopConstants.USER;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
@@ -148,20 +150,17 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-
-    private List<OrderCsvDto> parseCsv(MultipartFile file) {
+    public List<OrderCsvDto> parseCsv(MultipartFile file) {
         if (Optional.ofNullable(file).isPresent()) {
             try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-                CsvToBean<OrderCsvDto> csvToBean = new CsvToBeanBuilder<OrderCsvDto>(reader)
-                        .withType(OrderCsvDto.class)
-                        .withIgnoreLeadingWhiteSpace(true)
-                        .withSeparator(',')
-                        .build();
-
+                CsvToBean<OrderCsvDto> csvToBean = new CsvToBeanBuilder<OrderCsvDto>(reader).withType(OrderCsvDto.class).
+                        withIgnoreLeadingWhiteSpace(true).withSeparator(';').build();
                 return csvToBean.parse();
-            } catch (Exception ex) {
-                throw new ParsingException(String.format("Ошибка во время преобразования данных: %s", ex.getMessage()));
+            } catch (IOException e) {
+                log.error("Exception occurred during csv parsing:" + e.getMessage());
             }
+        } else {
+            log.error("Empty scv file is uploaded");
         }
         return Collections.emptyList();
     }
