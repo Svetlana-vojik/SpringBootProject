@@ -44,7 +44,7 @@
     <form class="input-group mb-3" method="post" action="/search/applyFilter" style="text-align: center">
         <label for="searchKey"></label>
         <input type="text" name="searchKey" id="searchKey" class="form-control"
-               placeholder=" Поиск ">
+               placeholder=" Поиск " minlength="3"/>
         <button type="submit" style="margin-left:10px" class="btn btn-success">Найти</button>
     </form>
     <p></p>
