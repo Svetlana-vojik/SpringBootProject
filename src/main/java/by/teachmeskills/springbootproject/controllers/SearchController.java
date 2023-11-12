@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import static by.teachmeskills.springbootproject.ShopConstants.SEARCH;
+import static by.teachmeskills.springbootproject.ShopConstants.SEARCH_WORD;
 
 @RestController
 @RequestMapping("/search")
-@SessionAttributes({SEARCH})
+@SessionAttributes({SEARCH_WORD})
 public class SearchController {
 
     private final ProductService productService;
@@ -27,20 +27,20 @@ public class SearchController {
     }
 
     @GetMapping
-    public ModelAndView openSearchPage(@SessionAttribute(name = SEARCH, required = false) SearchParams search,
+    public ModelAndView openSearchPage(@SessionAttribute(name = SEARCH_WORD, required = false) SearchParams search,
                                        @RequestParam(required = false, defaultValue = "0") Integer pageNumber,
                                        @RequestParam(required = false, defaultValue = "" + ShopConstants.PAGE_SIZE) Integer pageSize) {
         return productService.searchProducts(search, pageNumber, pageSize);
     }
 
     @PostMapping
-    public ModelAndView search(@ModelAttribute(SEARCH) SearchParams search,
+    public ModelAndView search(@ModelAttribute(SEARCH_WORD) SearchParams search,
                                @RequestParam(required = false, defaultValue = "0") Integer pageNumber,
                                @RequestParam(required = false, defaultValue = "" + ShopConstants.PAGE_SIZE) Integer pageSize) {
         return productService.searchProducts(search, pageNumber, pageSize);
     }
 
-    @ModelAttribute(SEARCH)
+    @ModelAttribute(SEARCH_WORD)
     public SearchParams setSearchParams() {
         return new SearchParams();
     }

@@ -19,7 +19,7 @@ public interface ProductService extends BaseService<Product> {
 
     ModelAndView searchProducts(SearchParams search, int pageNumber, int pageSize);
 
-     ModelAndView saveProductsFromFile(int pageNumber, int pageSize, MultipartFile file);
+    ModelAndView saveProductsFromFile(int pageNumber, int pageSize, MultipartFile file);
 
     void saveCategoryProductsToFile(HttpServletResponse servletResponse, int id) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException;
 }

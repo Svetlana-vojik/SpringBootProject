@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
                 .user(user).productList(cart.getProducts()).build();
         orderRepository.save(order);
         cart.clear();
-                ModelAndView modelAndView = new ModelAndView(CART_PAGE.getPath());
+        ModelAndView modelAndView = new ModelAndView(CART_PAGE.getPath());
         modelAndView.addObject("info", "Заказ оформлен.");
         return modelAndView;
     }

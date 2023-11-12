@@ -145,6 +145,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return Collections.emptyList();
     }
+
     @Override
     public void exportCategoriesToCsv(HttpServletResponse response) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
         List<Category> categories = categoryRepository.findAll();
