@@ -6,7 +6,6 @@ import by.teachmeskills.springbootproject.services.OrderService;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,9 +24,12 @@ import static by.teachmeskills.springbootproject.ShopConstants.USER;
 @RestController
 @RequestMapping("/userPage")
 @SessionAttributes(USER)
-@AllArgsConstructor
 public class UserPageController {
     private final OrderService orderService;
+
+    public UserPageController(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     @GetMapping
     public ModelAndView openAccountPage(@SessionAttribute(name = USER, required = false) User user) throws AuthorizationException {
@@ -39,8 +41,8 @@ public class UserPageController {
         return orderService.importOrdersFromCsv(file, user);
     }
 
-    @PostMapping("/csv/export/{id}")
-    public void exportOrdersToCsv(HttpServletResponse response, @PathVariable int id) throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
-        orderService.exportOrdersToCsv(response, id);
+    @PostMapping("/csv/export/{userId}")
+    public void exportOrdersToCsv(HttpServletResponse response, @PathVariable int userId) throws CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, IOException {
+        orderService.exportOrdersToCsv(response, userId);
     }
 }

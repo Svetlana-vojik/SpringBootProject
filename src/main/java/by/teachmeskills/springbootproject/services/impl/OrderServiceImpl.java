@@ -1,10 +1,8 @@
 package by.teachmeskills.springbootproject.services.impl;
 
 import by.teachmeskills.springbootproject.csv.converters.OrderConverter;
-import by.teachmeskills.springbootproject.csv.dto.CategoryCsvDto;
 import by.teachmeskills.springbootproject.csv.dto.OrderCsvDto;
 import by.teachmeskills.springbootproject.entities.Cart;
-import by.teachmeskills.springbootproject.entities.Category;
 import by.teachmeskills.springbootproject.entities.Order;
 import by.teachmeskills.springbootproject.entities.User;
 import by.teachmeskills.springbootproject.exceptions.AuthorizationException;
@@ -19,7 +17,6 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
@@ -48,12 +45,17 @@ import static by.teachmeskills.springbootproject.ShopConstants.SURNAME;
 import static by.teachmeskills.springbootproject.ShopConstants.USER;
 
 @Service
-@AllArgsConstructor
 @Slf4j
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final OrderConverter orderConverter;
+
+    public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository, OrderConverter orderConverter) {
+        this.orderRepository = orderRepository;
+        this.userRepository = userRepository;
+        this.orderConverter = orderConverter;
+    }
 
     @Override
     public ModelAndView create(User user, Cart cart) throws CartIsEmptyException, AuthorizationException {
@@ -67,8 +69,7 @@ public class OrderServiceImpl implements OrderService {
                 .user(user).productList(cart.getProducts()).build();
         orderRepository.save(order);
         cart.clear();
-        cart.setTotalPrice(0);
-        ModelAndView modelAndView = new ModelAndView(CART_PAGE.getPath());
+                ModelAndView modelAndView = new ModelAndView(CART_PAGE.getPath());
         modelAndView.addObject("info", "Заказ оформлен.");
         return modelAndView;
     }

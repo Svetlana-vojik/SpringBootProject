@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 @AllArgsConstructor
 public class ProductSearchSpecification implements Specification<Product> {
     private final SearchParams searchParams;

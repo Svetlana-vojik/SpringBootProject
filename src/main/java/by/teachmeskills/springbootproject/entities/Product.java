@@ -41,6 +41,6 @@ public class Product extends BaseEntity {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToMany(mappedBy = "productList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "productList", cascade = CascadeType.ALL)
     private List<Order> orders;
 }

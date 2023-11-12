@@ -7,7 +7,7 @@ import by.teachmeskills.springbootproject.exceptions.AuthorizationException;
 import by.teachmeskills.springbootproject.repositories.UserRepository;
 import by.teachmeskills.springbootproject.services.CategoryService;
 import by.teachmeskills.springbootproject.services.UserService;
-import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,11 +18,16 @@ import java.util.Optional;
 import static by.teachmeskills.springbootproject.PagesPathEnum.HOME_PAGE;
 import static by.teachmeskills.springbootproject.ShopConstants.CATEGORIES;
 
+@Slf4j
 @Service
-@AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final CategoryService categoryService;
+
+    public UserServiceImpl(UserRepository userRepository, CategoryService categoryService) {
+        this.userRepository = userRepository;
+        this.categoryService = categoryService;
+    }
 
     @Override
     public ModelAndView createUser(User entity) throws AuthorizationException {

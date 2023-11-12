@@ -17,6 +17,6 @@ public class SpringBootProjectApplication {
                         \tApplication '{}' is running! Access URLs:
                         \tLocal: \t\thttp://localhost:{}{}
                         ----------------------------------------------------------""",
-                environment.getProperty("spring.application.name"), environment.getProperty("server.port"), "/login");
+                environment.getProperty("spring.application.name"), environment.getProperty("server.port"), "/home");
     }
 }

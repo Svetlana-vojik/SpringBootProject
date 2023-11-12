@@ -2,7 +2,6 @@ package by.teachmeskills.springbootproject.controllers;
 
 import by.teachmeskills.springbootproject.entities.Cart;
 import by.teachmeskills.springbootproject.services.ProductService;
-import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +17,12 @@ import static by.teachmeskills.springbootproject.PagesPathEnum.CART_PAGE;
 @RestController
 @RequestMapping("/cart")
 @SessionAttributes({CART})
-@AllArgsConstructor
 public class CartController {
-
     private final ProductService productService;
+
+    public CartController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @GetMapping("/open")
     public ModelAndView openCartPage() {

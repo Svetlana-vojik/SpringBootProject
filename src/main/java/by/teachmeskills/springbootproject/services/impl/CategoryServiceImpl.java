@@ -1,11 +1,15 @@
 package by.teachmeskills.springbootproject.services.impl;
 
+import by.teachmeskills.springbootproject.RequestParamsEnum;
+import by.teachmeskills.springbootproject.ShopConstants;
 import by.teachmeskills.springbootproject.csv.converters.CategoryConverter;
 import by.teachmeskills.springbootproject.csv.dto.CategoryCsvDto;
 import by.teachmeskills.springbootproject.entities.Category;
-import by.teachmeskills.springbootproject.entities.PaginationParams;
+import by.teachmeskills.springbootproject.entities.Product;
 import by.teachmeskills.springbootproject.repositories.CategoryRepository;
+import by.teachmeskills.springbootproject.repositories.ProductRepository;
 import by.teachmeskills.springbootproject.services.CategoryService;
+import by.teachmeskills.springbootproject.services.ProductService;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.StatefulBeanToCsv;
@@ -14,7 +18,6 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,15 +37,23 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static by.teachmeskills.springbootproject.PagesPathEnum.CATEGORY_PAGE;
 import static by.teachmeskills.springbootproject.PagesPathEnum.HOME_PAGE;
-import static by.teachmeskills.springbootproject.ShopConstants.CATEGORIES;
 
 @Service
 @Slf4j
-@AllArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryConverter categoryConverter;
+    private final ProductService productService;
+    private final ProductRepository productRepository;
+
+    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryConverter categoryConverter, ProductService productService, ProductRepository productRepository) {
+        this.categoryRepository = categoryRepository;
+        this.categoryConverter = categoryConverter;
+        this.productService = productService;
+        this.productRepository = productRepository;
+    }
 
     @Override
     public Category create(Category entity) {
@@ -64,21 +75,60 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public ModelAndView importCategoriesFromCsv(MultipartFile file) throws EntityNotFoundException {
+    public ModelAndView getAllCategories(int pageNumber, int pageSize) throws EntityNotFoundException {
+        ModelMap model = new ModelMap();
+        Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by("name").ascending());
+        List<Category> categories = categoryRepository.findAll(paging).getContent();
+        if (categories.isEmpty()) {
+            throw new EntityNotFoundException("Категории не найдены. Попробуйте позже.");
+        }
+        long totalItems = categoryRepository.count();
+        int totalPages = (int) (Math.ceil((double) totalItems / pageSize));
+
+        model.addAttribute(RequestParamsEnum.PAGE_NUMBER.getValue(), pageNumber + 1);
+        model.addAttribute(RequestParamsEnum.PAGE_SIZE.getValue(), ShopConstants.PAGE_SIZE);
+        model.addAttribute(RequestParamsEnum.SELECTED_PAGE_SIZE.getValue(), pageSize);
+        model.addAttribute(RequestParamsEnum.TOTAL_PAGES.getValue(), totalPages);
+        model.addAttribute(RequestParamsEnum.CATEGORIES.getValue(), categories);
+        return new ModelAndView(HOME_PAGE.getPath(), model);
+    }
+
+    @Override
+    public ModelAndView getCategoryById(int id, int pageNumber, int pageSize) throws EntityNotFoundException {
+        ModelMap model = new ModelMap();
+
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Категории с id %d не найдено.", id)));
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("name").ascending());
+        List<Product> products = productService.getProductsByCategoryId(category.getId(), pageable);
+        if (products.isEmpty()) {
+            throw new EntityNotFoundException("Продукты не найдены.");
+        }
+        int totalItems = productRepository.findByCategoryId(id).size();
+        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+
+        model.addAttribute(RequestParamsEnum.PRODUCTS.getValue(), products);
+        model.addAttribute(RequestParamsEnum.CATEGORY_ID.getValue(), id);
+        model.addAttribute(RequestParamsEnum.PAGE_NUMBER.getValue(), pageNumber + 1);
+        model.addAttribute(RequestParamsEnum.PAGE_SIZE.getValue(), ShopConstants.PAGE_SIZE);
+        model.addAttribute(RequestParamsEnum.SELECTED_PAGE_SIZE.getValue(), pageSize);
+        model.addAttribute(RequestParamsEnum.TOTAL_PAGES.getValue(), totalPages);
+        return new ModelAndView(CATEGORY_PAGE.getPath(), model);
+    }
+
+    @Override
+    public ModelAndView importCategoriesFromCsv(int pageNumber, int pageSize, MultipartFile file) throws EntityNotFoundException {
         List<CategoryCsvDto> csvCategories = parseCsv(file);
-        ModelMap modelMap = new ModelMap();
         List<Category> newCategories = Optional.ofNullable(csvCategories)
                 .map(list -> list.stream()
                         .map(categoryConverter::fromCsv)
                         .toList())
                 .orElse(null);
-
         if (Optional.ofNullable(newCategories).isPresent()) {
             newCategories.forEach(categoryRepository::save);
         }
-        List<Category> categories = categoryRepository.findAll();
-        modelMap.addAttribute(CATEGORIES, categories);
-        return new ModelAndView(HOME_PAGE.getPath(), modelMap);
+        return getAllCategories(pageNumber, pageSize);
     }
 
     public List<CategoryCsvDto> parseCsv(MultipartFile file) {
@@ -95,7 +145,6 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return Collections.emptyList();
     }
-
     @Override
     public void exportCategoriesToCsv(HttpServletResponse response) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
         List<Category> categories = categoryRepository.findAll();
@@ -105,21 +154,5 @@ public class CategoryServiceImpl implements CategoryService {
             response.addHeader("Content-Disposition", "attachment; filename=" + "categories.csv");
             statefulBeanToCsv.write(categories);
         }
-    }
-
-    @Override
-    public ModelAndView getAllCategories(PaginationParams paginationParams) {
-        ModelMap modelMap = new ModelMap();
-        Pageable pageable = PageRequest.of(paginationParams.getPageNumber(), paginationParams.getPageSize(), Sort.by("name").ascending());
-        List<Category> categories = categoryRepository.findAll(pageable).getContent();
-        if (paginationParams.getPageNumber() < 0) {
-            paginationParams.setPageNumber(0);
-        }
-        if (categories.isEmpty()) {
-            throw new EntityNotFoundException("Категории не найдены.");
-        }
-
-        modelMap.addAttribute(CATEGORIES, categories);
-        return new ModelAndView(HOME_PAGE.getPath(), modelMap);
     }
 }
