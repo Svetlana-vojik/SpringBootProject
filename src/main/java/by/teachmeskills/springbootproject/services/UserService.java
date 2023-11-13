@@ -9,4 +9,10 @@ public interface UserService extends BaseService<User> {
     ModelAndView createUser(User user)throws AuthorizationException;
 
     ModelAndView authenticate(User user) throws AuthorizationException;
+
+    ModelAndView generateAccountPage(User user);
+
+
+    User getCurrentUser();
+
 }

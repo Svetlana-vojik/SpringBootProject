@@ -7,6 +7,7 @@ import by.teachmeskills.springbootproject.services.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,6 @@ import static by.teachmeskills.springbootproject.ShopConstants.USER;
 import static by.teachmeskills.springbootproject.utils.ErrorUtil.populateError;
 
 @RestController
-@SessionAttributes({USER})
 @RequestMapping("/login")
 @AllArgsConstructor
 public class LoginController {
@@ -39,19 +39,12 @@ public class LoginController {
     }
 
     @PostMapping
-    public ModelAndView login(@Valid @ModelAttribute(USER) User user, BindingResult bindingResult, ModelAndView modelAndView) throws AuthorizationException {
+    public ModelAndView login(@Validated User user, BindingResult bindingResult, ModelAndView modelAndView) throws AuthorizationException {
         if (bindingResult.hasFieldErrors(EMAIL) || bindingResult.hasFieldErrors(PASSWORD)) {
             populateError(EMAIL, modelAndView, bindingResult);
             populateError(PASSWORD, modelAndView, bindingResult);
-            modelAndView.setViewName(LOGIN_PAGE.getPath());
-            return modelAndView;
-        } else {
-            return userService.authenticate(user);
+            return new ModelAndView(LOGIN_PAGE.getPath());
         }
-    }
-
-    @ModelAttribute("user")
-    public User setUpUserForm() {
-        return new User();
+        return userService.authenticate(user);
     }
 }

@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum RequestParamsEnum {
+    USER("user"),
     CATEGORIES("categories"),
     CATEGORY("category"),
     CATEGORY_ID("category_id"),

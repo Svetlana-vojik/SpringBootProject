@@ -1,7 +1,7 @@
 package by.teachmeskills.springbootproject.services;
 
 import by.teachmeskills.springbootproject.entities.Product;
-import by.teachmeskills.springbootproject.entities.SearchParams;
+import by.teachmeskills.springbootproject.entities.Search;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,7 +17,7 @@ public interface ProductService extends BaseService<Product> {
 
     List<Product> getProductsByCategoryId(int categoryId, Pageable pageable);
 
-    ModelAndView searchProducts(SearchParams search, int pageNumber, int pageSize);
+    ModelAndView searchProducts(Search search, int pageNumber, int pageSize);
 
     ModelAndView saveProductsFromFile(int pageNumber, int pageSize, MultipartFile file);
 
