@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS shop.users (
                                           id INT NOT NULL AUTO_INCREMENT,
                                           email VARCHAR(60) NOT NULL,
-    password VARCHAR(60) NOT NULL,
+    password VARCHAR(200) NOT NULL,
     name VARCHAR(30) NOT NULL,
     surname VARCHAR(60) NOT NULL,
     birthday DATE NULL,
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS shop.products (
     UNIQUE INDEX IDX_PRODUCTS_ID_UNIQUE (ID ASC),
     CONSTRAINT FK_PRODUCTS_CATEGORY_ID_CATEGORIES_ID
     FOREIGN KEY (category_id)
-    REFERENCES SHOP.CATEGORIES (ID)
+    REFERENCES shop.categories (ID)
     ON DELETE CASCADE
     ON UPDATE CASCADE);
 
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS shop.orders (
     UNIQUE INDEX IDX_ORDERS_ID_UNIQUE (ID ASC),
     CONSTRAINT FK_ORDERS_USERID_USERS_ID
     FOREIGN KEY (user_id)
-    REFERENCES SHOP.USERS (ID)
+    REFERENCES shop.users (ID)
     ON DELETE CASCADE
     ON UPDATE CASCADE);
 
@@ -77,27 +77,27 @@ INSERT INTO shop.categories(name, image_path, rating) VALUES('Круассаны
 INSERT INTO shop.categories(name, image_path, rating) VALUES('Киши', 'images/categories/quiche.png',5);
 
 
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Капкейки', 'Лимонный капкейк', 5, 1,'images/products/lemon.png');
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Капкейки', 'Шоколадный капкейк', 7, 1,'images/products/chocolate.png');
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Капкейки', 'Клубничный капкейк', 10, 1,'images/products/strawberries.png');
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Капкейки', 'Сырный капкейк', 8, 1,'images/products/cheese.jpg');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Капкейки', 'Лимонный капкейк', 5, 1,'products/lemon.png');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Капкейки', 'Шоколадный капкейк', 7, 1,'products/chocolate.png');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Капкейки', 'Клубничный капкейк', 10, 1,'products/strawberries.png');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Капкейки', 'Сырный капкейк', 8, 1,'products/cheese.jpg');
 
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Торты', 'Наполеон', 5, 2,'images/products/napoleon.jpg');
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Торты', 'Красный бархат', 7, 2,'images/products/red.jpg');
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Торты', 'Медовик', 10, 2,'images/products/medovik.jpg');
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Торты', 'Тирамису', 8, 2,'images/products/tiramisu.jpg');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Торты', 'Наполеон', 5, 2,'products/napoleon.jpg');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Торты', 'Красный бархат', 7, 2,'products/red.jpg');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Торты', 'Медовик', 10, 2,'products/medovik.jpg');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Торты', 'Тирамису', 8, 2,'products/tiramisu.jpg');
 
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Пирожные', 'Картошка', 5, 3,'images/products/kartoshka.jpg');
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Пирожные', 'Классический эклер', 7, 3,'images/products/ekler.jpg');
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Пирожные', 'Корзиночка', 10, 3,'images/products/korzinochka.jpg');
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Пирожные', 'Павлова', 8, 3,'images/products/pavlova.jpg');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Пирожные', 'Картошка', 5, 3,'products/kartoshka.jpg');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Пирожные', 'Классический эклер', 7, 3,'products/ekler.jpg');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Пирожные', 'Корзиночка', 10, 3,'products/korzinochka.jpg');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Пирожные', 'Павлова', 8, 3,'products/pavlova.jpg');
 
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Круассаны', 'Шоколадный круассан', 10, 4,'images/products/croissant_chocolate.jpg');
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Круассаны', 'Сырный круассан', 10, 4,'images/products/chessecroissant.jpg');
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Круассаны', 'Круассан с беконом', 15, 4,'images/products/bacon.jpg');
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Круассаны', 'Круассан с яблочно-грушевой начинкой', 14, 4,'images/products/apple.jpg');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Круассаны', 'Шоколадный круассан', 10, 4,'products/croissant_chocolate.jpg');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Круассаны', 'Сырный круассан', 10, 4,'products/chessecroissant.jpg');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Круассаны', 'Круассан с беконом', 15, 4,'products/bacon.jpg');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Круассаны', 'Круассан с яблочно-грушевой начинкой', 14, 4,'products/apple.jpg');
 
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Киши', 'Киш с броколли', 5, 5,'images/products/brokoli.jpg');
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Киши', 'Киш с сыром', 7, 5,'images/products/cheesekish.jpg');
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Киши', 'Киш с семгой и броколли', 10, 5,'images/products/kish-s-semgoi-i-brokkoli.jpg');
-INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Киши', 'Киш Лорен с курицей', 8, 5,'images/products/kish-loren-s-kuricei.jpg');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Киши', 'Киш с броколли', 5, 5,'products/brokoli.jpg');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Киши', 'Киш с сыром', 7, 5,'products/cheesekish.jpg');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Киши', 'Киш с семгой и броколли', 10, 5,'products/kish-s-semgoi-i-brokkoli.jpg');
+INSERT INTO shop.products(name, description, price, category_id, image_path) VALUES('Киши', 'Киш Лорен с курицей', 8, 5,'products/kish-loren-s-kuricei.jpg');

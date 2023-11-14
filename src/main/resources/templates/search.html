@@ -154,12 +154,12 @@
                 <li><a class="dropdown-item" th:classappend="${pageSize == selectedPageSize ? 'active' : ''}"
                        th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize}}"
                        th:text="${pageSize}">Размер страницы</a></li>
-                <li><a class="dropdown-item" th:classappend="${pageSize * 2 == selectedPageSize ? 'active' : ''}"
-                       th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize * 2}}"
-                       th:text="${pageSize * 2}">Двойной размер страницы</a></li>
-                <li><a class="dropdown-item" th:classappend="${pageSize * 3 == selectedPageSize ? 'active' : ''}"
-                       th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize * 3}}"
-                       th:text="${pageSize * 3}">Тройной размер страницы</a></li>
+<!--                <li><a class="dropdown-item" th:classappend="${pageSize * 2 == selectedPageSize ? 'active' : ''}"-->
+<!--                       th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize * 2}}"-->
+<!--                       th:text="${pageSize * 2}">Двойной размер страницы</a></li>-->
+<!--                <li><a class="dropdown-item" th:classappend="${pageSize * 3 == selectedPageSize ? 'active' : ''}"-->
+<!--                       th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize * 3}}"-->
+<!--                       th:text="${pageSize * 3}">Тройной размер страницы</a></li>-->
             </ul>
         </div>
     </ul>
