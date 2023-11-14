@@ -1,4 +1,5 @@
-version: "2.23.0"
+version: "2.23.0-desktop.1"
+
 services:
   mysqldb:
     image: mysql:8
