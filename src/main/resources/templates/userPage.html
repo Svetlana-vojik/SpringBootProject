@@ -158,7 +158,7 @@
         <button type="submit" class="btn-outline-success">Импортировать заказы пользователя</button>
     </label>
 </form>
-<form th:method="POST" th:action="@{'/userPage/csv/export/' + ${user_id}}">
+<form th:method="POST" th:action="@{'/userPage/csv/export/' + ${user.getId}}">
     <button type="submit" class="btn-outline-success" style="margin: 15px">Экспортировать заказы пользователя</button>
 </form>
 </div>

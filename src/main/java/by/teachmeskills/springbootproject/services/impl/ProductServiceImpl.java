@@ -8,7 +8,6 @@ import by.teachmeskills.springbootproject.entities.Product;
 import by.teachmeskills.springbootproject.entities.Search;
 import by.teachmeskills.springbootproject.repositories.ProductRepository;
 import by.teachmeskills.springbootproject.repositories.ProductSearchSpecification;
-import by.teachmeskills.springbootproject.services.CategoryService;
 import by.teachmeskills.springbootproject.services.ProductService;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -47,14 +46,14 @@ import static by.teachmeskills.springbootproject.RequestParamsEnum.PRODUCTS;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final CategoryService categoryService;
     private final ProductConverter productConverter;
+    private final CategoryServiceImpl categoryService;
 
 
-    public ProductServiceImpl(ProductRepository productRepository, @Lazy CategoryService categoryService, ProductConverter productConverter) {
+    public ProductServiceImpl(ProductRepository productRepository, ProductConverter productConverter,@Lazy CategoryServiceImpl categoryService) {
         this.productRepository = productRepository;
-        this.categoryService = categoryService;
         this.productConverter = productConverter;
+        this.categoryService = categoryService;
     }
 
     @Override

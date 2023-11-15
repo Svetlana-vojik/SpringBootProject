@@ -32,6 +32,9 @@
 <h2 style="text-align:center">Регистрация</h2>
 <p></p>
 <div class="container">
+    <div th:if="${info!=null}">
+        <p style="text-align: center" class="text-danger" th:text="${info}"></p>
+         </div>
     <div class="row">
         <div class="col-md-12 offset-md-5">
             <form  th:method="post" th:action="@{/registration}" class="needs-validation" novalidate>

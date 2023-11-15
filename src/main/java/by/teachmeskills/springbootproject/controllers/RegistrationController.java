@@ -38,7 +38,7 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public ModelAndView register(@Valid @ModelAttribute(USER) User user, BindingResult bindingResult, ModelAndView modelAndView){
+    public ModelAndView register(@Valid @ModelAttribute(USER) User user, BindingResult bindingResult, ModelAndView modelAndView) throws AuthorizationException {
         if (bindingResult.hasErrors()) {
             populateError(EMAIL, modelAndView, bindingResult);
             populateError(PASSWORD, modelAndView, bindingResult);
