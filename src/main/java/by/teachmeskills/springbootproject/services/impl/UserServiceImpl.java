@@ -11,8 +11,6 @@ import by.teachmeskills.springbootproject.exceptions.AuthorizationException;
 import by.teachmeskills.springbootproject.repositories.CategoryRepository;
 import by.teachmeskills.springbootproject.repositories.OrderRepository;
 import by.teachmeskills.springbootproject.repositories.UserRepository;
-import by.teachmeskills.springbootproject.services.CategoryService;
-import by.teachmeskills.springbootproject.services.OrderService;
 import by.teachmeskills.springbootproject.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
