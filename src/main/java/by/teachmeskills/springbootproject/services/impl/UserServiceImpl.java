@@ -5,6 +5,7 @@ import by.teachmeskills.springbootproject.RequestParamsEnum;
 import by.teachmeskills.springbootproject.ShopConstants;
 import by.teachmeskills.springbootproject.entities.Category;
 import by.teachmeskills.springbootproject.entities.Order;
+import by.teachmeskills.springbootproject.entities.Role;
 import by.teachmeskills.springbootproject.entities.User;
 import by.teachmeskills.springbootproject.exceptions.AuthorizationException;
 import by.teachmeskills.springbootproject.repositories.CategoryRepository;
@@ -53,16 +54,15 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public ModelAndView createUser(User entity) throws AuthorizationException {
-        ModelAndView modelAndView = new ModelAndView(PagesPathEnum.REGISTRATION_PAGE.getPath());
-        if ((userRepository.findByEmailAndPassword(entity.getEmail(), entity.getPassword())) != null) {
-            throw new AuthorizationException("Данный пользователь уже зарегистрирован. Войдите в систему.");
-        } else {
-            userRepository.save(entity);
-            modelAndView.addObject("info", "Пользователь успешно зарегистрирован. Войдите в систему.");
-        }
-        return modelAndView;
+    public ModelAndView createUser(User entity) {
+        ModelMap modelMap = new ModelMap();
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+        entity.setRoles(List.of(Role.builder().id(2).name("USER").build()));
+        userRepository.save(entity);
+        modelMap.addAttribute("categories", categoryService.read());
+        return new ModelAndView(PagesPathEnum.REGISTRATION_PAGE.getPath(), modelMap);
     }
+
 
     @Override
     public User create(User entity) {
