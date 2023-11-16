@@ -123,7 +123,6 @@
     <h5 class="mb-0" style="padding: 20px">История заказов</h5>
     <div th:test="${orders}!=null">
         <div th:each="orders: ${orders}">
-
             <p th:text="'Дата заказа: '+${orders.getOrderDate()}"></p>
             <p th:text="'Номер заказа: '+${orders.getId()}"></p>
             <div th:each="product:${orders.getProductList()}">
@@ -187,8 +186,6 @@
             </a>
         </div>
     </section>
-    <!-- Section: Social media -->
-    <!-- Section: Links  -->
     <section class="">
         <div class="container text-center text-md-start mt-5">
             <div class="row mt-3">

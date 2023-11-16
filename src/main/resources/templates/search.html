@@ -145,6 +145,7 @@
                    th:href="@{'/search?pageNumber=' + ${pageNumber} + '&pageSize=' + ${selectedPageSize}}">Следующая</a>
             </li>
         </th:block>
+        <th:block th:if="${not #lists.isEmpty(products)}">
         <div class="dropdown">
             <button class="btn btn-success" type="button" id="dropdownMenu" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false" style="margin-left:30px ">
@@ -154,20 +155,20 @@
                 <li><a class="dropdown-item" th:classappend="${pageSize == selectedPageSize ? 'active' : ''}"
                        th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize}}"
                        th:text="${pageSize}">Размер страницы</a></li>
-<!--                <li><a class="dropdown-item" th:classappend="${pageSize * 2 == selectedPageSize ? 'active' : ''}"-->
-<!--                       th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize * 2}}"-->
-<!--                       th:text="${pageSize * 2}">Двойной размер страницы</a></li>-->
-<!--                <li><a class="dropdown-item" th:classappend="${pageSize * 3 == selectedPageSize ? 'active' : ''}"-->
-<!--                       th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize * 3}}"-->
-<!--                       th:text="${pageSize * 3}">Тройной размер страницы</a></li>-->
+                <li><a class="dropdown-item" th:classappend="${pageSize * 2 == selectedPageSize ? 'active' : ''}"
+                       th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize * 2}}"
+                       th:text="${pageSize * 2}">Двойной размер страницы</a></li>
+                <li><a class="dropdown-item" th:classappend="${pageSize * 3 == selectedPageSize ? 'active' : ''}"
+                       th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize * 3}}"
+                       th:text="${pageSize * 3}">Тройной размер страницы</a></li>
             </ul>
         </div>
+        </th:block>
     </ul>
 </nav>
 </div>
 </body>
 <footer class="text-center text-lg-start bg-white text-muted">
-    <!-- Section: Social media -->
     <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
         <div class="me-5 d-none d-lg-block">
             <span>Присоединяйтесь к нам в социальных сетях:</span>
@@ -190,8 +191,6 @@
             </a>
         </div>
     </section>
-    <!-- Section: Social media -->
-    <!-- Section: Links  -->
     <section class="">
         <div class="container text-center text-md-start mt-5">
             <div class="row mt-3">

@@ -26,7 +26,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 import java.util.Optional;
 
-import static by.teachmeskills.springbootproject.PagesPathEnum.LOGIN_PAGE;
 import static by.teachmeskills.springbootproject.PagesPathEnum.REGISTRATION_PAGE;
 import static by.teachmeskills.springbootproject.PagesPathEnum.USER_PROFILE_PAGE;
 import static by.teachmeskills.springbootproject.ShopConstants.ORDERS;
