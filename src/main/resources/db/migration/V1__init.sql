@@ -92,17 +92,17 @@ VALUES ('Пирожные', 'images/categories/pastries.png', 4);
 INSERT INTO shop.categories(name, image_path, rating)
 VALUES ('Круассаны', 'images/categories/croissants.png', 3);
 INSERT INTO shop.categories(name, image_path, rating)
-VALUES ('Киши', 'images/categories/quiche.png', 5);
+VALUES ('Печенье', 'images/categories/cookie.png', 5);
 
 
 INSERT INTO shop.products(name, description, price, category_id, image_path)
-VALUES ('Лимонный капкейк', 'Лимонный капкейк', 5, 1, 'products/lemon.png');
+VALUES ('Лимонный капкейк', 'Если Вы любите все, что связано с цитрусовыми, тогда наш лимонный капкейк – это то, что Вам нужно. Ванильно-лимонное тесто на основе сметаны в сочетании с лимонным курдом придает непревзойденному вкусу капкейку.', 5, 1, 'products/lemon.png');
 INSERT INTO shop.products(name, description, price, category_id, image_path)
-VALUES ('Шоколадный капкейк', 'Шоколадный капкейк', 7, 1, 'products/chocolate.png');
+VALUES ('Шоколадный капкейк', 'Шоколадный капкейк понравится всем любителям шоколада. Это ведь самый шоколадный десерт в нашей онлайн кондитерской. Шоколадная кремовая шапочка имеет легкую и нежную структуру, так как на ее основе крем пломбир. Мы используем только натуральные полностью безопасные ингредиенты, которые покупаем у топовых производителей Франции.', 7, 1, 'products/chocolate.png');
 INSERT INTO shop.products(name, description, price, category_id, image_path)
-VALUES ('Клубничный капкейк', 'Клубничный капкейк', 10, 1, 'products/strawberries.png');
+VALUES ('Ванильный капкейк', 'Нежный ванильный вкус уже стал классикой среди капкейков, и это не удивительно, ведь ванильный вкус любят абсолютно все. "Шапочка" капкейка изготовлена из крема пломбира, который славится своей особой нежностью. Такие капкейки можно смело заказывать на любое событие, будь то корпоративный праздник компании, открытие магазина или детский день рождения.', 10, 1, 'products/vanilla.png');
 INSERT INTO shop.products(name, description, price, category_id, image_path)
-VALUES ('Сырный капкейк', 'Сырный капкейк', 8, 1, 'products/cheese.jpg');
+VALUES ('Ванильно-ягодный капкейк', 'Ванильно-ягодный капкейк не оставит равнодушным никого. Ванильное основание капкейка в сочетании с ягодами – это вкус, который любят абсолютно все. Декор изготовлен из крема пломбира, который просто тает во рту. При изготовлении мы используем только натуральные полностью безопасные ингредиенты от топовых украинских и европейских производителей.', 8, 1, 'products/vanillafruit.png');
 
 INSERT INTO shop.products(name, description, price, category_id, image_path)
 VALUES ('Наполеон', 'Наполеон', 5, 2, 'products/napoleon.jpg');
@@ -132,10 +132,10 @@ INSERT INTO shop.products(name, description, price, category_id, image_path)
 VALUES ('Круассан с яблочно-грушевой начинкой', 'Круассан с яблочно-грушевой начинкой', 14, 4, 'products/apple.jpg');
 
 INSERT INTO shop.products(name, description, price, category_id, image_path)
-VALUES ('Киш с броколли', 'Киш с броколли', 5, 5, 'products/brokoli.jpg');
+VALUES ('Печенье Банан', 'Печенье Банан - идеальное дополнение к торту или как подарок для маленьких гостей. Печенье в виде подарка для маленьких гостей рекомендуем заказывать по 2 шт на одного ребенка. Печенье мы упаковываем в прозрачный пакет, который завязывается лентой.', 5, 5, 'products/banan.png');
 INSERT INTO shop.products(name, description, price, category_id, image_path)
-VALUES ('Киш с сыром', 'Киш с сыром', 7, 5, 'products/cheesekish.jpg');
+VALUES ('Печенье Щенячий патруль', 'Печенье Щенячий патруль Вы можете заказать, как дополнение к торту или как тематические подарки для маленьких гостей детского праздника. Также такие подарки, в виде печенья с ручной росписью, прекрасная альтернатива сладкого стола в школе или детском саду.', 7, 5, 'products/paw.png');
 INSERT INTO shop.products(name, description, price, category_id, image_path)
-VALUES ('Киш с семгой и броколли', 'Киш с семгой и броколли', 10, 5, 'products/kish-s-semgoi-i-brokkoli.jpg');
+VALUES ('Печенье Три кота', 'Печенье с героями мультсериала "Три кота" покорит маленьких поклонников. Такой вид печенья рекомендуем заказывать как дополнение к праздничному торту или как альтернатива сладкому столу в школе или детском саду.', 10, 5, 'products/cats.png');
 INSERT INTO shop.products(name, description, price, category_id, image_path)
-VALUES ('Киш Лорен с курицей', 'Киш Лорен с курицей', 8, 5, 'products/kish-loren-s-kuricei.jpg');
+VALUES ('Печенье Миньон', 'Печенье в стиле Миньон изготовлено и расписано вручную. Яркое печенье рекомендуем заказывать как дополнение к торту или как подарок для гостей детского праздника.', 8, 5, 'products/minion.png');

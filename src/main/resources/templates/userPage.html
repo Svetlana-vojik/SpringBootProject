@@ -34,6 +34,14 @@
                 <button class="btn btn-outline-success" type="button">Главная</button>
             </a>
         </form>
+        <div class="container">
+            <form class="input-group mb-3" th:method="POST" th:action="@{/search}" style="text-align: center">
+                <label for="searchKey"></label>
+                <input type="text" name="searchKey" id="searchKey" class="form-control"
+                       placeholder=" Поиск ">
+                <button type="submit" style="margin-left:10px" class="btn btn-success">Найти</button>
+            </form>
+        </div>
         <form class="form-inline my-2 my-lg-0">
             <a th:href="@{/search}">
                 <button class="btn btn-outline-success m-1" type="button">Поиск</button>
