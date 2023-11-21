@@ -76,12 +76,7 @@ CREATE TABLE IF NOT EXISTS shop.orders_products
 INSERT INTO shop.users(email, password, name, surname, birthday, balance, address)
 VALUES ('user1@mail.ru', '1111', 'Sveta', 'Kot', '1989-12-29', 10.00, 'Minsk Masherova 7-15');
 INSERT INTO shop.users(email, password, name, surname, birthday, balance, address)
-VALUES ('user2@mail.ru', '2222', 'Dima', 'Black', '1996-02-25', 2.50, 'Minsk Nezavisimisti 5-175');
-INSERT INTO shop.users(email, password, name, surname, birthday, balance, address)
-VALUES ('user3@mail.ru', '3333', 'Ira', 'Smith', '1994-03-08', 0.00, 'Minsk Shugaeva 4-25');
-INSERT INTO shop.users(email, password, name, surname, birthday, balance, address)
-VALUES ('user4@mail.ru', '4444', 'Lena', 'White', '2000-11-15', 13.15, 'Minsk Kiseleva 25-52');
-
+VALUES ('user2@mail.ru', '2222', 'Dima', 'Black', '1996-02-25', 2.50, 'Minsk Nezavisimisti 5 175');
 
 INSERT INTO shop.categories(name, image_path, rating)
 VALUES ('Капкейки', 'images/categories/cupcakes.png', 2);
