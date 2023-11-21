@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 @AllArgsConstructor
-public class SearchParams {
+public class Search {
     private String searchKey;
     private Integer priceFrom;
     private Integer priceTo;

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/" lang="ru">
+<html xmlns:th="http://www.thymeleaf.org/" lang="ru"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <title>Категория</title>
     <meta charset="utf-8">
@@ -18,6 +19,7 @@
             margin: 5px 2px;
             border-radius: 50%;
         }
+
         .fa:hover {
             opacity: 0.7;
         }
@@ -41,6 +43,16 @@
             <a th:href="@{/cart/open}">
                 <button class="btn btn-outline-success m-1" type="button">Корзина</button>
             </a>
+            <th:block sec:authorize="isAuthenticated()">
+                <a th:href="@{/logout}">
+                    <button class="btn btn-outline-success m-1" type="button">Выйти</button>
+                </a>
+            </th:block>
+            <th:block sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}">
+                    <button class="btn btn-outline-success m-1" type="button">Войти</button>
+                </a>
+            </th:block>
         </form>
     </div>
 </nav>
@@ -53,12 +65,12 @@
                 <div class="row">
                     <div class="col m-1">
                         <a
-                            th:href="'/products/'+${product.getId()}">
-                        <img
-                            class="card-img"
-                            style="width:140px;height:140px"
-                            th:src="${'/images/' + product.imagePath}"
-                            alt="Product image"></a></div>
+                                th:href="'/products/'+${product.getId()}">
+                            <img
+                                    class="card-img"
+                                    style="width:140px;height:140px"
+                                    th:src="${'/images/' + product.imagePath}"
+                                    alt="Product image"></a></div>
                     <div class="col m-1" style="text-align: center"><p></p>
                         <a th:href="'/products/'+${product.getId()}">
                             <p th:text="${product.getName()}"></p>
@@ -95,34 +107,37 @@
                     aria-haspopup="true" aria-expanded="false" style="margin-left:30px ">
                 Размер страницы
             </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" th:classappend="${pageSize == selectedPageSize ? 'active' : ''}"
-                           th:href="@{'/category/' + ${category_id} + '?pageNumber=0&pageSize=' + ${pageSize}}"
-                           th:text="${pageSize}">Размер страницы</a></li>
-                    <li><a class="dropdown-item"
-                           th:classappend="${pageSize * 2 == selectedPageSize ? 'active' : ''}"
-                           th:href="@{'/category/' + ${category_id} + '?pageNumber=0&pageSize=' + ${pageSize * 2}}"
-                           th:text="${pageSize * 2}">Двойной размер страницы</a></li>
-                    <li><a class="dropdown-item" th:classappend="${pageSize * 3 == selectedPageSize ? 'active' : ''}"
-                           th:href="@{'/category/' + ${category_id} + '?pageNumber=0&pageSize=' + ${pageSize * 3}}"
-                           th:text="${pageSize * 3}">Тройной размер страницы</a></li>
-                </ul>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" th:classappend="${pageSize == selectedPageSize ? 'active' : ''}"
+                       th:href="@{'/category/' + ${category_id} + '?pageNumber=0&pageSize=' + ${pageSize}}"
+                       th:text="${pageSize}">Размер страницы</a></li>
+                <li><a class="dropdown-item"
+                       th:classappend="${pageSize * 2 == selectedPageSize ? 'active' : ''}"
+                       th:href="@{'/category/' + ${category_id} + '?pageNumber=0&pageSize=' + ${pageSize * 2}}"
+                       th:text="${pageSize * 2}">Двойной размер страницы</a></li>
+                <li><a class="dropdown-item" th:classappend="${pageSize * 3 == selectedPageSize ? 'active' : ''}"
+                       th:href="@{'/category/' + ${category_id} + '?pageNumber=0&pageSize=' + ${pageSize * 3}}"
+                       th:text="${pageSize * 3}">Тройной размер страницы</a></li>
+            </ul>
         </div>
     </ul>
 </nav>
 <br>
 <br>
-<form th:method="POST" th:action="@{/category/csv/import}" enctype="multipart/form-data"
-      class="file-import">
-    <label for="file-upload" class="custom-file-upload"
-           style="padding: 15px;margin: 0px 0px 15px 15px;border: 1px solid #ccc">
-        <input id="file-upload" name="file" type="file" class="title" accept=".csv">
-        <button type="submit" class="btn-outline-success">Импортировать продукты категории</button>
-    </label>
-</form>
-<form th:method="POST" th:action="@{'/category/csv/export/'+ ${category_id}}">
-    <button type="submit" class="btn-outline-success" style="margin: 15px">Экспортировать продукты категории</button>
-</form>
+<div sec:authorize="hasAuthority('ADMIN')">
+    <form th:method="POST" th:action="@{/category/csv/import}" enctype="multipart/form-data"
+          class="file-import">
+        <label for="file-upload" class="custom-file-upload"
+               style="padding: 15px;margin: 0px 0px 15px 15px;border: 1px solid #ccc">
+            <input id="file-upload" name="file" type="file" class="title" accept=".csv">
+            <button type="submit" class="btn-outline-success">Импортировать продукты категории</button>
+        </label>
+    </form>
+    <form th:method="POST" th:action="@{'/category/csv/export/'+ ${category_id}}">
+        <button type="submit" class="btn-outline-success" style="margin: 15px">Экспортировать продукты категории
+        </button>
+    </form>
+</div>
 </body>
 <footer class="text-center text-lg-start bg-white text-muted">
     <!-- Section: Social media -->
@@ -131,7 +146,7 @@
             <span>Присоединяйтесь к нам в социальных сетях:</span>
         </div>
         <div>
-            <a href="https://www.facebook.com/sveta.yezhaleva/" class="me-4 link-secondary"  >
+            <a href="https://www.facebook.com/sveta.yezhaleva/" class="me-4 link-secondary">
                 <i class="fa fa-facebook" style="align-items: center"></i>
             </a>
             <a href="https://t.me/sviatlana_y" class="me-4 link-secondary">
@@ -194,7 +209,8 @@
                 </div>
                 <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
                     <h6 class="text-uppercase fw-bold mb-4">Контакты</h6>
-                    <p><i class="fa fa-home me-3 text-secondary" style="margin-right:10px"></i> Минск, ул.Скрыганова д.3 каб.36 </p>
+                    <p><i class="fa fa-home me-3 text-secondary" style="margin-right:10px"></i> Минск, ул.Скрыганова д.3
+                        каб.36 </p>
                     <p>
                         <i class="fa fa-envelope me-3 text-secondary" style="margin-right:10px"></i>
                         cake@example.com

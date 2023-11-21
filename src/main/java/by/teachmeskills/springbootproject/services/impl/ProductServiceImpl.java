@@ -5,7 +5,7 @@ import by.teachmeskills.springbootproject.ShopConstants;
 import by.teachmeskills.springbootproject.csv.converters.ProductConverter;
 import by.teachmeskills.springbootproject.csv.dto.ProductCsvDto;
 import by.teachmeskills.springbootproject.entities.Product;
-import by.teachmeskills.springbootproject.entities.SearchParams;
+import by.teachmeskills.springbootproject.entities.Search;
 import by.teachmeskills.springbootproject.repositories.ProductRepository;
 import by.teachmeskills.springbootproject.repositories.ProductSearchSpecification;
 import by.teachmeskills.springbootproject.services.CategoryService;
@@ -83,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ModelAndView searchProducts(SearchParams search, int pageNumber, int pageSize) {
+    public ModelAndView searchProducts(Search search, int pageNumber, int pageSize) {
         ModelMap model = new ModelMap();
         if (search != null) {
             if (search.getSearchKey() != null || search.getPriceFrom() != null || search.getPriceTo() != null || search.getCategoryName() != null) {

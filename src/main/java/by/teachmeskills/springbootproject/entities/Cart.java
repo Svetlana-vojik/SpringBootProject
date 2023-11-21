@@ -1,6 +1,7 @@
 package by.teachmeskills.springbootproject.entities;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,6 +16,7 @@ import static by.teachmeskills.springbootproject.ShopConstants.CART;
 import static by.teachmeskills.springbootproject.ShopConstants.PRODUCT;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class Cart extends BaseEntity {
     private Map<Integer, Product> products;
     private int totalPrice = 0;

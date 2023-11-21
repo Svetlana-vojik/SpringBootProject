@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/" lang="ru">
+<html xmlns:th="http://www.thymeleaf.org/" lang="ru"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <title th:text="${product.getName()}"></title>
     <meta charset="utf-8">
@@ -41,6 +42,16 @@
             <a th:href="@{/cart/open}">
                 <button class="btn btn-outline-success m-1" type="button">Корзина</button>
             </a>
+            <th:block sec:authorize="isAuthenticated()">
+                <a th:href="@{/logout}">
+                    <button class="btn btn-outline-success m-1" type="button">Выйти</button>
+                </a>
+            </th:block>
+            <th:block sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}">
+                    <button class="btn btn-outline-success m-1" type="button">Войти</button>
+                </a>
+            </th:block>
         </form>
     </div>
 </nav>

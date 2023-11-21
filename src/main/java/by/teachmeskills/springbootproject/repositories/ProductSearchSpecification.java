@@ -2,7 +2,7 @@ package by.teachmeskills.springbootproject.repositories;
 
 import by.teachmeskills.springbootproject.entities.Category;
 import by.teachmeskills.springbootproject.entities.Product;
-import by.teachmeskills.springbootproject.entities.SearchParams;
+import by.teachmeskills.springbootproject.entities.Search;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
@@ -19,30 +19,30 @@ import java.util.Optional;
 
 @AllArgsConstructor
 public class ProductSearchSpecification implements Specification<Product> {
-    private final SearchParams searchParams;
+    private final Search search;
 
     @Override
     public Predicate toPredicate(@NonNull Root<Product> root, @NonNull CriteriaQuery<?> query, @NonNull CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if (Optional.ofNullable(searchParams).isPresent() && Optional.ofNullable(searchParams.getSearchKey()).isPresent() && !searchParams.getSearchKey().isBlank()) {
+        if (Optional.ofNullable(search).isPresent() && Optional.ofNullable(search.getSearchKey()).isPresent() && !search.getSearchKey().isBlank()) {
             predicates.add(criteriaBuilder
-                    .or(criteriaBuilder.like(root.get("name"), "%" + searchParams.getSearchKey() + "%"),
-                            criteriaBuilder.like(root.get("description"), "%" + searchParams.getSearchKey() + "%")));
+                    .or(criteriaBuilder.like(root.get("name"), "%" + search.getSearchKey() + "%"),
+                            criteriaBuilder.like(root.get("description"), "%" + search.getSearchKey() + "%")));
         }
 
-        if (Optional.ofNullable(searchParams).isPresent() && Optional.ofNullable(searchParams.getPriceFrom()).isPresent() && searchParams.getPriceFrom() > 0) {
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("price"), searchParams.getPriceFrom()));
+        if (Optional.ofNullable(search).isPresent() && Optional.ofNullable(search.getPriceFrom()).isPresent() && search.getPriceFrom() > 0) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("price"), search.getPriceFrom()));
         }
 
-        if (Optional.ofNullable(searchParams).isPresent() && Optional.ofNullable(searchParams.getPriceTo()).isPresent() && searchParams.getPriceTo() > 0) {
-            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("price"), searchParams.getPriceTo()));
+        if (Optional.ofNullable(search).isPresent() && Optional.ofNullable(search.getPriceTo()).isPresent() && search.getPriceTo() > 0) {
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("price"), search.getPriceTo()));
         }
 
-        if (Optional.ofNullable(searchParams).isPresent() && Optional.ofNullable(searchParams.getCategoryName()).isPresent()
-                && !searchParams.getCategoryName().isBlank()) {
+        if (Optional.ofNullable(search).isPresent() && Optional.ofNullable(search.getCategoryName()).isPresent()
+                && !search.getCategoryName().isBlank()) {
             Join<Product, Category> productCategoryJoin = root.join("category");
-            predicates.add(criteriaBuilder.and(criteriaBuilder.like(productCategoryJoin.get("name"), "%" + searchParams.getCategoryName() + "%")));
+            predicates.add(criteriaBuilder.and(criteriaBuilder.like(productCategoryJoin.get("name"), "%" + search.getCategoryName() + "%")));
         }
 
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
