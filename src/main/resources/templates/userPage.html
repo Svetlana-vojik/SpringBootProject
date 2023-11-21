@@ -81,7 +81,7 @@
                             <h6 class="mb-0">Имя</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <h5 style="color:saddlebrown" th:text="${user.getName()}"></h5>
+                            <h5 style="color:saddlebrown" th:text="${user.name}"></h5>
                         </div>
                     </div>
                     <hr>
@@ -90,7 +90,7 @@
                             <h6 class="mb-0">Фамилия</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <h5 style="color:saddlebrown" th:text="${user.getSurname()}"></h5>
+                            <h5 style="color:saddlebrown" th:text="${user.surname}"></h5>
                         </div>
                     </div>
                     <hr>
@@ -99,7 +99,7 @@
                             <h6 class="mb-0">Дата рождения</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <h5 style="color:saddlebrown" th:text="${user.getBirthday()}"></h5>
+                            <h5 style="color:saddlebrown" th:text="${user.birthday}"></h5>
                         </div>
                     </div>
                     <hr>
@@ -108,7 +108,7 @@
                             <h6 class="mb-0">Email</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <h5 style="color:saddlebrown" th:text="${user.getEmail()}"></h5>
+                            <h5 style="color:saddlebrown" th:text="${user.email}"></h5>
                         </div>
                     </div>
                     <hr>
@@ -117,7 +117,7 @@
                             <h6 class="mb-0">Адрес</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <h5 style="color:saddlebrown" th:text="${user.getAddress()}"></h5>
+                            <h5 style="color:saddlebrown" th:text="${user.address}"></h5>
                         </div>
                     </div>
                 </div>
@@ -131,9 +131,9 @@
     <h5 class="mb-0" style="padding: 20px">История заказов</h5>
     <div th:test="${orders}!=null">
         <div th:each="orders: ${orders}">
-            <p th:text="'Дата заказа: '+${orders.getOrderDate()}"></p>
-            <p th:text="'Номер заказа: '+${orders.getId()}"></p>
-            <div th:each="product:${orders.getProductList()}">
+            <p th:text="'Дата заказа: '+${orders.orderDate}"></p>
+            <p th:text="'Номер заказа: '+${orders.id}"></p>
+            <div th:each="product:${orders.productList}">
                 <div class="card w-50 m-1">
                     <div class="card-body">
                         <div class="row">
@@ -143,11 +143,11 @@
                                      th:src="${'/images/' + product.imagePath}"
                                      alt="Product image"></div>
                             <div class="col m-1" style="text-align: center">
-                                <p th:text="${product.getName()}"></p></div>
+                                <p th:text="${product.name}"></p></div>
                             <div class="col m-1" style="text-align: center">
-                                <p th:text="${product.getDescription()}"></p></div>
+                                <p th:text="${product.description}"></p></div>
                             <div class="col m-1" style="text-align: center">
-                                <p th:text="'Цена: ' + ${product.getPrice()}"></p></div>
+                                <p th:text="'Цена: ' + ${product.price}"></p></div>
                         </div>
                     </div>
 

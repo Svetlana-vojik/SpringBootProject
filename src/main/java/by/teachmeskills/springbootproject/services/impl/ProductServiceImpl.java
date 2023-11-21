@@ -4,7 +4,6 @@ import by.teachmeskills.springbootproject.RequestParamsEnum;
 import by.teachmeskills.springbootproject.ShopConstants;
 import by.teachmeskills.springbootproject.csv.converters.ProductConverter;
 import by.teachmeskills.springbootproject.csv.dto.ProductCsvDto;
-import by.teachmeskills.springbootproject.entities.Category;
 import by.teachmeskills.springbootproject.entities.Product;
 import by.teachmeskills.springbootproject.entities.Search;
 import by.teachmeskills.springbootproject.repositories.ProductRepository;
@@ -18,7 +17,6 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -37,7 +35,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static by.teachmeskills.springbootproject.PagesPathEnum.CATEGORY_PAGE;
+import static by.teachmeskills.springbootproject.PagesPathEnum.HOME_PAGE;
 import static by.teachmeskills.springbootproject.PagesPathEnum.SEARCH_PAGE;
 import static by.teachmeskills.springbootproject.RequestParamsEnum.PRODUCTS;
 
@@ -48,13 +46,11 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductConverter productConverter;
-    private final CategoryServiceImpl categoryService;
 
 
-    public ProductServiceImpl(ProductRepository productRepository, ProductConverter productConverter,@Lazy CategoryServiceImpl categoryService) {
+    public ProductServiceImpl(ProductRepository productRepository, ProductConverter productConverter) {
         this.productRepository = productRepository;
         this.productConverter = productConverter;
-        this.categoryService = categoryService;
     }
 
     @Override
@@ -111,6 +107,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ModelAndView saveProductsFromFile(int pageNumber, int pageSize, MultipartFile file) {
+        ModelAndView modelAndView = new ModelAndView("redirect:/" + HOME_PAGE.getPath());
         ModelMap model = new ModelMap();
         List<ProductCsvDto> csvProducts = parseCsv(file);
         List<Product> newProducts = Optional.ofNullable(csvProducts)
@@ -127,7 +124,7 @@ public class ProductServiceImpl implements ProductService {
 
             model.addAttribute(PRODUCTS.getValue(), products);
         }
-        return new ModelAndView(CATEGORY_PAGE.getPath(), model);
+        return modelAndView;
     }
 
     public List<ProductCsvDto> parseCsv(MultipartFile file) {

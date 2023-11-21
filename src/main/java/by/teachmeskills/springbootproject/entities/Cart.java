@@ -16,7 +16,7 @@ import static by.teachmeskills.springbootproject.ShopConstants.CART;
 import static by.teachmeskills.springbootproject.ShopConstants.PRODUCT;
 
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class Cart extends BaseEntity {
     private Map<Integer, Product> products;
     private int totalPrice = 0;

@@ -10,9 +10,4 @@ import lombok.experimental.SuperBuilder;
 public class PaginationParams {
     private int pageNumber;
     private int pageSize;
-
-    public PaginationParams() {
-        this.pageNumber = 0;
-        this.pageSize = 1;
-    }
 }

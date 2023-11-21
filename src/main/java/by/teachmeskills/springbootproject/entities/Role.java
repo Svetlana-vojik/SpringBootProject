@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Role extends BaseEntity{
+public class Role extends BaseEntity {
 
     @NotNull
     @Column(name = "name")

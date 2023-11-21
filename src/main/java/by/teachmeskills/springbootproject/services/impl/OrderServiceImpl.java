@@ -1,5 +1,6 @@
 package by.teachmeskills.springbootproject.services.impl;
 
+import by.teachmeskills.springbootproject.RequestParamsEnum;
 import by.teachmeskills.springbootproject.csv.converters.OrderConverter;
 import by.teachmeskills.springbootproject.csv.dto.OrderCsvDto;
 import by.teachmeskills.springbootproject.entities.Cart;
@@ -37,11 +38,7 @@ import java.util.stream.Collectors;
 
 import static by.teachmeskills.springbootproject.PagesPathEnum.CART_PAGE;
 import static by.teachmeskills.springbootproject.PagesPathEnum.USER_PROFILE_PAGE;
-import static by.teachmeskills.springbootproject.ShopConstants.BIRTHDAY;
-import static by.teachmeskills.springbootproject.ShopConstants.EMAIL;
-import static by.teachmeskills.springbootproject.ShopConstants.NAME;
 import static by.teachmeskills.springbootproject.ShopConstants.ORDERS;
-import static by.teachmeskills.springbootproject.ShopConstants.SURNAME;
 import static by.teachmeskills.springbootproject.ShopConstants.USER;
 
 @Service
@@ -118,12 +115,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ModelAndView importOrdersFromCsv(MultipartFile file, User user) {
         ModelMap model = new ModelMap();
+        ModelAndView modelAndView = new ModelAndView("redirect:/" + USER_PROFILE_PAGE.getPath());
 
-        model.addAttribute(USER, user.getId());
-        model.addAttribute(NAME, user.getName());
-        model.addAttribute(SURNAME, user.getSurname());
-        model.addAttribute(BIRTHDAY, user.getBirthday());
-        model.addAttribute(EMAIL, user.getEmail());
+        model.addAttribute(RequestParamsEnum.USER_ID.getValue(), user.getId());
+        model.addAttribute(RequestParamsEnum.NAME.name(), user.getName());
+        model.addAttribute(RequestParamsEnum.SURNAME.getValue(), user.getSurname());
+        model.addAttribute(RequestParamsEnum.BIRTHDAY.getValue(), user.getBirthday());
+        model.addAttribute(RequestParamsEnum.EMAIL.getValue(), user.getEmail());
 
         List<OrderCsvDto> csvOrders = parseCsv(file);
         List<Order> newOrders = Optional.ofNullable(csvOrders)
@@ -138,7 +136,7 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders = getOrdersByUserId(user.getId());
         model.addAttribute(orders.stream().collect(Collectors.toList()));
 
-        return new ModelAndView(USER_PROFILE_PAGE.getPath(), model);
+        return modelAndView;
     }
 
     @Override
