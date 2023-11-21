@@ -72,15 +72,15 @@
         <div class="row d-flex justify-content-center">
             <div class="card w-25 m-1" style="text-align: center" th:each=" category : ${categories}">
                 <div class="card-body">
-                    <a th:href="@{'category/'+${category.getId()}}">
-                        <img th:src="${category.getImagePath}" width="160px" height="160px"
+                    <a th:href="@{'/category/'+${category.id}}">
+                        <img th:src="${'/images/' + category.imagePath}" width="160px" height="160px"
                              alt="Category image">
                     </a>
                     <div>
-                        <a th:href="@{'category/'+${category.getId()}}"
-                           class="btn" th:text="${category.getName()}"></a>
+                        <a th:href="@{'/category/'+${category.id}}"
+                           class="btn" th:text="${category.name}"></a>
                         <p></p>
-                        <p th:text="'Рейтинг: ' + ${category.getRating()}"></p>
+                        <p th:text="'Рейтинг: ' + ${category.rating}"></p>
                     </div>
                 </div>
             </div>

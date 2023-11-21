@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org/" lang="ru"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-    <title th:text="${product.getName()}"></title>
+    <title> Продукты</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -19,6 +19,7 @@
             margin: 5px 2px;
             border-radius: 50%;
         }
+
         .fa:hover {
             opacity: 0.7;
         }
@@ -63,7 +64,7 @@
         </form>
     </div>
 </nav>
-<h2 style="text-align: center" th:text="${product.getName()}"></h2>
+<h2 style="text-align: center" th:text="${product.name}"></h2>
 <p></p>
 <div class="card w-50 m-1" style="text-align: center" type="product">
     <div class="card-body">
@@ -75,36 +76,36 @@
                     alt="Product image">
             </div>
             <div class="col m-1" style="text-align: left"><p></p>
-                <p th:text="${product.getName()}"></p>
-                <p th:text="${product.getDescription()}"></p>
-                <p th:text="'Цена: ' + ${product.getPrice()}"></p>
-                </div>
+                <p>
+                <h2 style="color:darkblue" th:text="${product.name}"></h2></p>
+                <p th:text="${product.description}"></p>
+                <p style="color:lightslategray" th:text="'Цена: ' + ${product.price}"></p>
+            </div>
             <div class="col m-1" style="text-align: center">
             </div>
         </div>
-            <div class="row m-1" style="text-align: end">
-                <div class="col m-1" style="text-align: center"><p></p></div>
-                <div class="col m-1" style="text-align: center"><p></p></div>
-                <button class="btn btn-outline-success m-2" style="text-align: right" type="button" data-toggle="modal"
-                        data-target="#myModal">Купить
-                </button>
-                <div class="modal" id="myModal">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <p class="modal-title" style="text-align: center"
-                                   th:text="'Добавить '+ ${product.getName()}+' в корзину?'"></p>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div class="modal-body" style="text-align: center">
-                                <a th:href="'/cart/add?product_id='+${product.getId()}">
-                                    <button class="btn btn-outline-success m-2" style="text-align: left" type="button"
-                                            data-toggle="modal"
-                                            data-target="#myModal">Да
-                                    </button>
-                                </a>
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Нет</button>
-                            </div>
+        <div class="row m-1" style="text-align: end">
+            <div class="col m-1" style="text-align: center"><p></p></div>
+            <div class="col m-1" style="text-align: center"><p></p></div>
+            <button class="btn btn-outline-success m-2" style="text-align: right" type="button" data-toggle="modal"
+                    data-target="#myModal">Купить
+            </button>
+            <div class="modal" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <p class="modal-title" style="text-align: center"
+                               th:text="'Добавить '+ ${product.getName()}+' в корзину?'"></p>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align: center">
+                            <a th:href="'/cart/add?product_id='+${product.id}">
+                                <button class="btn btn-outline-success m-2" style="text-align: left" type="button"
+                                        data-toggle="modal"
+                                        data-target="#myModal">Да
+                                </button>
+                            </a>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Нет</button>
                         </div>
                     </div>
                 </div>
@@ -137,8 +138,6 @@
             </a>
         </div>
     </section>
-    <!-- Section: Social media -->
-    <!-- Section: Links  -->
     <section class="">
         <div class="container text-center text-md-start mt-5">
             <div class="row mt-3">

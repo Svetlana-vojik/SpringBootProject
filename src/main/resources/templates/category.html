@@ -73,18 +73,18 @@
                 <div class="row">
                     <div class="col m-1">
                         <a
-                                th:href="'/products/'+${product.getId()}">
+                                th:href="'/products/'+${product.id}">
                             <img
                                     class="card-img"
                                     style="width:140px;height:140px"
                                     th:src="${'/images/' + product.imagePath}"
                                     alt="Product image"></a></div>
                     <div class="col m-1" style="text-align: center"><p></p>
-                        <a th:href="'/products/'+${product.getId()}">
-                            <p th:text="${product.getName()}"></p>
+                        <a th:href="'/products/'+${product.id}">
+                            <p th:text="${product.name}"></p>
                         </a>
-                        <p th:text="${product.getDescription()}"></p>
-                        <p th:text="'Цена: ' + ${product.getPrice()}"></p></div>
+                        <p th:text="${product.description}"></p>
+                        <p th:text="'Цена: ' + ${product.price}"></p></div>
                 </div>
             </div>
         </div>
@@ -148,7 +148,6 @@
 </div>
 </body>
 <footer class="text-center text-lg-start bg-white text-muted">
-    <!-- Section: Social media -->
     <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
         <div class="me-5 d-none d-lg-block">
             <span>Присоединяйтесь к нам в социальных сетях:</span>

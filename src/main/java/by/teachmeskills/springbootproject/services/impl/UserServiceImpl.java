@@ -47,10 +47,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ModelAndView createUser(User entity) throws AuthorizationException {
+    public ModelAndView createUser(User entity) {
         ModelAndView modelAndView = new ModelAndView(REGISTRATION_PAGE.getPath());
         if ((userRepository.findByEmailAndPassword(entity.getEmail(), entity.getPassword())) != null) {
-            throw new AuthorizationException("Пользователь уже зарегистрирован. Войдите в систему.");
+            modelAndView.addObject("info", "Пользователь уже зарегистрирован. Войдите в систему.");
         } else {
             entity.setPassword(passwordEncoder.encode(entity.getPassword()));
             entity.setRoles(List.of(Role.builder().id(2).name("USER").build()));

@@ -32,24 +32,24 @@ import java.util.List;
 @Table(name = "users")
 public class User extends BaseEntity {
     @NotNull
-    @NotBlank(message = "email не должен быть пустым")
+    @NotBlank(message = "Email не должен быть пустым")
     @Email(message = "Некорректный адрес электронной почты.")
     @Column
     private String email;
 
     @NotNull
-    @NotNull(message = "пароль не должен быть пустым")
+    @NotBlank(message = "Пароль не должен быть пустым")
     @Column
     private String password;
 
     @NotNull
-    @NotBlank(message = "имя не должно быть пустым")
+    @NotBlank(message = "Имя не должно быть пустым")
     @Pattern(regexp = "[A-Za-z А-Яа-я]+", message = "Некорректное имя.")
     @Column
     private String name;
 
     @NotNull
-    @NotBlank(message = "фамилия не должна быть пустой")
+    @NotBlank(message = "Фамилия не должна быть пустой")
     @Pattern(regexp = "[A-Za-z А-Яа-я]+", message = "Некорректная фамилия.")
     @Column
     private String surname;
@@ -61,7 +61,7 @@ public class User extends BaseEntity {
     @Column
     private int balance;
 
-    @NotNull(message = "поле не должно быть пустым")
+    @NotNull(message = "Поле не должно быть пустым")
     @Pattern(regexp = "[A-Za-z А-Яа-я0-9\\d]+", message = "Некорректный адрес")
     @Column
     private String address;

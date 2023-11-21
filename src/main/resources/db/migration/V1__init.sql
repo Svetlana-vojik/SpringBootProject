@@ -79,15 +79,15 @@ INSERT INTO shop.users(email, password, name, surname, birthday, balance, addres
 VALUES ('user2@mail.ru', '2222', 'Dima', 'Black', '1996-02-25', 2.50, 'Minsk Nezavisimisti 5 175');
 
 INSERT INTO shop.categories(name, image_path, rating)
-VALUES ('Капкейки', 'images/categories/cupcakes.png', 2);
+VALUES ('Капкейки', 'categories/cupcakes.png', 2);
 INSERT INTO shop.categories(name, image_path, rating)
-VALUES ('Торты', 'images/categories/cakes.png', 5);
+VALUES ('Торты', 'categories/cakes.png', 5);
 INSERT INTO shop.categories(name, image_path, rating)
-VALUES ('Пирожные', 'images/categories/pastries.png', 4);
+VALUES ('Пирожные', 'categories/pastries.png', 4);
 INSERT INTO shop.categories(name, image_path, rating)
-VALUES ('Круассаны', 'images/categories/croissants.png', 3);
+VALUES ('Круассаны', 'categories/croissants.png', 3);
 INSERT INTO shop.categories(name, image_path, rating)
-VALUES ('Печенье', 'images/categories/cookie.png', 5);
+VALUES ('Печенье', 'categories/cookie.png', 5);
 
 
 INSERT INTO shop.products(name, description, price, category_id, image_path)

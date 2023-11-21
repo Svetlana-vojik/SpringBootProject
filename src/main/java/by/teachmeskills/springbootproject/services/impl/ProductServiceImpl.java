@@ -4,6 +4,7 @@ import by.teachmeskills.springbootproject.RequestParamsEnum;
 import by.teachmeskills.springbootproject.ShopConstants;
 import by.teachmeskills.springbootproject.csv.converters.ProductConverter;
 import by.teachmeskills.springbootproject.csv.dto.ProductCsvDto;
+import by.teachmeskills.springbootproject.entities.Category;
 import by.teachmeskills.springbootproject.entities.Product;
 import by.teachmeskills.springbootproject.entities.Search;
 import by.teachmeskills.springbootproject.repositories.ProductRepository;
@@ -100,7 +101,7 @@ public class ProductServiceImpl implements ProductService {
                     model.addAttribute(RequestParamsEnum.PAGE_NUMBER.getValue(), pageNumber + 1);
                     model.addAttribute(RequestParamsEnum.PAGE_SIZE.getValue(), ShopConstants.PAGE_SIZE);
                 } else {
-                    log.error("Продукты не найдены");
+                    model.addAttribute("message", "Ничего не найдено...");
                 }
             }
         }
