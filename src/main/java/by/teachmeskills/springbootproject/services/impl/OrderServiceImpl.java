@@ -9,7 +9,6 @@ import by.teachmeskills.springbootproject.entities.User;
 import by.teachmeskills.springbootproject.exceptions.AuthorizationException;
 import by.teachmeskills.springbootproject.exceptions.CartIsEmptyException;
 import by.teachmeskills.springbootproject.repositories.OrderRepository;
-import by.teachmeskills.springbootproject.repositories.UserRepository;
 import by.teachmeskills.springbootproject.services.OrderService;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -38,19 +37,15 @@ import java.util.stream.Collectors;
 
 import static by.teachmeskills.springbootproject.PagesPathEnum.CART_PAGE;
 import static by.teachmeskills.springbootproject.PagesPathEnum.USER_PROFILE_PAGE;
-import static by.teachmeskills.springbootproject.ShopConstants.ORDERS;
-import static by.teachmeskills.springbootproject.ShopConstants.USER;
 
 @Service
 @Slf4j
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
-    private final UserRepository userRepository;
     private final OrderConverter orderConverter;
 
-    public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository, OrderConverter orderConverter) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderConverter orderConverter) {
         this.orderRepository = orderRepository;
-        this.userRepository = userRepository;
         this.orderConverter = orderConverter;
     }
 
@@ -69,27 +64,6 @@ public class OrderServiceImpl implements OrderService {
         cart.setTotalPrice(0);
         ModelAndView modelAndView = new ModelAndView(CART_PAGE.getPath());
         modelAndView.addObject("info", "Заказ оформлен.");
-        return modelAndView;
-    }
-
-    @Override
-    public ModelAndView findUserOrders(User user) throws AuthorizationException {
-        ModelAndView modelAndView = new ModelAndView();
-        ModelMap modelMap = new ModelMap();
-        if (Optional.ofNullable(user).isPresent()
-                && Optional.ofNullable(user.getEmail()).isPresent()
-                && Optional.ofNullable(user.getPassword()).isPresent()) {
-            User loggedUser = userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
-            if (Optional.ofNullable(loggedUser).isPresent()) {
-                List<Order> orders = orderRepository.findByUserId(loggedUser.getId());
-                modelMap.addAttribute(USER, loggedUser);
-                modelMap.addAttribute(ORDERS, orders);
-                modelAndView.addAllObjects(modelMap);
-            }
-        } else {
-            throw new AuthorizationException("Пользователь не авторизован!");
-        }
-        modelAndView.setViewName(USER_PROFILE_PAGE.getPath());
         return modelAndView;
     }
 
