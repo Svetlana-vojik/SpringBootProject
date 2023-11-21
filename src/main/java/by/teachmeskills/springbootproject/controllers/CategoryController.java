@@ -1,10 +1,12 @@
 package by.teachmeskills.springbootproject.controllers;
 
+import by.teachmeskills.springbootproject.ShopConstants;
+import by.teachmeskills.springbootproject.services.CategoryService;
 import by.teachmeskills.springbootproject.services.ProductService;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,19 +20,28 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/category")
-@AllArgsConstructor
 public class CategoryController {
 
     private final ProductService productService;
+    private final CategoryService categoryService;
 
-    @GetMapping("/{id}")
-    public ModelAndView openCategoryPage(@PathVariable int id) {
-        return productService.getProductsByCategory(id);
+    public CategoryController(ProductService productService, CategoryService categoryService) {
+        this.productService = productService;
+        this.categoryService = categoryService;
     }
 
-    @PostMapping("/csv/import/{categoryId}")
-    public ModelAndView importCategoriesFromCsv(@RequestParam("file") MultipartFile file, @PathVariable int categoryId) throws IOException {
-        return productService.saveProductsFromFile(file, categoryId);
+    @GetMapping("/{categoryId}")
+    public ModelAndView openCategoryPage(@PathVariable Integer categoryId,
+                                         @RequestParam(required = false, defaultValue = "0") Integer pageNumber,
+                                         @RequestParam(required = false, defaultValue = "" + ShopConstants.PAGE_SIZE) Integer pageSize) throws EntityNotFoundException {
+ return categoryService.getCategoryById(categoryId, pageNumber, pageSize);
+    }
+
+    @PostMapping("/csv/import")
+    public ModelAndView  importCategoriesFromCsv(@RequestParam("file") MultipartFile file,
+                                                 @RequestParam(required = false, defaultValue = "0") Integer pageNumber,
+                                                 @RequestParam(required = false, defaultValue = "" + ShopConstants.PAGE_SIZE) Integer pageSize) {
+        return productService.saveProductsFromFile(pageNumber, pageSize, file);
     }
 
     @PostMapping("/csv/export/{categoryId}")

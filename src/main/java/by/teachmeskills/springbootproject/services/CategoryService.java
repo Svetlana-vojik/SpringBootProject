@@ -13,7 +13,11 @@ import java.io.IOException;
 public interface CategoryService extends BaseService<Category> {
     Category findById(int id);
 
-    ModelAndView importCategoriesFromCsv(MultipartFile file) throws EntityNotFoundException;
+    ModelAndView importCategoriesFromCsv(int pageNumber, int pageSize, MultipartFile file) throws EntityNotFoundException;
 
     void exportCategoriesToCsv(HttpServletResponse response) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException;
+
+    ModelAndView getAllCategories(int pageNumber, int pageSize) throws EntityNotFoundException;
+
+    ModelAndView getCategoryById(int id, int pageNumber, int pageSize) throws EntityNotFoundException;
 }

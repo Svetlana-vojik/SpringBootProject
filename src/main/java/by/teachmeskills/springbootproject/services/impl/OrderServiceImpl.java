@@ -17,8 +17,7 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
-import org.hibernate.query.sqm.ParsingException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,11 +45,17 @@ import static by.teachmeskills.springbootproject.ShopConstants.SURNAME;
 import static by.teachmeskills.springbootproject.ShopConstants.USER;
 
 @Service
-@AllArgsConstructor
+@Slf4j
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final OrderConverter orderConverter;
+
+    public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository, OrderConverter orderConverter) {
+        this.orderRepository = orderRepository;
+        this.userRepository = userRepository;
+        this.orderConverter = orderConverter;
+    }
 
     @Override
     public ModelAndView create(User user, Cart cart) throws CartIsEmptyException, AuthorizationException {
@@ -62,10 +67,8 @@ public class OrderServiceImpl implements OrderService {
         }
         Order order = Order.builder().orderDate(LocalDate.now()).price(cart.getTotalPrice())
                 .user(user).productList(cart.getProducts()).build();
-        userRepository.update(userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword()));
-        orderRepository.create(order);
+        orderRepository.save(order);
         cart.clear();
-        cart.setTotalPrice(0);
         ModelAndView modelAndView = new ModelAndView(CART_PAGE.getPath());
         modelAndView.addObject("info", "Заказ оформлен.");
         return modelAndView;
@@ -94,22 +97,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order create(Order entity) {
-        return orderRepository.create(entity);
+        return orderRepository.save(entity);
     }
 
     @Override
     public List<Order> read() {
-        return orderRepository.read();
+        return orderRepository.findAll();
     }
 
     @Override
-    public Order update(Order entity) {
-        return orderRepository.update(entity);
-    }
-
-    @Override
-    public void delete(Order entity) {
-        orderRepository.delete(entity);
+    public void delete(int id) {
+        orderRepository.deleteById(id);
     }
 
     public List<Order> getOrdersByUserId(int id) {
@@ -133,7 +131,7 @@ public class OrderServiceImpl implements OrderService {
                         .toList())
                 .orElse(null);
         if (Optional.ofNullable(newOrders).isPresent()) {
-            newOrders.forEach(orderRepository::create);
+            newOrders.forEach(orderRepository::save);
         }
 
         List<Order> orders = getOrdersByUserId(user.getId());
@@ -153,20 +151,17 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-
-    private List<OrderCsvDto> parseCsv(MultipartFile file) {
+    public List<OrderCsvDto> parseCsv(MultipartFile file) {
         if (Optional.ofNullable(file).isPresent()) {
             try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-                CsvToBean<OrderCsvDto> csvToBean = new CsvToBeanBuilder<OrderCsvDto>(reader)
-                        .withType(OrderCsvDto.class)
-                        .withIgnoreLeadingWhiteSpace(true)
-                        .withSeparator(',')
-                        .build();
-
+                CsvToBean<OrderCsvDto> csvToBean = new CsvToBeanBuilder<OrderCsvDto>(reader).withType(OrderCsvDto.class).
+                        withIgnoreLeadingWhiteSpace(true).withSeparator(';').build();
                 return csvToBean.parse();
-            } catch (Exception ex) {
-                throw new ParsingException(String.format("Ошибка во время преобразования данных: %s", ex.getMessage()));
+            } catch (IOException e) {
+                log.error("Exception occurred during csv parsing:" + e.getMessage());
             }
+        } else {
+            log.error("Empty scv file is uploaded");
         }
         return Collections.emptyList();
     }

@@ -5,26 +5,15 @@ import by.teachmeskills.springbootproject.entities.Order;
 import by.teachmeskills.springbootproject.entities.User;
 import by.teachmeskills.springbootproject.exceptions.AuthorizationException;
 import by.teachmeskills.springbootproject.exceptions.CartIsEmptyException;
-import by.teachmeskills.springbootproject.repositories.OrderRepository;
-import by.teachmeskills.springbootproject.repositories.UserRepository;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
-import static by.teachmeskills.springbootproject.PagesPathEnum.CART_PAGE;
-import static by.teachmeskills.springbootproject.PagesPathEnum.USER_PROFILE_PAGE;
-import static by.teachmeskills.springbootproject.ShopConstants.ORDERS;
-import static by.teachmeskills.springbootproject.ShopConstants.USER;
 
 public interface OrderService extends BaseService<Order>{
 
