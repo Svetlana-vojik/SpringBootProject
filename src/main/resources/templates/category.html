@@ -33,6 +33,14 @@
                 <button class="btn btn-outline-success" type="button">Главная</button>
             </a>
         </form>
+        <div class="container">
+            <form class="input-group mb-3" th:method="POST" th:action="@{/search}" style="text-align: center">
+                <label for="searchKey"></label>
+                <input type="text" name="searchKey" id="searchKey" class="form-control"
+                       placeholder=" Поиск ">
+                <button type="submit" style="margin-left:10px" class="btn btn-success">Найти</button>
+            </form>
+        </div>
         <form class="form-inline my-2 my-lg-0">
             <a th:href="@{/search}">
                 <button class="btn btn-outline-success m-1" type="button">Поиск</button>
@@ -59,24 +67,24 @@
 <h2 style="text-align: center" th:text="${categoryName}"></h2>
 <div style="text-align: center" th:text="${message}"></div>
 <div th:test="${products}!=null">
-    <div class="container-fluid mb-4">
+    <div class="row d-flex justify-content-center">
         <div class="card w-25 m-1" th:each="product : ${products}">
             <div class="card-body">
                 <div class="row">
                     <div class="col m-1">
                         <a
-                                th:href="'/products/'+${product.getId()}">
+                                th:href="'/products/'+${product.id}">
                             <img
                                     class="card-img"
                                     style="width:140px;height:140px"
                                     th:src="${'/images/' + product.imagePath}"
                                     alt="Product image"></a></div>
                     <div class="col m-1" style="text-align: center"><p></p>
-                        <a th:href="'/products/'+${product.getId()}">
-                            <p th:text="${product.getName()}"></p>
+                        <a th:href="'/products/'+${product.id}">
+                            <p th:text="${product.name}"></p>
                         </a>
-                        <p th:text="${product.getDescription()}"></p>
-                        <p th:text="${product.getPrice()}"></p></div>
+                        <p th:text="${product.description}"></p>
+                        <p th:text="'Цена: ' + ${product.price}"></p></div>
                 </div>
             </div>
         </div>
@@ -140,7 +148,6 @@
 </div>
 </body>
 <footer class="text-center text-lg-start bg-white text-muted">
-    <!-- Section: Social media -->
     <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
         <div class="me-5 d-none d-lg-block">
             <span>Присоединяйтесь к нам в социальных сетях:</span>
@@ -163,8 +170,6 @@
             </a>
         </div>
     </section>
-    <!-- Section: Social media -->
-    <!-- Section: Links  -->
     <section class="">
         <div class="container text-center text-md-start mt-5">
             <div class="row mt-3">

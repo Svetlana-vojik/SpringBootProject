@@ -8,7 +8,6 @@ import by.teachmeskills.springbootproject.entities.Product;
 import by.teachmeskills.springbootproject.entities.Search;
 import by.teachmeskills.springbootproject.repositories.ProductRepository;
 import by.teachmeskills.springbootproject.repositories.ProductSearchSpecification;
-import by.teachmeskills.springbootproject.services.CategoryService;
 import by.teachmeskills.springbootproject.services.ProductService;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -18,7 +17,6 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -37,7 +35,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static by.teachmeskills.springbootproject.PagesPathEnum.CATEGORY_PAGE;
+import static by.teachmeskills.springbootproject.PagesPathEnum.HOME_PAGE;
 import static by.teachmeskills.springbootproject.PagesPathEnum.SEARCH_PAGE;
 import static by.teachmeskills.springbootproject.RequestParamsEnum.PRODUCTS;
 
@@ -47,13 +45,11 @@ import static by.teachmeskills.springbootproject.RequestParamsEnum.PRODUCTS;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final CategoryService categoryService;
     private final ProductConverter productConverter;
 
 
-    public ProductServiceImpl(ProductRepository productRepository, @Lazy CategoryService categoryService, ProductConverter productConverter) {
+    public ProductServiceImpl(ProductRepository productRepository, ProductConverter productConverter) {
         this.productRepository = productRepository;
-        this.categoryService = categoryService;
         this.productConverter = productConverter;
     }
 
@@ -87,6 +83,9 @@ public class ProductServiceImpl implements ProductService {
         ModelMap model = new ModelMap();
         if (search != null) {
             if (search.getSearchKey() != null || search.getPriceFrom() != null || search.getPriceTo() != null || search.getCategoryName() != null) {
+                if (search.getSearchKey().length() < 3) {
+                    model.addAttribute("info", "Не менее трех символов для поиска!");
+                }else {
                 Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by("name").ascending());
                 ProductSearchSpecification productSearchSpecification = new ProductSearchSpecification(search);
                 List<Product> products = productRepository.findAll(productSearchSpecification, paging).getContent();
@@ -101,8 +100,8 @@ public class ProductServiceImpl implements ProductService {
                     model.addAttribute(RequestParamsEnum.PAGE_NUMBER.getValue(), pageNumber + 1);
                     model.addAttribute(RequestParamsEnum.PAGE_SIZE.getValue(), ShopConstants.PAGE_SIZE);
                 } else {
-                    log.error("Продукты не найдены");
-                }
+                    model.addAttribute("message", "Ничего не найдено...");
+                }}
             }
         }
         model.addAttribute(RequestParamsEnum.SELECTED_PAGE_SIZE.getValue(), pageSize);
@@ -111,6 +110,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ModelAndView saveProductsFromFile(int pageNumber, int pageSize, MultipartFile file) {
+        ModelAndView modelAndView = new ModelAndView("redirect:/" + HOME_PAGE.getPath());
         ModelMap model = new ModelMap();
         List<ProductCsvDto> csvProducts = parseCsv(file);
         List<Product> newProducts = Optional.ofNullable(csvProducts)
@@ -127,7 +127,7 @@ public class ProductServiceImpl implements ProductService {
 
             model.addAttribute(PRODUCTS.getValue(), products);
         }
-        return new ModelAndView(CATEGORY_PAGE.getPath(), model);
+        return modelAndView;
     }
 
     public List<ProductCsvDto> parseCsv(MultipartFile file) {

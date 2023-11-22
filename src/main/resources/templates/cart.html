@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org/" lang="ru"
-xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <title>Корзина</title>
     <meta charset="utf-8">
@@ -20,6 +20,7 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
             margin: 5px 2px;
             border-radius: 50%;
         }
+
         .fa:hover {
             opacity: 0.7;
         }
@@ -33,6 +34,14 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
                 <button class="btn btn-outline-success" type="button">Главная</button>
             </a>
         </form>
+        <div class="container">
+            <form class="input-group mb-3" th:method="POST" th:action="@{/search}" style="text-align: center">
+                <label for="searchKey"></label>
+                <input type="text" name="searchKey" id="searchKey" class="form-control"
+                       placeholder=" Поиск ">
+                <button type="submit" style="margin-left:10px" class="btn btn-success">Найти</button>
+            </form>
+        </div>
         <form class="form-inline my-2 my-lg-0">
             <a th:href="@{/search}">
                 <button class="btn btn-outline-success m-1" type="button">Поиск</button>
@@ -78,7 +87,7 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
                             <div class="col m-1" style="text-align: left"><p></p>
                                 <p th:text="${p.getName()}"></p>
                                 <p th:text="${p.getDescription()}"></p>
-                                <p th:text="${p.getPrice()}"></p>
+                                <p th:text="'Цена: ' + ${p.getPrice()}"></p>
                             </div>
                             <div class="col m-1">
                                 <a th:href="'/cart/delete?product_id='+${p.getId()}">
@@ -102,13 +111,12 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 </div>
 </body>
 <footer class="text-center text-lg-start bg-white text-muted">
-    <!-- Section: Social media -->
     <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
         <div class="me-5 d-none d-lg-block">
             <span>Присоединяйтесь к нам в социальных сетях:</span>
         </div>
         <div>
-            <a href="https://www.facebook.com/sveta.yezhaleva/" class="me-4 link-secondary"  >
+            <a href="https://www.facebook.com/sveta.yezhaleva/" class="me-4 link-secondary">
                 <i class="fa fa-facebook" style="align-items: center"></i>
             </a>
             <a href="https://t.me/sviatlana_y" class="me-4 link-secondary">
@@ -125,8 +133,6 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
             </a>
         </div>
     </section>
-    <!-- Section: Social media -->
-    <!-- Section: Links  -->
     <section class="">
         <div class="container text-center text-md-start mt-5">
             <div class="row mt-3">
@@ -171,7 +177,8 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
                 </div>
                 <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
                     <h6 class="text-uppercase fw-bold mb-4">Контакты</h6>
-                    <p><i class="fa fa-home me-3 text-secondary" style="margin-right:10px"></i> Минск, ул.Скрыганова д.3 каб.36 </p>
+                    <p><i class="fa fa-home me-3 text-secondary" style="margin-right:10px"></i> Минск, ул.Скрыганова д.3
+                        каб.36 </p>
                     <p>
                         <i class="fa fa-envelope me-3 text-secondary" style="margin-right:10px"></i>
                         cake@example.com

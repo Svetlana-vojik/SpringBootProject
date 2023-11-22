@@ -13,7 +13,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,24 +31,24 @@ import java.util.List;
 @Table(name = "users")
 public class User extends BaseEntity {
     @NotNull
-    @NotBlank(message = "email не должен быть пустым")
+    @NotBlank(message = "Email не должен быть пустым")
     @Email(message = "Некорректный адрес электронной почты.")
     @Column
     private String email;
 
     @NotNull
-    @NotNull(message = "пароль не должен быть пустым")
+    @NotBlank(message = "Пароль не должен быть пустым")
     @Column
     private String password;
 
     @NotNull
-    @NotBlank(message = "имя не должно быть пустым")
+    @NotBlank(message = "Имя не должно быть пустым")
     @Pattern(regexp = "[A-Za-z А-Яа-я]+", message = "Некорректное имя.")
     @Column
     private String name;
 
     @NotNull
-    @NotBlank(message = "фамилия не должна быть пустой")
+    @NotBlank(message = "Фамилия не должна быть пустой")
     @Pattern(regexp = "[A-Za-z А-Яа-я]+", message = "Некорректная фамилия.")
     @Column
     private String surname;
@@ -61,7 +60,7 @@ public class User extends BaseEntity {
     @Column
     private int balance;
 
-    @NotNull(message = "поле не должно быть пустым")
+    @NotNull(message = "Поле не должно быть пустым")
     @Pattern(regexp = "[A-Za-z А-Яа-я0-9\\d]+", message = "Некорректный адрес")
     @Column
     private String address;
@@ -75,6 +74,5 @@ public class User extends BaseEntity {
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-
     private List<Role> roles;
 }

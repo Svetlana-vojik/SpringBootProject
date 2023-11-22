@@ -5,6 +5,13 @@ import lombok.Getter;
 @Getter
 public enum RequestParamsEnum {
     USER("user"),
+    USER_ID("user_id"),
+    NAME("name"),
+    SURNAME("surname"),
+    BIRTHDAY("birthday"),
+    EMAIL("email"),
+    LOGIN("email"),
+    PASSWORD("password"),
     CATEGORIES("categories"),
     CATEGORY("category"),
     CATEGORY_ID("category_id"),

@@ -5,15 +5,13 @@ import by.teachmeskills.springbootproject.RequestParamsEnum;
 import by.teachmeskills.springbootproject.ShopConstants;
 import by.teachmeskills.springbootproject.entities.Category;
 import by.teachmeskills.springbootproject.entities.Order;
+import by.teachmeskills.springbootproject.entities.Role;
 import by.teachmeskills.springbootproject.entities.User;
 import by.teachmeskills.springbootproject.exceptions.AuthorizationException;
 import by.teachmeskills.springbootproject.repositories.CategoryRepository;
 import by.teachmeskills.springbootproject.repositories.OrderRepository;
 import by.teachmeskills.springbootproject.repositories.UserRepository;
-import by.teachmeskills.springbootproject.services.CategoryService;
-import by.teachmeskills.springbootproject.services.OrderService;
 import by.teachmeskills.springbootproject.services.UserService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 import java.util.Optional;
 
+import static by.teachmeskills.springbootproject.PagesPathEnum.REGISTRATION_PAGE;
 import static by.teachmeskills.springbootproject.PagesPathEnum.USER_PROFILE_PAGE;
 import static by.teachmeskills.springbootproject.ShopConstants.ORDERS;
 import static by.teachmeskills.springbootproject.ShopConstants.USER;
@@ -36,28 +35,25 @@ import static by.teachmeskills.springbootproject.ShopConstants.USER;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final CategoryService categoryService;
     private final PasswordEncoder passwordEncoder;
     private final CategoryRepository categoryRepository;
-    private final OrderService orderService;
     private final OrderRepository orderRepository;
 
-    public UserServiceImpl(UserRepository userRepository, CategoryService categoryService, PasswordEncoder passwordEncoder, CategoryRepository categoryRepository, OrderService orderService, OrderRepository orderRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, CategoryRepository categoryRepository, OrderRepository orderRepository) {
         this.userRepository = userRepository;
-        this.categoryService = categoryService;
         this.passwordEncoder = passwordEncoder;
         this.categoryRepository = categoryRepository;
-        this.orderService = orderService;
         this.orderRepository = orderRepository;
     }
 
-
     @Override
-    public ModelAndView createUser(User entity) throws AuthorizationException {
-        ModelAndView modelAndView = new ModelAndView(PagesPathEnum.REGISTRATION_PAGE.getPath());
+    public ModelAndView createUser(User entity) {
+        ModelAndView modelAndView = new ModelAndView(REGISTRATION_PAGE.getPath());
         if ((userRepository.findByEmailAndPassword(entity.getEmail(), entity.getPassword())) != null) {
-            throw new AuthorizationException("Данный пользователь уже зарегистрирован. Войдите в систему.");
+            modelAndView.addObject("info", "Пользователь уже зарегистрирован. Войдите в систему.");
         } else {
+            entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+            entity.setRoles(List.of(Role.builder().id(2).name("USER").build()));
             userRepository.save(entity);
             modelAndView.addObject("info", "Пользователь успешно зарегистрирован. Войдите в систему.");
         }

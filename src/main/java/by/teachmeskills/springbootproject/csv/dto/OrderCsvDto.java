@@ -1,7 +1,5 @@
 package by.teachmeskills.springbootproject.csv.dto;
 
-
-import by.teachmeskills.springbootproject.entities.Order;
 import com.opencsv.bean.CsvBindByName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderCsvDto  {
+public class OrderCsvDto {
     private int id;
 
     @CsvBindByName

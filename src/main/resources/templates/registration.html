@@ -32,6 +32,9 @@
 <h2 style="text-align:center">Регистрация</h2>
 <p></p>
 <div class="container">
+    <div th:if="${info!=null}">
+        <p style="text-align: center" class="text-danger" th:text="${info}"></p>
+         </div>
     <div class="row">
         <div class="col-md-12 offset-md-5">
             <form  th:method="post" th:action="@{/registration}" class="needs-validation" novalidate>
@@ -80,8 +83,7 @@
 </div>
 </body>
 <footer class="text-center text-lg-start bg-white text-muted">
-    <!-- Section: Social media -->
-    <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+     <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
         <div class="me-5 d-none d-lg-block">
             <span>Присоединяйтесь к нам в социальных сетях:</span>
         </div>
@@ -103,8 +105,6 @@
             </a>
         </div>
     </section>
-    <!-- Section: Social media -->
-    <!-- Section: Links  -->
     <section class="">
         <div class="container text-center text-md-start mt-5">
             <div class="row mt-3">

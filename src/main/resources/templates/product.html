@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org/" lang="ru"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-    <title th:text="${product.getName()}"></title>
+    <title> Продукты</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -19,6 +19,7 @@
             margin: 5px 2px;
             border-radius: 50%;
         }
+
         .fa:hover {
             opacity: 0.7;
         }
@@ -32,6 +33,14 @@
                 <button class="btn btn-outline-success" type="button">Главная</button>
             </a>
         </form>
+        <div class="container">
+            <form class="input-group mb-3" th:method="POST" th:action="@{/search}" style="text-align: center">
+                <label for="searchKey"></label>
+                <input type="text" name="searchKey" id="searchKey" class="form-control"
+                       placeholder=" Поиск ">
+                <button type="submit" style="margin-left:10px" class="btn btn-success">Найти</button>
+            </form>
+        </div>
         <form class="form-inline my-2 my-lg-0">
             <a th:href="@{/search}">
                 <button class="btn btn-outline-success m-1" type="button">Поиск</button>
@@ -55,7 +64,7 @@
         </form>
     </div>
 </nav>
-<h2 style="text-align: center" th:text="${product.getName()}"></h2>
+<h2 style="text-align: center" th:text="${product.name}"></h2>
 <p></p>
 <div class="card w-50 m-1" style="text-align: center" type="product">
     <div class="card-body">
@@ -67,20 +76,40 @@
                     alt="Product image">
             </div>
             <div class="col m-1" style="text-align: left"><p></p>
-                <p th:text="${product.getName()}"></p>
-                <p th:text="${product.getDescription()}"></p>
-                <p th:text="${product.getPrice()}"></p>
-                </div>
+                <p>
+                <h2 style="color:darkblue" th:text="${product.name}"></h2></p>
+                <p th:text="${product.description}"></p>
+                <p style="color:lightslategray" th:text="'Цена: ' + ${product.price}"></p>
+            </div>
             <div class="col m-1" style="text-align: center">
-
             </div>
         </div>
-        <div class="row" style="text-align: end">
+        <div class="row m-1" style="text-align: end">
             <div class="col m-1" style="text-align: center"><p></p></div>
             <div class="col m-1" style="text-align: center"><p></p></div>
-            <a  th:href="'/cart/add?product_id='+${product.getId()}">
-                <button type="button" class="btn btn-success">Купить</button>
-            </a>
+            <button class="btn btn-outline-success m-2" style="text-align: right" type="button" data-toggle="modal"
+                    data-target="#myModal">Купить
+            </button>
+            <div class="modal" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <p class="modal-title" style="text-align: center"
+                               th:text="'Добавить '+ ${product.getName()}+' в корзину?'"></p>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align: center">
+                            <a th:href="'/cart/add?product_id='+${product.id}">
+                                <button class="btn btn-outline-success m-2" style="text-align: left" type="button"
+                                        data-toggle="modal"
+                                        data-target="#myModal">Да
+                                </button>
+                            </a>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Нет</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -92,7 +121,7 @@
             <span>Присоединяйтесь к нам в социальных сетях:</span>
         </div>
         <div>
-            <a href="https://www.facebook.com/sveta.yezhaleva/" class="me-4 link-secondary"  >
+            <a href="https://www.facebook.com/sveta.yezhaleva/" class="me-4 link-secondary">
                 <i class="fa fa-facebook" style="align-items: center"></i>
             </a>
             <a href="https://t.me/sviatlana_y" class="me-4 link-secondary">
@@ -109,8 +138,6 @@
             </a>
         </div>
     </section>
-    <!-- Section: Social media -->
-    <!-- Section: Links  -->
     <section class="">
         <div class="container text-center text-md-start mt-5">
             <div class="row mt-3">
@@ -155,7 +182,8 @@
                 </div>
                 <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
                     <h6 class="text-uppercase fw-bold mb-4">Контакты</h6>
-                    <p><i class="fa fa-home me-3 text-secondary" style="margin-right:10px"></i> Минск, ул.Скрыганова д.3 каб.36 </p>
+                    <p><i class="fa fa-home me-3 text-secondary" style="margin-right:10px"></i> Минск, ул.Скрыганова д.3
+                        каб.36 </p>
                     <p>
                         <i class="fa fa-envelope me-3 text-secondary" style="margin-right:10px"></i>
                         cake@example.com

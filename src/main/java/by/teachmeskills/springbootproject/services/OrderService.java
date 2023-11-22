@@ -15,11 +15,9 @@ import java.io.IOException;
 import java.util.List;
 
 
-public interface OrderService extends BaseService<Order>{
+public interface OrderService extends BaseService<Order> {
 
     ModelAndView create(User user, Cart cart) throws CartIsEmptyException, AuthorizationException;
-
-    ModelAndView findUserOrders(User user) throws AuthorizationException;
 
     Order create(Order entity);
 
