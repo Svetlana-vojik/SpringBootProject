@@ -20,6 +20,7 @@
             margin: 5px 2px;
             border-radius: 50%;
         }
+
         .fa:hover {
             opacity: 0.7;
         }
@@ -59,13 +60,17 @@
         <input type="text" name="searchKey" id="searchKey" class="form-control"
                placeholder=" Поиск ">
         <button type="submit" style="margin-left:10px" class="btn btn-success">Найти</button>
-            </form>
+    </form>
+    <div th:test="${info}!=null">
+        <p style="text-align: center" class="text-danger" th:text="${info}"></p>
+        <p></p>
+    </div>
     <p></p>
 </div>
 <br>
 <br>
 <div class="row">
-    <div class="col-md-8" style="margin-left:100px">Фильтр<br><br>
+    <div class="col-md-8" style="margin-left:100px"><b>Фильтр</b><br><br>
         <form th:method="POST" th:action="@{/search}">
             <div class="form-group">
                 <label for="searchKey">Название товара:</label>
@@ -84,9 +89,9 @@
             </div>
             <button class="btn btn-primary">Найти</button>
         </form>
+        <p></p>
     </div>
-    <p></p>
-    <p></p>
+    <br>
     <div class="col" style="margin-right:20px"><b>Результаты поиска:</b><br><br>
         <div th:test="${message}!=null">
             <p style="text-align: center" class="text" th:text="${message}"></p>
@@ -146,23 +151,23 @@
             </li>
         </th:block>
         <th:block th:if="${not #lists.isEmpty(products)}">
-        <div class="dropdown">
-            <button class="btn btn-success" type="button" id="dropdownMenu" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false" style="margin-left:30px ">
-                Размер страницы
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" th:classappend="${pageSize == selectedPageSize ? 'active' : ''}"
-                       th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize}}"
-                       th:text="${pageSize}">Размер страницы</a></li>
-                <li><a class="dropdown-item" th:classappend="${pageSize * 2 == selectedPageSize ? 'active' : ''}"
-                       th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize * 2}}"
-                       th:text="${pageSize * 2}">Двойной размер страницы</a></li>
-                <li><a class="dropdown-item" th:classappend="${pageSize * 3 == selectedPageSize ? 'active' : ''}"
-                       th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize * 3}}"
-                       th:text="${pageSize * 3}">Тройной размер страницы</a></li>
-            </ul>
-        </div>
+            <div class="dropdown">
+                <button class="btn btn-success" type="button" id="dropdownMenu" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false" style="margin-left:30px ">
+                    Размер страницы
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" th:classappend="${pageSize == selectedPageSize ? 'active' : ''}"
+                           th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize}}"
+                           th:text="${pageSize}">Размер страницы</a></li>
+                    <li><a class="dropdown-item" th:classappend="${pageSize * 2 == selectedPageSize ? 'active' : ''}"
+                           th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize * 2}}"
+                           th:text="${pageSize * 2}">Двойной размер страницы</a></li>
+                    <li><a class="dropdown-item" th:classappend="${pageSize * 3 == selectedPageSize ? 'active' : ''}"
+                           th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize * 3}}"
+                           th:text="${pageSize * 3}">Тройной размер страницы</a></li>
+                </ul>
+            </div>
         </th:block>
     </ul>
 </nav>

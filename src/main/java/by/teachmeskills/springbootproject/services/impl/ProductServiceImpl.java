@@ -83,6 +83,9 @@ public class ProductServiceImpl implements ProductService {
         ModelMap model = new ModelMap();
         if (search != null) {
             if (search.getSearchKey() != null || search.getPriceFrom() != null || search.getPriceTo() != null || search.getCategoryName() != null) {
+                if (search.getSearchKey().length() < 3) {
+                    model.addAttribute("info", "Не менее трех символов для поиска!");
+                }else {
                 Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by("name").ascending());
                 ProductSearchSpecification productSearchSpecification = new ProductSearchSpecification(search);
                 List<Product> products = productRepository.findAll(productSearchSpecification, paging).getContent();
@@ -98,7 +101,7 @@ public class ProductServiceImpl implements ProductService {
                     model.addAttribute(RequestParamsEnum.PAGE_SIZE.getValue(), ShopConstants.PAGE_SIZE);
                 } else {
                     model.addAttribute("message", "Ничего не найдено...");
-                }
+                }}
             }
         }
         model.addAttribute(RequestParamsEnum.SELECTED_PAGE_SIZE.getValue(), pageSize);
